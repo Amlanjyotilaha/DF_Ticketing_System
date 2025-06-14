@@ -1,373 +1,40 @@
-# DF_Ticketing_system
-The DF_Ticketing system manages workflows for Reimbursements, Procurements, and Advances, enabling ticket creation, approvals, and financial tracking with audit trails, user roles, and integrated payment records—ensuring efficient and compliant operations.
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infographic: The Evolution of the df_ticketing Database</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
-        }
-        @media (max-width: 640px) {
-            .chart-container {
-                height: 300px;
-            }
-        }
-        .flow-node {
-            border: 2px solid #003f5c;
-            background-color: #ffffff;
-            color: #003f5c;
-        }
-        .flow-arrow {
-            color: #58508d;
-            font-size: 2rem;
-            line-height: 1;
-        }
-        .gradient-text {
-            background: linear-gradient(90deg, #bc5090, #ff6361, #ffa600);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
-</head>
-<body class="text-gray-800">
+# 📋 DF_Ticketing System Overview
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <h1 class="text-3xl font-bold text-center text-gray-900">
-                The Evolution of the <span class="gradient-text">df_ticketing</span> Database
-            </h1>
-            <p class="text-center text-gray-500 mt-1">An Infographic on Schema Changes from April to June 2025</p>
-        </div>
-    </header>
+**DF_Ticketing** is an integrated workflow and financial management system built to streamline and manage key operational processes such as **Reimbursements**, **Procurement Requests**, and **Advance Requests**. It allows users to raise tickets, manage approvals, and track financial transactions, ensuring transparency and accountability throughout.
 
-    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-16">
+---
 
-        <section id="initial-state" class="scroll-mt-20">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-extrabold text-gray-900">Pre-April 2025: The Initial Schema</h2>
-                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">As of the base database dump (May 9, 2025), and accounting for subsequent explicit creation dates, the `df_ticketing` system began with a robust set of core tables forming its fundamental structure.</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center h-full">
-                    <p class="text-lg text-gray-500">Tables Present Before April 15, 2025</p>
-                    <p class="text-9xl font-black text-[#003f5c]">51</p>
-                    <p class="mt-2 text-center text-gray-600">These 51 tables, including foundational entities like `users`, `roles`, `tickets`, `ledgers`, and `master_status`, were the backbone of the `df_ticketing` system prior to the major documented changes.</p>
-                </div>
-                <div class="bg-white rounded-2xl shadow-lg p-8 h-full">
-                    <h3 class="text-2xl font-bold text-center mb-6">Foundational Modules</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-2">
-                        <li>**User Management:** `users`, `roles`, `user_roles`, `login_details`, `user_history`.</li>
-                        <li>**Organizational Structure:** `organization`, `entities`, `departments`, `sub_departments`, `cost_center`.</li>
-                        <li>**Ticketing & Expense Core:** `tickets`, `ticket_history`, `ticket_logs`, `expense_category`, `bills`, `re_ticket_details`, `reimbursement_history`, `adv_ticket_details`, `pro_ticket_details`, `travels`, `accommodation`, `food`, `vehicles`.</li>
-                        <li>**Financial Ledgers:** `ledgers`, `categories`.</li>
-                        <li>**System Configuration:** `master_status`, `levels`, `menus`, `payment_mode`, `payment_route`.</li>
-                        <li>**HR & Employee Data:** `employees`, `employee_history`, `pf_details`.</li>
-                        <li>**Reporting:** `reports`, `report_history`, `report_logs`.</li>
-                        <li>**Banking:** `user_bank`, `vendors`, `vendor_bank`.</li>
-                        <li>**Academic Modules:** `academic_year`, `academic_entity`, `academic_organization`, `academic_cost_center`, `academic_expense_category`.</li>
-                    </ul>
-                    <p class="mt-6 text-sm text-center text-gray-600">This list highlights the comprehensive nature of the initial database, indicating a system designed from the outset to handle various aspects of organizational operations.</p>
-                </div>
-            </div>
-        </section>
+## 🔑 Key Functional Modules
 
-        <section id="foundation-april" class="scroll-mt-20">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-extrabold text-gray-900">Phase 1: New Creations <span class="text-[#003f5c]">(April 2025)</span></h2>
-                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">April 2025 marked the beginning of documented schema enhancements with the introduction of new tables designed to add more specific financial and organizational classifications.</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center h-full">
-                    <p class="text-lg text-gray-500">New Tables Created in April</p>
-                    <p class="text-9xl font-black text-[#003f5c]">6</p>
-                    <p class="mt-2 text-center text-gray-600">These include `budget_type`, `expense`, `contribution_type`, `reimb_others` (April 15), `organization_bank`, and `payment_type` (April 21).</p>
-                </div>
-                <div class="bg-white rounded-2xl shadow-lg p-8 h-full">
-                    <h3 class="text-2xl font-bold text-center mb-6">Initial Data Flow with New Additions</h3>
-                    <div class="flex flex-col items-center space-y-2">
-                        <div class="flow-node font-semibold py-3 px-6 rounded-lg">Ticket Generation</div>
-                        <div class="flow-arrow">&#129047;</div>
-                        <div class="flow-node font-semibold py-3 px-6 rounded-lg">Detailed Expense & Financial Classification</div>
-                        <div class="flow-arrow">&#129047;</div>
-                        <div class="grid grid-cols-3 gap-x-2 text-center">
-                            <div class="flow-node py-2 px-3 rounded-md text-sm">Budget Type</div>
-                             <div class="flow-node py-2 px-3 rounded-md text-sm">Expense Type</div>
-                            <div class="flow-node py-2 px-3 rounded-md text-sm">Contribution Type</div>
-                        </div>
-                         <div class="flow-arrow">&#129047;</div>
-                         <div class="flow-node font-semibold py-3 px-6 rounded-lg">Refined Payment & Reimbursement Processes</div>
-                    </div>
-                    <p class="mt-6 text-sm text-center text-gray-600">This flow demonstrates how the newly introduced tables integrate into the core processes, enabling more granular categorization of financial transactions.</p>
-                </div>
-            </div>
-        </section>
+- ✅ **Reimbursement**  
+  Claim submission, multi-level approvals, and final settlement processing.
 
-        <section id="hardening" class="scroll-mt-20">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-extrabold text-gray-900">Phase 2: Hardening & Enrichment <span class="text-[#58508d]">(Late April - May 2025)</span></h2>
-                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">This phase focused on refining the data model for greater detail, consistency, and integrity. Changes involved making structures more granular and adding constraints to prevent bad data.</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-center">
-                    <h3 class="text-2xl font-bold text-center mb-6">Address Field Expansion</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="text-center p-4 bg-red-50 rounded-lg border-2 border-red-200">
-                            <h4 class="font-bold text-red-800 mb-2">Before</h4>
-                            <p class="font-mono bg-red-100 text-red-900 p-2 rounded text-sm">current_address</p>
-                            <p class="font-mono bg-red-100 text-red-900 p-2 rounded text-sm mt-2">permanent_address</p>
-                        </div>
-                        <div class="text-center p-4 bg-green-50 rounded-lg border-2 border-green-200">
-                            <h4 class="font-bold text-green-800 mb-2">After</h4>
-                            <p class="font-mono bg-green-100 text-green-900 p-2 rounded text-xs">address_line_1</p>
-                            <p class="font-mono bg-green-100 text-green-900 p-2 rounded text-xs mt-1">address_line_2</p>
-                            <p class="font-mono bg-green-100 text-green-900 p-2 rounded text-xs mt-1">city, state, zip</p>
-                        </div>
-                    </div>
-                    <p class="mt-6 text-sm text-center text-gray-600">The `employees` and `employee_history` tables were updated to capture more detailed address information, a typical sign of a maturing application requiring more specific user data.</p>
-                </div>
-                <div class="bg-white rounded-2xl shadow-lg p-8">
-                     <h3 class="text-2xl font-bold text-center mb-6">Key Table Alterations (Selected Focus)</h3>
-                     <div class="chart-container">
-                        <canvas id="alterationsChart"></canvas>
-                    </div>
-                    <p class="mt-6 text-sm text-center text-gray-600">A Bar Chart showing the number of significant columns added or modified in key tables, highlighting the focus on enriching the data model during this period.</p>
-                </div>
-                 <div class="bg-white rounded-2xl shadow-lg p-8 lg:col-span-2">
-                    <h3 class="text-2xl font-bold text-center mb-6">Database Schema Refinements</h3>
-                    <p class="mt-4 text-center text-gray-600">Beyond just adding new columns, this phase involved extensive modifications to existing tables to enhance data capacity and structure.</p>
-                    <ul class="list-disc list-inside text-gray-700 mt-4 max-w-2xl mx-auto">
-                        <li>**Expanded VARCHAR Lengths:** Numerous columns across `employees`, `employee_history`, `users`, `user_history`, `user_bank`, `vendor_bank`, and `travels` saw increased `VARCHAR` lengths for fields like names, emails, job titles, and bank details, accommodating more diverse and longer data entries. The `organization_bank` table also saw significant additions and renames, including client code and bank contact details.</li>
-                        <li>**Transient Tables:** The `bill_history` and `edit_history` tables were subject to creation and subsequent drops within this period (as per commented out sections in the SQL log), indicating iterative development and potential restructuring of how historical data or billing information was managed.</li>
-                        <li>**New Table:** `role_actions` was created (May 23) to manage permissions more granularly.</li>
-                    </ul>
-                    <div class="flex justify-around items-center text-center mt-8">
-                        <div class="flex flex-col items-center">
-                            <span class="text-6xl text-green-500">&#10003;</span>
-                            <p class="font-bold mt-2">Unique Reports</p>
-                            <p class="text-sm text-gray-600">`unique_report_code`</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                             <span class="text-6xl text-green-500">&#10003;</span>
-                            <p class="font-bold mt-2">Unique Tickets</p>
-                             <p class="text-sm text-gray-600">`unique_ticket_number`</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-6xl text-green-500">&#10003;</span>
-                            <p class="font-bold mt-2">Unique Payments</p>
-                             <p class="text-sm text-gray-600">`unique_transaction_id`</p>
-                        </div>
-                    </div>
-                    <p class="mt-6 text-sm text-center text-gray-600">Unicode pictographs illustrate the addition of `UNIQUE` constraints to critical tables (`reports`, `tickets`, `payments`) on May 3, preventing duplicate entries and ensuring system reliability.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="integration" class="scroll-mt-20">
-             <div class="text-center mb-12">
-                <h2 class="text-4xl font-extrabold text-gray-900">Phase 3: Enterprise Integration <span class="text-[#bc5090]">(June 2025)</span></h2>
-                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">The final phase recorded in the log marks a significant step: connecting the df_ticketing system to external enterprise software, specifically for Tally accounting integration.</p>
-            </div>
-             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                 <div class="bg-white rounded-2xl shadow-lg p-8 h-full">
-                    <h3 class="text-2xl font-bold text-center mb-6">Tally Integration Flow</h3>
-                    <div class="flex flex-col items-center space-y-2">
-                        <div class="flow-node font-semibold py-3 px-6 rounded-lg bg-pink-50 border-[#bc5090]">Tally Booking (New June 5)</div>
-                        <div class="flow-arrow text-[#bc5090]">&#129047;</div>
-                        <div class="flow-node font-semibold py-3 px-6 rounded-lg bg-pink-50 border-[#bc5090]">Tally Payment (New June 5)</div>
-                         <div class="flow-arrow text-[#bc5090]">&#129047;</div>
-                        <div class="flow-node font-semibold py-3 px-6 rounded-lg bg-pink-50 border-[#bc5090]">Tally Pay Bank (New June 11)</div>
-                        <div class="flow-arrow text-[#bc5090]">&#129047;</div>
-                        <div class="flow-node font-semibold py-3 px-6 rounded-lg bg-pink-50 border-[#bc5090]">Links to Payment Route</div>
-                    </div>
-                    <p class="mt-6 text-sm text-center text-gray-600">This diagram, styled with HTML, shows the new tables and relationships introduced to facilitate communication with the Tally accounting system.</p>
-                </div>
-                 <div class="bg-white rounded-2xl shadow-lg p-8 h-full">
-                    <h3 class="text-2xl font-bold text-center mb-6">Focus of June's Changes</h3>
-                    <div class="chart-container">
-                        <canvas id="juneChangesChart"></canvas>
-                    </div>
-                     <p class="mt-6 text-sm text-center text-gray-600">A Donut Chart illustrating that the overwhelming majority of development effort in June was dedicated to building out the Tally integration features, including data cleanup in `ledgers`.</p>
-                </div>
-            </div>
-        </section>
+- 🛒 **Procurement**  
+  Purchase requests, vendor management, and payment tracking for procurement workflows.
 
-        <section id="summary" class="scroll-mt-20">
-             <div class="text-center mb-12">
-                <h2 class="text-4xl font-extrabold text-gray-900">Project Trajectory Summary</span></h2>
-                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">A high-level view of the schema modifications across the entire period, showing the types of changes that dominated each month of development.</p>
-            </div>
-             <div class="bg-white rounded-2xl shadow-lg p-8">
-                 <h3 class="text-2xl font-bold text-center mb-6">Total Schema Changes (April - June 2025)</h3>
-                 <div class="chart-container h-[400px] max-h-[450px]">
-                    <canvas id="summaryChangesChart"></canvas>
-                </div>
-                 <p class="mt-6 text-sm text-center text-gray-600">This stacked bar chart provides a cumulative overview of the project's evolution, from foundational work to feature enrichment and finally to integration, as reflected by the database changes.</p>
-             </div>
-        </section>
-    </main>
-    
-    <footer class="text-center py-8">
-        <p class="text-gray-500">Infographic generated on <span id="generationDate"></span>.</p>
-        <p class="text-xs text-gray-400 mt-2">This infographic was dynamically generated based on SQL change logs and schema dumps. All charts are rendered using the Canvas API via Chart.js. All diagrams are created with structured HTML and Tailwind CSS. No SVG or Mermaid JS was used in this output.</p>
-    </footer>
+- 💰 **Advance**  
+  Requesting, disbursing, and reconciling advances for travel, projects, or operational needs.
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('generationDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
 
-            const brilliantBlues = ['#003f5c', '#58508d', '#bc5090', '#ff6361', '#ffa600'];
-            
-            function wrapLabels(label, maxWidth) {
-                if (typeof label !== 'string' || label.length <= maxWidth) {
-                    return label;
-                }
-                const words = label.split(' ');
-                let lines = [];
-                let currentLine = '';
-                for (const word of words) {
-                    if ((currentLine + ' ' + word).trim().length > maxWidth) {
-                        lines.push(currentLine.trim());
-                        currentLine = word;
-                    } else {
-                        currentLine = (currentLine + ' ' + word).trim();
-                    }
-                }
-                if (currentLine) {
-                    lines.push(currentLine.trim());
-                }
-                return lines;
-            }
+## ⚙️ System Capabilities
 
-            const tooltipTitleCallback = (tooltipItems) => {
-                const item = tooltipItems[0];
-                let label = item.chart.data.labels[item.dataIndex];
-                if (Array.isArray(label)) {
-                    return label.join(' ');
-                }
-                return label;
-            };
+- 🎫 Ticket lifecycle management with unique tracking numbers  
+- 👥 Role-based access and hierarchical approval workflows  
+- 🕵️‍♀️ Audit trails with historical change tracking  
+- 🏦 Integration with organization banking and payment systems  
+- 🔐 Data integrity enforced through relational constraints and keys  
+- 📊 Custom reports for performance, finance, and compliance insights
 
-            const commonChartOptions = (hasLabels) => ({
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                           title: tooltipTitleCallback
-                        }
-                    }
-                },
-                scales: hasLabels ? {
-                    y: {
-                        beginAtZero: true,
-                         ticks: {
-                            stepSize: 5
-                        }
-                    },
-                     x: {
-                        ticks: {
-                            maxRotation: 0,
-                            minRotation: 0,
-                            autoSkip: false
-                        }
-                    }
-                } : {
-                    y: { display: false },
-                    x: { display: false }
-                }
-            });
+---
 
-            const alterationsCtx = document.getElementById('alterationsChart')?.getContext('2d');
-            if (alterationsCtx) {
-                const rawLabels = ['employees & history', 'payments', 'organization_bank', 'users & history', 'reimbursement details', 'tickets', 'ledgers', 'login_details', 'travels'];
-                const processedLabels = rawLabels.map(label => wrapLabels(label, 16));
-                new Chart(alterationsCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: processedLabels,
-                        datasets: [{
-                            label: 'Significant Column Alterations',
-                            data: [15, 8, 14, 12, 5, 2, 2, 1, 2],
-                            backgroundColor: brilliantBlues[1],
-                            borderColor: brilliantBlues[1],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: commonChartOptions(true)
-                });
-            }
-            
-            const juneChangesCtx = document.getElementById('juneChangesChart')?.getContext('2d');
-            if (juneChangesCtx) {
-                new Chart(juneChangesCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Tally Integration (New Tables)', 'Ledger & Tally Alterations'],
-                        datasets: [{
-                            data: [3, 4], 
-                            backgroundColor: [brilliantBlues[2], brilliantBlues[3]],
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: commonChartOptions(false)
-                });
-            }
+## 🧱 Database
 
-            const summaryChangesCtx = document.getElementById('summaryChangesChart')?.getContext('2d');
-            if (summaryChangesCtx) {
-                 new Chart(summaryChangesCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['April', 'May', 'June'],
-                        datasets: [
-                            {
-                                label: 'New Tables',
-                                data: [6, 1, 3], /* April: 6, May: 1, June: 3 (tally_booking, tally_payment, tally_pay_bank) */
-                                backgroundColor: brilliantBlues[0],
-                            },
-                            {
-                                label: 'Altered Tables',
-                                data: [6, 10, 3], /* April: 6, May: 10, June: 3 */
-                                backgroundColor: brilliantBlues[1],
-                            },
-                            {
-                                label: 'Constraints Added',
-                                data: [0, 3, 2], /* April: 0, May: 3, June: 2 */
-                                backgroundColor: brilliantBlues[4],
-                            }
-                        ]
-                    },
-                    options: {
-                        ...commonChartOptions(true),
-                        scales: {
-                            x: { stacked: true },
-                            y: { stacked: true, beginAtZero: true, ticks: { stepSize: 2 } }
-                        }
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+The system is backed by the `df_ticketing` MySQL database, designed for:
+- Scalability
+- Financial compliance
+- Multi-department operational efficiency
+
+---
+
+> 📝 This repository includes schema changes, historical modifications, and table-wise updates to support the evolution of the DF_Ticketing system.
