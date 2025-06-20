@@ -1,5 +1,8 @@
 # 📋 DF_Ticketing System Overview
 
+![SRS Infographics-1](https://github.com/user-attachments/assets/cae8b492-1777-4006-926d-cf323359d907)
+
+
 **DF_Ticketing** is an integrated workflow and financial management system built to streamline and manage key operational processes such as **Reimbursements**, **Procurement Requests**, and **Advance Requests**. It allows users to raise tickets, manage approvals, and track financial transactions, ensuring transparency and accountability throughout.
 
 ---
