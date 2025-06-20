@@ -250,7 +250,7 @@ User → API → Backend → DB → Notification/Export → Frontend Update
 
 <br><br>
 <div align="center">
-  <sub>© 2025 Deshpande Foundation. All Rights Reserved.</sub>
+  <sub>© 2025 Amlanjyoti Laha & Deshpande Foundation. All Rights Reserved.</sub>
 </div>
 
 
