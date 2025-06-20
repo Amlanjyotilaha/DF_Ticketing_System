@@ -246,3 +246,11 @@ User → API → Backend → DB → Notification/Export → Frontend Update
 | Express.js | 🚏 Routing |  
 | express-validator | ✅ Validation |  
 | Bcrypt | 🔒 Password Hashing |
+
+
+<br><br>
+<div align="center">
+  <sub>© 2025 Deshpande Foundation. All Rights Reserved.</sub>
+</div>
+
+
