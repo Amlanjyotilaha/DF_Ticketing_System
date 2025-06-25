@@ -1,317 +1,16 @@
----------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 1-->
-******************************************************************* */
----------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_ORG_DETAILS`(
-    IN p_org_id INT,
-    IN p_entity_name VARCHAR(255),
-    IN p_cost_center_name VARCHAR(255),
-    IN p_department_name VARCHAR(255),
-    IN p_sub_department_name VARCHAR(255)
-)
-BEGIN
-    DECLARE v_entity_id INT DEFAULT NULL;
-    DECLARE v_cost_center_id INT DEFAULT NULL;
-    DECLARE v_department_id INT DEFAULT NULL;
-    DECLARE v_sub_department_id INT DEFAULT NULL;
-    DECLARE v_year_id INT;
-
-    -- Get active academic year_id
-    SELECT year_id INTO v_year_id
-    FROM academic_year
-    WHERE status_id = 1
-    LIMIT 1;
-
-    -- Convert empty strings to NULL
-    SET p_entity_name = NULLIF(p_entity_name, '');
-    SET p_cost_center_name = NULLIF(p_cost_center_name, '');
-    SET p_department_name = NULLIF(p_department_name, '');
-    SET p_sub_department_name = NULLIF(p_sub_department_name, '');
-
-    -- Process entity
-    IF p_entity_name IS NOT NULL THEN
-        SELECT entity_id INTO v_entity_id
-        FROM entities
-        WHERE entity_name = p_entity_name AND status_id = 1
-        LIMIT 1;
-
-        IF v_entity_id IS NULL THEN
-            INSERT INTO entities (org_id, entity_name, status_id)
-            VALUES (p_org_id, p_entity_name, 1);
-            SET v_entity_id = LAST_INSERT_ID();
-        END IF;
-
-        -- Check or insert into academic_entity
-        IF v_year_id IS NOT NULL AND v_entity_id IS NOT NULL THEN
-            IF NOT EXISTS (
-                SELECT 1 FROM academic_entity
-                WHERE entity_id = v_entity_id AND year_id = v_year_id AND status_id = 1
-            ) THEN
-                INSERT INTO academic_entity (entity_id, year_id, status_id)
-                VALUES (v_entity_id, v_year_id, 1);
-            END IF;
-        END IF;
-    END IF;
-
-    -- Process cost center
-    IF p_cost_center_name IS NOT NULL THEN
-        SELECT cost_center_id INTO v_cost_center_id
-        FROM cost_center
-        WHERE cost_center_name = p_cost_center_name AND status_id = 1
-        LIMIT 1;
-
-        IF v_cost_center_id IS NULL THEN
-            INSERT INTO cost_center (cost_center_name, status_id)
-            VALUES (p_cost_center_name, 1);
-            SET v_cost_center_id = LAST_INSERT_ID();
-        END IF;
-
-        -- Check or insert into academic_cost_center
-        IF v_year_id IS NOT NULL AND v_cost_center_id IS NOT NULL AND v_entity_id IS NOT NULL THEN
-            IF NOT EXISTS (
-                SELECT 1 FROM academic_cost_center
-                WHERE cost_center_id = v_cost_center_id AND entity_id = v_entity_id AND year_id = v_year_id AND status_id = 1
-            ) THEN
-                INSERT INTO academic_cost_center (cost_center_id, year_id, entity_id, status_id)
-                VALUES (v_cost_center_id, v_year_id, v_entity_id, 1);
-            END IF;
-        END IF;
-    END IF;
-
-    
-    -- Process department
-    IF p_department_name IS NOT NULL THEN
-        SELECT department_id INTO v_department_id
-        FROM departments
-        WHERE department_name = p_department_name AND status_id = 1
-        LIMIT 1;
-
-        IF v_department_id IS NULL THEN
-            INSERT INTO departments (department_name, status_id)
-            VALUES (p_department_name, 1);
-            SET v_department_id = LAST_INSERT_ID();
-        END IF;
-    END IF;
-
-    -- Process sub-department
-    IF p_sub_department_name IS NOT NULL AND v_department_id IS NOT NULL THEN
-        SELECT sub_department_id INTO v_sub_department_id
-        FROM sub_departments
-        WHERE department_id = v_department_id
-          AND sub_department_name = p_sub_department_name
-          AND status_id = 1
-        LIMIT 1;
-
-        IF v_sub_department_id IS NULL THEN
-            INSERT INTO sub_departments (department_id, sub_department_name, status_id)
-            VALUES (v_department_id, p_sub_department_name, 1);
-            SET v_sub_department_id = LAST_INSERT_ID();
-        END IF;
-    END IF;
-
-    -- Final output
-    SELECT 
-        v_entity_id AS entity_id,
-        v_cost_center_id AS cost_center_id,
-        v_department_id AS department_id,
-        v_sub_department_id AS sub_department_id;
-
-END;
-
-
--------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 2-->
-******************************************************************* */
--------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_PROFILE_DETAILS`(
-    IN p_User_ID INT
-)
-BEGIN
-
-        -- Result 1: Fetch user profile details & login details
-        SELECT 
-            p_User_ID as user_id,u.employee_id, u.employee_number, u.user_name, u.work_email, u.mobile, 
-            u.gender, u.PAN_number, u.aadhaar_number, u.enrollment_number, u.DOB,  e.org_id,o.org_name,
-            u.entity_id,e.entity_name, e.entity_code, u.cost_center_id,cc.cost_center_name, u.department_id,d.department_name, u.sub_department_id, 
-            sd.sub_department_name,u.job_title, u.secondary_job_title, u.manager_user_id, rm.user_name AS manager_name,
-            u.personal_email, u.father_name, u.mother_name, u.blood_group, 
-            u.nationality, u.bank_id,ub.name_on_bank, ub.bank_name, ub.account_number, ub.IFSC, u.pf_id,
-            pf.pf_establishment_id, pf.pf_details_available, pf.pf_number,DATE_FORMAT(pf.pf_joining_date, '%d-%m-%y') AS pf_joining_date,
-            pf.name_on_pf_account, pf.UAN,
-            u.pay_grade, u.work_location, 
-            u.status_id, ms.status , 
-            GROUP_CONCAT(ld.login_id) as login_ids ,
-            DATE_FORMAT(u.timestamp, '%d-%m-%y %H:%i:%s')  as updated_at
-        FROM users u
-            LEFT JOIN entities e ON u.entity_id = e.entity_id AND e.status_id = 1
-            LEFT JOIN organization o ON e.org_id = o.org_id AND o.status_id = 1
-            LEFT JOIN cost_center cc ON u.cost_center_id = cc.cost_center_id AND cc.status_id = 1
-            LEFT JOIN departments d ON u.department_id = d.department_id AND d.status_id = 1
-            LEFT JOIN sub_departments sd ON u.sub_department_id = sd.sub_department_id AND sd.status_id = 1
-            LEFT JOIN users rm ON u.manager_user_id = rm.user_id AND rm.status_id = 1
-            LEFT JOIN user_bank ub ON u.bank_id = ub.bank_id AND ub.status_id = 1
-            LEFT JOIN pf_details pf ON u.pf_id = pf.pf_id AND pf.status_id = 1
-            LEFT JOIN master_status ms ON u.status_id = ms.status_id
-            LEFT JOIN login_details ld ON ld.user_id = p_User_ID AND ld.status_id = 1
-        WHERE u.user_id = p_User_ID
-        GROUP BY u.user_id;
-
-        -- Result 2: Fetch user role details 
-        SELECT ur.role_id, r.role_name
-        FROM user_roles ur
-            LEFT JOIN roles r ON r.role_id = ur.role_id
-        WHERE ur.user_id = p_User_ID AND ur.status_id = 1;
-
-END
-
---------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 3-->
-******************************************************************* */
---------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_ROLE_MENU_DETAILS`(
-    IN p_user_id INT
-)
-BEGIN
-    DECLARE v_status_id INT;
-    DECLARE v_role_count INT;
-
-    -- Check if user exists and is active
-    SELECT status_id INTO v_status_id
-    FROM users 
-    WHERE user_id = p_user_id;
-
-    -- Check if user has assigned roles
-    SELECT COUNT(*) INTO v_role_count
-    FROM user_roles ur
-    JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
-    WHERE ur.user_id = p_user_id AND ur.status_id = 1;
-
-    -- If user is inactive or has no roles, return NULL results
-    IF v_status_id IS NULL OR v_status_id <> 1 OR v_role_count = 0 THEN
-        SELECT NULL AS role_id, NULL AS role_name, NULL AS action;
-        SELECT NULL AS menu_id, NULL AS menu_name, NULL AS action, NULL AS description;
-    ELSE
-        -- First Output: User roles and actions
-        SELECT 
-            ur.role_id,
-            r.role_name,
-            GROUP_CONCAT(DISTINCT ra.action ORDER BY ra.action SEPARATOR ',') AS action
-        FROM users u
-        INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.status_id = 1
-        INNER JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
-        LEFT JOIN role_actions ra ON ur.role_id = ra.role_id AND ra.status_id = 1
-        WHERE u.user_id = p_user_id
-        GROUP BY ur.role_id, r.role_name;
-
-        -- Second Output: Distinct menu access
-        SELECT DISTINCT
-            rm.menu_id AS menu_id,
-            m.menu_name AS menu_name,
-            m.action AS action,
-            m.description AS description,
-            m.sort
-        FROM users u
-        INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.status_id = 1
-        INNER JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
-        INNER JOIN role_menu rm ON r.role_id = rm.role_id AND rm.status_id = 1
-        INNER JOIN menus m ON rm.menu_id = m.menu_id AND m.status_id = 1
-        WHERE u.user_id = p_user_id
-        ORDER BY m.sort;
-    END IF;
-
-    -- Third Output: User basic details and status (always returned)
-    SELECT 
-        u.user_id,
-        u.user_name,
-        u.work_email,
-        u.entity_id,
-        e.entity_name,
-        u.status_id,
-        ms.status
-    FROM users u
-    LEFT JOIN master_status ms ON u.status_id = ms.status_id
-    LEFT JOIN entities e ON u.entity_id = e.entity_id
-    WHERE u.user_id = p_user_id;
-END
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 4-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_SET_USER_ROLES`()
-BEGIN
-    -- Step 1: Update user_role.status_id = 2 for users whose status has changed in the users table
-    UPDATE user_roles ur
-    JOIN users u ON ur.user_id = u.user_id
-    SET ur.status_id = 2
-    WHERE u.status_id = 2
-    AND ur.status_id = 1;
-
-    -- Step 2: Use a Temporary Table to store new role assignments before inserting
-    CREATE TEMPORARY TABLE tmp_new_roles (
-        user_id INT,
-        role_id INT
-    );
-
-    -- Insert role 7 for active users
-    INSERT INTO tmp_new_roles (user_id, role_id)
-    SELECT DISTINCT u.user_id, 7
-    FROM users u
-    WHERE u.status_id = 1
-    AND NOT EXISTS (
-        SELECT 1 FROM user_roles ur 
-        WHERE ur.user_id = u.user_id 
-        AND ur.role_id = 7 
-        AND ur.status_id = 1
-    );
-
-    -- Insert role 8 for users who are managers
-    INSERT INTO tmp_new_roles (user_id, role_id)
-    SELECT DISTINCT u.manager_user_id, 8
-    FROM users u
-    WHERE u.manager_user_id IS NOT NULL  
-    AND NOT EXISTS (
-        SELECT 1 FROM user_roles ur 
-        WHERE ur.user_id = u.manager_user_id 
-        AND ur.role_id = 8 
-        AND ur.status_id = 1
-    );
-
-    -- Step 3: Insert from temporary table to user_roles
-    INSERT INTO user_roles (user_id, role_id, status_id, created_at, created_by)
-    SELECT user_id, role_id, 1, NOW(), 'System'
-    FROM tmp_new_roles;
-
-    --  Step 4: Deactivate role 8 for users who are no longer managers
-    UPDATE user_roles
-	SET status_id = 2
-	WHERE role_id = 8
-	  AND status_id = 1
-	  AND user_id NOT IN (
-		  SELECT DISTINCT manager_user_id
-		  FROM users
-		  WHERE manager_user_id IS NOT NULL
-          AND status_id =1
-	  );
-
-    -- Step 5: Drop the Temporary Table after use
-    DROP TEMPORARY TABLE tmp_new_roles;
-END
-
-
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 5-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
+--
+-- Dumping routines for database 'df_ticketing'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `USP_API_GET_REPORT_DETAILS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
 CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_REPORT_DETAILS`(
     IN p_report_id INT
 )
@@ -406,13 +105,22 @@ BEGIN
             NULL AS updated_by, NULL AS updater_name, 
             NULL AS updated_at, NULL AS edit_description;
     END IF;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 6-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_API_GET_TICKET_DETAILS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
 CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_TICKET_DETAILS`(
     IN p_ticket_id INT
 )
@@ -1062,265 +770,537 @@ WHERE
 
 
     END IF;
-END
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 7-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_REPORT_NUMBERS`(
-    IN p_user_id INT
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_API_GET_USER_ORG_DETAILS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_ORG_DETAILS`(
+    IN p_org_id INT,
+    IN p_entity_name VARCHAR(255),
+    IN p_cost_center_name VARCHAR(255),
+    IN p_department_name VARCHAR(255),
+    IN p_sub_department_name VARCHAR(255)
 )
 BEGIN
-    SELECT 
-        -- Report Details
-        COUNT(r.report_id) AS raised_reports,
-        COUNT(CASE WHEN r.status_id = 1 THEN 1 END) AS active_reports,
-        COUNT(CASE WHEN r.status_id = 1 AND r.process_status_id != 15 THEN 1 END) AS pending_reports,
-        COUNT(CASE WHEN r.process_status_id = 15 THEN 1 END) AS closed_reports,
+    DECLARE v_entity_id INT DEFAULT NULL;
+    DECLARE v_cost_center_id INT DEFAULT NULL;
+    DECLARE v_department_id INT DEFAULT NULL;
+    DECLARE v_sub_department_id INT DEFAULT NULL;
+    DECLARE v_year_id INT;
 
-        -- Reimbursement Details (exp_catg_id = 1)
-        COUNT(CASE WHEN t.exp_catg_id = 1 THEN t.ticket_id END) AS re_raised_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 THEN t.ticket_id END) AS re_active_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS re_pending_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.process_status_id = 15 THEN t.ticket_id END) AS re_closed_tickets,
+    -- Get active academic year_id
+    SELECT year_id INTO v_year_id
+    FROM academic_year
+    WHERE status_id = 1
+    LIMIT 1;
 
-        -- Procurement Details (exp_catg_id = 2)
-        COUNT(CASE WHEN t.exp_catg_id = 2 THEN t.ticket_id END) AS pro_raised_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 THEN t.ticket_id END) AS pro_active_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS pro_pending_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.process_status_id = 15 THEN t.ticket_id END) AS pro_closed_tickets,
+    -- Convert empty strings to NULL
+    SET p_entity_name = NULLIF(p_entity_name, '');
+    SET p_cost_center_name = NULLIF(p_cost_center_name, '');
+    SET p_department_name = NULLIF(p_department_name, '');
+    SET p_sub_department_name = NULLIF(p_sub_department_name, '');
 
-        -- Advance Details (exp_catg_id = 3)
-        COUNT(CASE WHEN t.exp_catg_id = 3 THEN t.ticket_id END) AS adv_raised_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 THEN t.ticket_id END) AS adv_active_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS adv_pending_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.process_status_id = 15 THEN t.ticket_id END) AS adv_closed_tickets
-
-    FROM reports r
-    LEFT JOIN tickets t ON r.report_id = t.report_id
-    WHERE r.user_id = p_user_id;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 8-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_REPORTS_NUMBER`(
-    IN p_user_id INT
-)
-BEGIN
-    -- Temporary table to store relevant report_ids
-    CREATE TEMPORARY TABLE TempReportIds
-    SELECT report_id 
-    FROM reports 
-    WHERE manager_id = p_user_id 
-      AND status_id = 1;
-
-    -- Fetch the distinct count of report_id based on process_status_id in tickets table
-    SELECT 
-        COUNT(DISTINCT CASE WHEN t.process_status_id = 7 THEN t.report_id END) AS pending,
-        COUNT(DISTINCT CASE WHEN t.process_status_id NOT IN (19, 7, 8) THEN t.report_id END) AS approved,
-        COUNT(DISTINCT CASE WHEN t.process_status_id = 8 THEN t.report_id END) AS rejected,
-        COUNT(DISTINCT CASE WHEN t.process_status_id = 15 THEN t.report_id END) AS closed
-    FROM tickets t
-    WHERE t.report_id IN (SELECT report_id FROM TempReportIds);
-
-    -- Drop the temporary table to free up memory
-    DROP TEMPORARY TABLE IF EXISTS TempReportIds;
-END
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 9-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_INSERT_USER_BANK_DETAILS`(
-    IN p_updated_by INT,
-    IN p_employee_number varchar(50),
-    IN p_employee_name_on_bank VARCHAR(100),
-    IN p_employee_bank_name VARCHAR(30),
-    IN p_employee_account_number VARCHAR(20),
-    IN p_employee_IFSC VARCHAR(50)
-)
-BEGIN
-    DECLARE v_employee_id INT;
-    DECLARE v_user_id INT;
-    DECLARE v_bank_id INT;
-    DECLARE v_existing_bank_id INT;
-    DECLARE v_existing_account_number VARCHAR(20);
-    DECLARE v_existing_IFSC VARCHAR(50);
-    DECLARE v_existing_name_on_bank VARCHAR(100);
-    DECLARE v_existing_bank_name VARCHAR(30);
-
-    proc_end: BEGIN
-
-        -- Fetch employee_id
-        SELECT employee_id INTO v_employee_id
-        FROM employees
-        WHERE employee_number = p_employee_number;
-
-        -- If employee not found
-        IF v_employee_id IS NULL THEN
-            SELECT CONCAT('Employee with employee_number ', p_employee_number, ' not found') AS message, FALSE AS status;
-            LEAVE proc_end;
-        END IF;
-
-        -- Get user_id and existing bank_id
-        SELECT user_id, bank_id INTO v_user_id, v_existing_bank_id
-        FROM users
-        WHERE employee_id = v_employee_id;
-
-        -- Get latest bank details
-        SELECT bank_id, name_on_bank, bank_name, account_number, IFSC
-        INTO v_bank_id, v_existing_name_on_bank, v_existing_bank_name, v_existing_account_number, v_existing_IFSC
-        FROM user_bank
-        WHERE user_id = v_user_id and bank_id = v_existing_bank_id
-        ORDER BY created_at DESC
+    -- Process entity
+    IF p_entity_name IS NOT NULL THEN
+        SELECT entity_id INTO v_entity_id
+        FROM entities
+        WHERE entity_name = p_entity_name AND status_id = 1
         LIMIT 1;
 
-        -- Case 1: No Existing Bank Data
-        IF v_bank_id IS NULL THEN
-
-            INSERT INTO user_bank (user_id, name_on_bank, bank_name, account_number, IFSC, status_id, created_at)
-            VALUES (v_user_id, p_employee_name_on_bank, p_employee_bank_name, p_employee_account_number, p_employee_IFSC, 1, NOW());
-
-            SET v_bank_id = LAST_INSERT_ID();
-
-            UPDATE users 
-            SET bank_id = v_bank_id 
-            WHERE user_id = v_user_id;
-
-            UPDATE employees
-            SET employee_name_on_bank = p_employee_name_on_bank,
-                employee_bank_name = p_employee_bank_name,
-                employee_account_number = p_employee_account_number,
-                employee_IFSC = p_employee_IFSC
-            WHERE employee_id = v_employee_id;
-
-        -- Case 2: Existing Account Number Same
-        ELSEIF v_existing_account_number = p_employee_account_number THEN
-
-            -- Check if other details are different
-            IF v_existing_name_on_bank <> p_employee_name_on_bank
-               OR v_existing_bank_name <> p_employee_bank_name
-               OR v_existing_IFSC <> p_employee_IFSC THEN
-
-                -- Insert old record in history
-                INSERT INTO employee_history (employee_id, updated_by, updated_at, employee_name_on_bank, employee_bank_name, employee_account_number, employee_IFSC)
-                VALUES (v_employee_id, p_updated_by, NOW(), v_existing_name_on_bank, v_existing_bank_name, v_existing_account_number, v_existing_IFSC);
-
-                -- Update existing user_bank record
-                UPDATE user_bank
-                SET name_on_bank = p_employee_name_on_bank,
-                    bank_name = p_employee_bank_name,
-                    IFSC = p_employee_IFSC,
-                    updated_at = NOW()
-                WHERE bank_id = v_bank_id;
-
-                -- Update employees table
-                UPDATE employees
-                SET employee_name_on_bank = p_employee_name_on_bank,
-                    employee_bank_name = p_employee_bank_name,
-                    employee_IFSC = p_employee_IFSC
-                WHERE employee_id = v_employee_id;
-
-            ELSE
-                -- Case 3: Everything is same → No Action
-                SELECT 'Bank Details already exist. No changes done.' AS message, TRUE AS status;
-                LEAVE proc_end;
-            END IF;
-
-        -- Case 4: Different Account Number
-        ELSE
-
-            INSERT INTO user_bank (user_id, name_on_bank, bank_name, account_number, IFSC, status_id, created_at)
-            VALUES (v_user_id, p_employee_name_on_bank, p_employee_bank_name, p_employee_account_number, p_employee_IFSC, 1, NOW());
-
-            SET v_bank_id = LAST_INSERT_ID();
-
-            INSERT INTO employee_history (employee_id, updated_by, updated_at, employee_name_on_bank, employee_bank_name, employee_account_number, employee_IFSC)
-            VALUES (v_employee_id, p_updated_by, NOW(), v_existing_name_on_bank, v_existing_bank_name, v_existing_account_number, v_existing_IFSC);
-
-            INSERT INTO user_history (user_id, bank_id, updated_at, updated_by)
-            VALUES (v_user_id, v_existing_bank_id, NOW(), p_updated_by);
-
-            UPDATE users 
-            SET bank_id = v_bank_id 
-            WHERE user_id = v_user_id;
-
-            UPDATE employees
-            SET employee_name_on_bank = p_employee_name_on_bank,
-                employee_bank_name = p_employee_bank_name,
-                employee_account_number = p_employee_account_number,
-                employee_IFSC = p_employee_IFSC
-            WHERE employee_id = v_employee_id;
-
+        IF v_entity_id IS NULL THEN
+            INSERT INTO entities (org_id, entity_name, status_id)
+            VALUES (p_org_id, p_entity_name, 1);
+            SET v_entity_id = LAST_INSERT_ID();
         END IF;
 
-        -- Final Success Message
-        SELECT 'Employee Bank data inserted/updated successfully' AS message, TRUE AS status;
-
-    END proc_end;
-
-END
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 10-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_TICKETS_NUMBER`(
-    IN p_report_id INT
-)
-BEGIN
-    -- Fetch the report counts based on process_status_id
-    SELECT 
-        COUNT(CASE WHEN t.process_status_id = 7 THEN 1 END) AS pending,
-        COUNT(CASE WHEN t.process_status_id NOT IN (19, 7, 8) THEN 1 END) AS approved,
-        COUNT(CASE WHEN t.process_status_id = 8 THEN 1 END) AS rejected,
-        COUNT(CASE WHEN t.process_status_id = 15 THEN 1 END) AS closed
-    FROM tickets t
-    WHERE t.report_id = p_report_id 
-      AND t.status_id = 1;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 11-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_UPDATE_REPORT_CLOSE_STATUS`(
-    IN p_report_id INT
-)
-BEGIN
-    DECLARE v_all_closed INT DEFAULT 0;
-    
-    -- Check if all tickets for the given report_id have process_status_id = 15
-    SELECT 
-        COUNT(*) = SUM(CASE WHEN process_status_id = 15 THEN 1 ELSE 0 END)
-    INTO v_all_closed
-    FROM tickets
-    WHERE report_id = p_report_id;
-
-    -- Update reports only if all tickets have process_status_id = 15
-    IF v_all_closed = 1 THEN
-        UPDATE reports 
-        SET process_status_id = 15
-        WHERE report_id = p_report_id;
+        -- Check or insert into academic_entity
+        IF v_year_id IS NOT NULL AND v_entity_id IS NOT NULL THEN
+            IF NOT EXISTS (
+                SELECT 1 FROM academic_entity
+                WHERE entity_id = v_entity_id AND year_id = v_year_id AND status_id = 1
+            ) THEN
+                INSERT INTO academic_entity (entity_id, year_id, status_id)
+                VALUES (v_entity_id, v_year_id, 1);
+            END IF;
+        END IF;
     END IF;
-END
 
+    -- Process cost center
+    IF p_cost_center_name IS NOT NULL THEN
+        SELECT cost_center_id INTO v_cost_center_id
+        FROM cost_center
+        WHERE cost_center_name = p_cost_center_name AND status_id = 1
+        LIMIT 1;
 
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 12-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
+        IF v_cost_center_id IS NULL THEN
+            INSERT INTO cost_center (cost_center_name, status_id)
+            VALUES (p_cost_center_name, 1);
+            SET v_cost_center_id = LAST_INSERT_ID();
+        END IF;
 
+        -- Check or insert into academic_cost_center
+        IF v_year_id IS NOT NULL AND v_cost_center_id IS NOT NULL AND v_entity_id IS NOT NULL THEN
+            IF NOT EXISTS (
+                SELECT 1 FROM academic_cost_center
+                WHERE cost_center_id = v_cost_center_id AND entity_id = v_entity_id AND year_id = v_year_id AND status_id = 1
+            ) THEN
+                INSERT INTO academic_cost_center (cost_center_id, year_id, entity_id, status_id)
+                VALUES (v_cost_center_id, v_year_id, v_entity_id, 1);
+            END IF;
+        END IF;
+    END IF;
+
+    
+    -- Process department
+    IF p_department_name IS NOT NULL THEN
+        SELECT department_id INTO v_department_id
+        FROM departments
+        WHERE department_name = p_department_name AND status_id = 1
+        LIMIT 1;
+
+        IF v_department_id IS NULL THEN
+            INSERT INTO departments (department_name, status_id)
+            VALUES (p_department_name, 1);
+            SET v_department_id = LAST_INSERT_ID();
+        END IF;
+    END IF;
+
+    -- Process sub-department
+    IF p_sub_department_name IS NOT NULL AND v_department_id IS NOT NULL THEN
+        SELECT sub_department_id INTO v_sub_department_id
+        FROM sub_departments
+        WHERE department_id = v_department_id
+          AND sub_department_name = p_sub_department_name
+          AND status_id = 1
+        LIMIT 1;
+
+        IF v_sub_department_id IS NULL THEN
+            INSERT INTO sub_departments (department_id, sub_department_name, status_id)
+            VALUES (v_department_id, p_sub_department_name, 1);
+            SET v_sub_department_id = LAST_INSERT_ID();
+        END IF;
+    END IF;
+
+    -- Final output
+    SELECT 
+        v_entity_id AS entity_id,
+        v_cost_center_id AS cost_center_id,
+        v_department_id AS department_id,
+        v_sub_department_id AS sub_department_id;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_API_GET_USER_PROFILE_DETAILS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_PROFILE_DETAILS`(
+    IN p_User_ID INT
+)
+BEGIN
+
+        -- Result 1: Fetch user profile details & login details
+        SELECT 
+            p_User_ID as user_id,u.employee_id, u.employee_number, u.user_name, u.work_email, u.mobile, 
+            u.gender, u.PAN_number, u.aadhaar_number, u.enrollment_number, u.DOB,  e.org_id,o.org_name,
+            u.entity_id,e.entity_name, e.entity_code, u.cost_center_id,cc.cost_center_name, u.department_id,d.department_name, u.sub_department_id, 
+            sd.sub_department_name,u.job_title, u.secondary_job_title, u.manager_user_id, rm.user_name AS manager_name,
+            u.personal_email, u.father_name, u.mother_name, u.blood_group, 
+            u.nationality, u.bank_id,ub.name_on_bank, ub.bank_name, ub.account_number, ub.IFSC, u.pf_id,
+            pf.pf_establishment_id, pf.pf_details_available, pf.pf_number,DATE_FORMAT(pf.pf_joining_date, '%d-%m-%y') AS pf_joining_date,
+            pf.name_on_pf_account, pf.UAN,
+            u.pay_grade, u.work_location, 
+            u.status_id, ms.status , 
+            GROUP_CONCAT(ld.login_id) as login_ids ,
+            DATE_FORMAT(u.timestamp, '%d-%m-%y %H:%i:%s')  as updated_at
+        FROM users u
+            LEFT JOIN entities e ON u.entity_id = e.entity_id AND e.status_id = 1
+            LEFT JOIN organization o ON e.org_id = o.org_id AND o.status_id = 1
+            LEFT JOIN cost_center cc ON u.cost_center_id = cc.cost_center_id AND cc.status_id = 1
+            LEFT JOIN departments d ON u.department_id = d.department_id AND d.status_id = 1
+            LEFT JOIN sub_departments sd ON u.sub_department_id = sd.sub_department_id AND sd.status_id = 1
+            LEFT JOIN users rm ON u.manager_user_id = rm.user_id AND rm.status_id = 1
+            LEFT JOIN user_bank ub ON u.bank_id = ub.bank_id AND ub.status_id = 1
+            LEFT JOIN pf_details pf ON u.pf_id = pf.pf_id AND pf.status_id = 1
+            LEFT JOIN master_status ms ON u.status_id = ms.status_id
+            LEFT JOIN login_details ld ON ld.user_id = p_User_ID AND ld.status_id = 1
+        WHERE u.user_id = p_User_ID
+        GROUP BY u.user_id;
+
+        -- Result 2: Fetch user role details 
+        SELECT ur.role_id, r.role_name
+        FROM user_roles ur
+            LEFT JOIN roles r ON r.role_id = ur.role_id
+        WHERE ur.user_id = p_User_ID AND ur.status_id = 1;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_API_GET_USER_ROLE_MENU_DETAILS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_ROLE_MENU_DETAILS`(
+    IN p_user_id INT
+)
+BEGIN
+    DECLARE v_status_id INT;
+    DECLARE v_role_count INT;
+
+    -- Check if user exists and is active
+    SELECT status_id INTO v_status_id
+    FROM users 
+    WHERE user_id = p_user_id;
+
+    -- Check if user has assigned roles
+    SELECT COUNT(*) INTO v_role_count
+    FROM user_roles ur
+    JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
+    WHERE ur.user_id = p_user_id AND ur.status_id = 1;
+
+    -- If user is inactive or has no roles, return NULL results
+    IF v_status_id IS NULL OR v_status_id <> 1 OR v_role_count = 0 THEN
+        SELECT NULL AS role_id, NULL AS role_name, NULL AS action;
+        SELECT NULL AS menu_id, NULL AS menu_name, NULL AS action, NULL AS description;
+    ELSE
+        -- First Output: User roles and actions
+        SELECT 
+            ur.role_id,
+            r.role_name,
+            GROUP_CONCAT(DISTINCT ra.action ORDER BY ra.action SEPARATOR ',') AS action
+        FROM users u
+        INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.status_id = 1
+        INNER JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
+        LEFT JOIN role_actions ra ON ur.role_id = ra.role_id AND ra.status_id = 1
+        WHERE u.user_id = p_user_id
+        GROUP BY ur.role_id, r.role_name;
+
+        -- Second Output: Distinct menu access
+        SELECT DISTINCT
+            rm.menu_id AS menu_id,
+            m.menu_name AS menu_name,
+            m.action AS action,
+            m.description AS description,
+            m.sort
+        FROM users u
+        INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.status_id = 1
+        INNER JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
+        INNER JOIN role_menu rm ON r.role_id = rm.role_id AND rm.status_id = 1
+        INNER JOIN menus m ON rm.menu_id = m.menu_id AND m.status_id = 1
+        WHERE u.user_id = p_user_id
+        ORDER BY m.sort;
+    END IF;
+
+    -- Third Output: User basic details and status (always returned)
+    SELECT 
+        u.user_id,
+        u.user_name,
+        u.work_email,
+        u.entity_id,
+        e.entity_name,
+        u.status_id,
+        ms.status
+    FROM users u
+    LEFT JOIN master_status ms ON u.status_id = ms.status_id
+    LEFT JOIN entities e ON u.entity_id = e.entity_id
+    WHERE u.user_id = p_user_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_API_SET_USER_ROLES` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_SET_USER_ROLES`()
+BEGIN
+    -- Step 1: Update user_role.status_id = 2 for users whose status has changed in the users table
+    UPDATE user_roles ur
+    JOIN users u ON ur.user_id = u.user_id
+    SET ur.status_id = 2
+    WHERE u.status_id = 2
+    AND ur.status_id = 1;
+
+    -- Step 2: Use a Temporary Table to store new role assignments before inserting
+    CREATE TEMPORARY TABLE tmp_new_roles (
+        user_id INT,
+        role_id INT
+    );
+
+    -- Insert role 7 for active users
+    INSERT INTO tmp_new_roles (user_id, role_id)
+    SELECT DISTINCT u.user_id, 7
+    FROM users u
+    WHERE u.status_id = 1
+    AND NOT EXISTS (
+        SELECT 1 FROM user_roles ur 
+        WHERE ur.user_id = u.user_id 
+        AND ur.role_id = 7 
+        AND ur.status_id = 1
+    );
+
+    -- Insert role 8 for users who are managers
+    INSERT INTO tmp_new_roles (user_id, role_id)
+    SELECT DISTINCT u.manager_user_id, 8
+    FROM users u
+    WHERE u.manager_user_id IS NOT NULL  
+    AND NOT EXISTS (
+        SELECT 1 FROM user_roles ur 
+        WHERE ur.user_id = u.manager_user_id 
+        AND ur.role_id = 8 
+        AND ur.status_id = 1
+    );
+
+    -- Step 3: Insert from temporary table to user_roles
+    INSERT INTO user_roles (user_id, role_id, status_id, created_at, created_by)
+    SELECT user_id, role_id, 1, NOW(), 'System'
+    FROM tmp_new_roles;
+
+    --  Step 4: Deactivate role 8 for users who are no longer managers
+    UPDATE user_roles
+	SET status_id = 2
+	WHERE role_id = 8
+	  AND status_id = 1
+	  AND user_id NOT IN (
+		  SELECT DISTINCT manager_user_id
+		  FROM users
+		  WHERE manager_user_id IS NOT NULL
+          AND status_id =1
+	  );
+
+    -- Step 5: Drop the Temporary Table after use
+    DROP TEMPORARY TABLE tmp_new_roles;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_EXPORT_TALLY_DATA` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EXPORT_TALLY_DATA`(
+    IN p_user_id INT,
+    IN p_tally_booking_ids TEXT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            @sqlstate = RETURNED_SQLSTATE,
+            @errmsg = MESSAGE_TEXT;
+        ROLLBACK;
+        SELECT 'Data Insertion Failed' AS Message, 0 AS Success;
+    END;
+
+    export_proc: BEGIN
+
+        START TRANSACTION;
+
+        -- Drop temp tables if they exist
+        DROP TEMPORARY TABLE IF EXISTS temp_booking_ids;
+        DROP TEMPORARY TABLE IF EXISTS temp_bank_summary;
+
+        -- Step 1: Create temporary table for booking IDs
+        CREATE TEMPORARY TABLE temp_booking_ids (
+            id INT
+        );
+
+        -- Step 2: Parse comma-separated IDs into temp_booking_ids
+        SET @input := p_tally_booking_ids;
+
+        WHILE LENGTH(TRIM(@input)) > 0 DO
+            SET @next_comma := LOCATE(',', @input);
+            IF @next_comma > 0 THEN
+                INSERT INTO temp_booking_ids (id)
+                VALUES (CAST(TRIM(SUBSTRING(@input, 1, @next_comma - 1)) AS UNSIGNED));
+                SET @input := SUBSTRING(@input, @next_comma + 1);
+            ELSE
+                INSERT INTO temp_booking_ids (id)
+                VALUES (CAST(TRIM(@input) AS UNSIGNED));
+                SET @input := '';
+            END IF;
+        END WHILE;
+
+        -- Step 3 + 5 Combined: Create temp_bank_summary with all necessary info
+        CREATE TEMPORARY TABLE temp_bank_summary AS
+        SELECT 
+            tb.tally_booking_id,
+            tb.ticket_id,
+            tb.expense_category_id,
+            tb.ticket_dtls_id,
+            tb.payment_id,
+            tb.paid_amount,
+            p.paid_from_bank AS bank_id,
+            p.route_id,
+            CASE 
+                WHEN p.route_id IN (1, 3) THEN ob_from.bank_ledger 
+                ELSE NULL 
+            END AS bank_ledger
+        FROM 
+            tally_booking tb
+        JOIN 
+            payments p ON tb.payment_id = p.payment_id
+        LEFT JOIN 
+            organization_bank ob_from ON ob_from.org_bank_id = p.paid_from_bank
+        WHERE 
+            tb.status_id = 1 
+            AND tb.process_status_id = 23
+            AND tb.tally_booking_id IN (SELECT id FROM temp_booking_ids);
+
+        -- Step 3.5: Check if any eligible records exist
+        SELECT COUNT(*) INTO @row_count FROM temp_bank_summary;
+        IF @row_count = 0 THEN
+            ROLLBACK;
+            SELECT 'No eligible records to process' AS Message, 0 AS Success;
+            LEAVE export_proc;
+        END IF;
+
+        -- Step 4: Compute total paid amount
+        SELECT SUM(paid_amount) INTO @tally_total FROM temp_bank_summary;
+
+        -- Step 5: Compute bank total and get bank_ledger
+        SELECT 
+            SUM(paid_amount), 
+            bank_ledger 
+        INTO 
+            @payment_grand_total, 
+            @bank_ledger
+        FROM 
+            temp_bank_summary
+        WHERE 
+            bank_ledger IS NOT NULL
+        LIMIT 1;
+
+        -- Step 6: Insert into tally_payment
+        INSERT INTO tally_payment (
+            voucher_type,
+            ledger,
+            amount,
+            `dr/cr`,
+            status_id,
+            created_by,
+            created_at
+        ) VALUES (
+            'Payment',
+            'Expenses Payable',
+            @tally_total,
+            'Dr',
+            1,
+            p_user_id,
+            NOW()
+        );
+
+        SET @last_tally_pay_id := LAST_INSERT_ID();
+
+        -- Step 7: Insert into tally_pay_bank (with bank_id and route_id)
+        INSERT INTO tally_pay_bank (
+            voucher_type,
+            tally_pay_id,
+            ledger,
+            amount,
+            `dr/cr`,
+            bank_id,
+            route_id,
+            status_id,
+            created_by,
+            created_at
+        )
+        SELECT 
+            'Payment',
+            @last_tally_pay_id,
+            bank_ledger,
+            SUM(paid_amount),
+            'Cr',
+            bank_id,
+            route_id,
+            1,
+            p_user_id,
+            NOW()
+        FROM temp_bank_summary
+        WHERE bank_ledger IS NOT NULL
+        GROUP BY bank_id, route_id, bank_ledger;
+
+        -- Step 8: Update tally_booking
+        UPDATE tally_booking
+        SET 
+            voucher_type = 'Journal',
+            tally_pay_id = @last_tally_pay_id,
+            `dr/cr` = 'Dr',
+            process_status_id = 24,
+            created_by = p_user_id,
+            created_at = NOW()
+        WHERE tally_booking_id IN (
+            SELECT tally_booking_id FROM temp_bank_summary
+        );
+
+        COMMIT;
+
+        SELECT 'Data Inserted Successfully' AS Message, 1 AS Success;
+
+    END export_proc;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_COST_CENTER_BY_YEAR` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
 CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_COST_CENTER_BY_YEAR`(
     IN p_Year_ID VARCHAR(10),
     IN p_User_ID VARCHAR(50)
@@ -1376,14 +1356,22 @@ BEGIN
           )
           AND acc.status_id = 1;
     END IF;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 13-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_LEDGERS_BY_USER_ID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
 CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_LEDGERS_BY_USER_ID`(
     IN p_user_id INT
 )
@@ -1406,125 +1394,89 @@ BEGIN
     FROM ledgers
     WHERE status_id = 1
       ORDER BY ledger_name ASC;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 14-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_ENTITIES`(
-    IN p_user_id INT,
-    IN p_year_id VARCHAR(10)
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_MANAGER_REPORTS_NUMBER` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_REPORTS_NUMBER`(
+    IN p_user_id INT
 )
 BEGIN
-    DECLARE effective_year_id INT;
-    DECLARE is_super_admin INT;
+    -- Temporary table to store relevant report_ids
+    CREATE TEMPORARY TABLE TempReportIds
+    SELECT report_id 
+    FROM reports 
+    WHERE manager_id = p_user_id 
+      AND status_id = 1;
 
-    -- Step 1: Check if user is super admin
-    SELECT COUNT(*) INTO is_super_admin
-    FROM user_roles
-    WHERE user_id = p_user_id AND role_id = 1 AND status_id = 1;
-
-    -- Step 2: If year_id = '*', skip academic year checks
-    IF p_year_id = '*' THEN
-
-        IF is_super_admin > 0 THEN
-            -- Super Admin with access to all active entities
-            SELECT '*' AS entity_id, 'All Entities' AS entity_name, 'All Entities' AS entity_code
-            UNION
-            SELECT e.entity_id, e.entity_name, e.entity_code
-            FROM entities e 
-            WHERE e.status_id = 1;
-        ELSE
-            -- Regular user - show only their assigned entity
-            SELECT e.entity_id, e.entity_name, e.entity_code
-            FROM users u
-            JOIN entities e ON u.entity_id = e.entity_id
-            WHERE u.user_id = p_user_id
-              AND e.status_id = 1;
-        END IF;
-
-    ELSE
-        -- Step 3: Convert p_year_id and validate
-        SET effective_year_id = CAST(p_year_id AS UNSIGNED);
-
-        -- Step 4: Logic when specific year is provided
-        IF is_super_admin > 0 THEN
-            -- Super Admin: Only return All+Entities if valid year data exists
-            IF EXISTS (
-                SELECT 1
-                FROM academic_entity ae
-                JOIN entities e ON ae.entity_id = e.entity_id
-                WHERE ae.year_id = effective_year_id
-                  AND ae.status_id = 1
-                  AND e.status_id = 1
-            ) THEN
-                SELECT '*' AS entity_id, 'All Entities' AS entity_name, 'All Entities' AS entity_code
-                UNION
-                SELECT e.entity_id, e.entity_name, e.entity_code
-                FROM academic_entity ae
-                JOIN entities e ON ae.entity_id = e.entity_id
-                WHERE ae.year_id = effective_year_id
-                  AND ae.status_id = 1
-                  AND e.status_id = 1;
-            ELSE
-                -- No data: return empty set
-                SELECT e.entity_id, e.entity_name, e.entity_code
-                FROM entities e
-                WHERE 1=0;
-            END IF;
-
-        ELSE
-            -- Regular user: filter by their entity and year
-            SELECT e.entity_id, e.entity_name, e.entity_code
-            FROM users u
-            JOIN academic_entity ae ON u.entity_id = ae.entity_id
-            JOIN entities e ON u.entity_id = e.entity_id
-            WHERE u.user_id = p_user_id
-              AND ae.year_id = effective_year_id
-              AND ae.status_id = 1
-              AND e.status_id = 1;
-        END IF;
-    END IF;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 15-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USERS_FA_FP_BY_ENTITY`(
-    p_entity_id INT
-)
-BEGIN
+    -- Fetch the distinct count of report_id based on process_status_id in tickets table
     SELECT 
-        u.user_id,
-        u.employee_number,
-        u.user_name,
-        u.work_email,
-        ur.role_id,
-        r.role_name
-    FROM 
-        users u
-    INNER JOIN 
-        user_roles ur ON u.user_id = ur.user_id
-    INNER JOIN 
-        roles r ON ur.role_id = r.role_id
-    WHERE 
-        u.entity_id = p_entity_id
-        AND ur.status_id = 1
-        AND ur.role_id IN (3, 4);
-END
+        COUNT(DISTINCT CASE WHEN t.process_status_id = 7 THEN t.report_id END) AS pending,
+        COUNT(DISTINCT CASE WHEN t.process_status_id NOT IN (19, 7, 8) THEN t.report_id END) AS approved,
+        COUNT(DISTINCT CASE WHEN t.process_status_id = 8 THEN t.report_id END) AS rejected,
+        COUNT(DISTINCT CASE WHEN t.process_status_id = 15 THEN t.report_id END) AS closed
+    FROM tickets t
+    WHERE t.report_id IN (SELECT report_id FROM TempReportIds);
 
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 16-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
+    -- Drop the temporary table to free up memory
+    DROP TEMPORARY TABLE IF EXISTS TempReportIds;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_MANAGER_TICKETS_NUMBER` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_TICKETS_NUMBER`(
+    IN p_report_id INT
+)
+BEGIN
+    -- Fetch the report counts based on process_status_id
+    SELECT 
+        COUNT(CASE WHEN t.process_status_id = 7 THEN 1 END) AS pending,
+        COUNT(CASE WHEN t.process_status_id NOT IN (19, 7, 8) THEN 1 END) AS approved,
+        COUNT(CASE WHEN t.process_status_id = 8 THEN 1 END) AS rejected,
+        COUNT(CASE WHEN t.process_status_id = 15 THEN 1 END) AS closed
+    FROM tickets t
+    WHERE t.report_id = p_report_id 
+      AND t.status_id = 1;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_TALLY_LIST` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
 CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_TALLY_LIST`(
     IN p_status_id VARCHAR(10),
     IN p_entity_id VARCHAR(10),
@@ -1709,183 +1661,443 @@ BEGIN
 
         DROP TEMPORARY TABLE IF EXISTS temp_tally_list;
 
-END
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 17-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EXPORT_TALLY_DATA`(
-    IN p_user_id INT,
-    IN p_tally_booking_ids TEXT
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_USERS_FA_FP_BY_ENTITY` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USERS_FA_FP_BY_ENTITY`(
+    p_entity_id INT
 )
 BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        GET DIAGNOSTICS CONDITION 1
-            @sqlstate = RETURNED_SQLSTATE,
-            @errmsg = MESSAGE_TEXT;
-        ROLLBACK;
-        SELECT 'Data Insertion Failed' AS Message, 0 AS Success;
-    END;
+    SELECT 
+        u.user_id,
+        u.employee_number,
+        u.user_name,
+        u.work_email,
+        ur.role_id,
+        r.role_name
+    FROM 
+        users u
+    INNER JOIN 
+        user_roles ur ON u.user_id = ur.user_id
+    INNER JOIN 
+        roles r ON ur.role_id = r.role_id
+    WHERE 
+        u.entity_id = p_entity_id
+        AND ur.status_id = 1
+        AND ur.role_id IN (3, 4);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_USER_ENTITIES` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_ENTITIES`(
+    IN p_user_id INT,
+    IN p_year_id VARCHAR(10)
+)
+BEGIN
+    DECLARE effective_year_id INT;
+    DECLARE is_super_admin INT;
 
-    export_proc: BEGIN
+    -- Step 1: Check if user is super admin
+    SELECT COUNT(*) INTO is_super_admin
+    FROM user_roles
+    WHERE user_id = p_user_id AND role_id = 1 AND status_id = 1;
 
-        START TRANSACTION;
+    -- Step 2: If year_id = '*', skip academic year checks
+    IF p_year_id = '*' THEN
 
-        -- Drop temp tables if they exist
-        DROP TEMPORARY TABLE IF EXISTS temp_booking_ids;
-        DROP TEMPORARY TABLE IF EXISTS temp_bank_summary;
-
-        -- Step 1: Create temporary table for booking IDs
-        CREATE TEMPORARY TABLE temp_booking_ids (
-            id INT
-        );
-
-        -- Step 2: Parse comma-separated IDs into temp_booking_ids
-        SET @input := p_tally_booking_ids;
-
-        WHILE LENGTH(TRIM(@input)) > 0 DO
-            SET @next_comma := LOCATE(',', @input);
-            IF @next_comma > 0 THEN
-                INSERT INTO temp_booking_ids (id)
-                VALUES (CAST(TRIM(SUBSTRING(@input, 1, @next_comma - 1)) AS UNSIGNED));
-                SET @input := SUBSTRING(@input, @next_comma + 1);
-            ELSE
-                INSERT INTO temp_booking_ids (id)
-                VALUES (CAST(TRIM(@input) AS UNSIGNED));
-                SET @input := '';
-            END IF;
-        END WHILE;
-
-        -- Step 3 + 5 Combined: Create temp_bank_summary with all necessary info
-        CREATE TEMPORARY TABLE temp_bank_summary AS
-        SELECT 
-            tb.tally_booking_id,
-            tb.ticket_id,
-            tb.expense_category_id,
-            tb.ticket_dtls_id,
-            tb.payment_id,
-            tb.paid_amount,
-            p.paid_from_bank AS bank_id,
-            p.route_id,
-            CASE 
-                WHEN p.route_id IN (1, 3) THEN ob_from.bank_ledger 
-                ELSE NULL 
-            END AS bank_ledger
-        FROM 
-            tally_booking tb
-        JOIN 
-            payments p ON tb.payment_id = p.payment_id
-        LEFT JOIN 
-            organization_bank ob_from ON ob_from.org_bank_id = p.paid_from_bank
-        WHERE 
-            tb.status_id = 1 
-            AND tb.process_status_id = 23
-            AND tb.tally_booking_id IN (SELECT id FROM temp_booking_ids);
-
-        -- Step 3.5: Check if any eligible records exist
-        SELECT COUNT(*) INTO @row_count FROM temp_bank_summary;
-        IF @row_count = 0 THEN
-            ROLLBACK;
-            SELECT 'No eligible records to process' AS Message, 0 AS Success;
-            LEAVE export_proc;
+        IF is_super_admin > 0 THEN
+            -- Super Admin with access to all active entities
+            SELECT '*' AS entity_id, 'All Entities' AS entity_name, 'All Entities' AS entity_code
+            UNION
+            SELECT e.entity_id, e.entity_name, e.entity_code
+            FROM entities e 
+            WHERE e.status_id = 1;
+        ELSE
+            -- Regular user - show only their assigned entity
+            SELECT e.entity_id, e.entity_name, e.entity_code
+            FROM users u
+            JOIN entities e ON u.entity_id = e.entity_id
+            WHERE u.user_id = p_user_id
+              AND e.status_id = 1;
         END IF;
 
-        -- Step 4: Compute total paid amount
-        SELECT SUM(paid_amount) INTO @tally_total FROM temp_bank_summary;
+    ELSE
+        -- Step 3: Convert p_year_id and validate
+        SET effective_year_id = CAST(p_year_id AS UNSIGNED);
 
-        -- Step 5: Compute bank total and get bank_ledger
-        SELECT 
-            SUM(paid_amount), 
-            bank_ledger 
-        INTO 
-            @payment_grand_total, 
-            @bank_ledger
-        FROM 
-            temp_bank_summary
-        WHERE 
-            bank_ledger IS NOT NULL
+        -- Step 4: Logic when specific year is provided
+        IF is_super_admin > 0 THEN
+            -- Super Admin: Only return All+Entities if valid year data exists
+            IF EXISTS (
+                SELECT 1
+                FROM academic_entity ae
+                JOIN entities e ON ae.entity_id = e.entity_id
+                WHERE ae.year_id = effective_year_id
+                  AND ae.status_id = 1
+                  AND e.status_id = 1
+            ) THEN
+                SELECT '*' AS entity_id, 'All Entities' AS entity_name, 'All Entities' AS entity_code
+                UNION
+                SELECT e.entity_id, e.entity_name, e.entity_code
+                FROM academic_entity ae
+                JOIN entities e ON ae.entity_id = e.entity_id
+                WHERE ae.year_id = effective_year_id
+                  AND ae.status_id = 1
+                  AND e.status_id = 1;
+            ELSE
+                -- No data: return empty set
+                SELECT e.entity_id, e.entity_name, e.entity_code
+                FROM entities e
+                WHERE 1=0;
+            END IF;
+
+        ELSE
+            -- Regular user: filter by their entity and year
+            SELECT e.entity_id, e.entity_name, e.entity_code
+            FROM users u
+            JOIN academic_entity ae ON u.entity_id = ae.entity_id
+            JOIN entities e ON u.entity_id = e.entity_id
+            WHERE u.user_id = p_user_id
+              AND ae.year_id = effective_year_id
+              AND ae.status_id = 1
+              AND e.status_id = 1;
+        END IF;
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_USER_REPORT_NUMBERS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_REPORT_NUMBERS`(
+    IN p_user_id INT
+)
+BEGIN
+    SELECT 
+        -- Report Details
+        COUNT(r.report_id) AS raised_reports,
+        COUNT(CASE WHEN r.status_id = 1 THEN 1 END) AS active_reports,
+        COUNT(CASE WHEN r.status_id = 1 AND r.process_status_id != 15 THEN 1 END) AS pending_reports,
+        COUNT(CASE WHEN r.process_status_id = 15 THEN 1 END) AS closed_reports,
+
+        -- Reimbursement Details (exp_catg_id = 1)
+        COUNT(CASE WHEN t.exp_catg_id = 1 THEN t.ticket_id END) AS re_raised_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 THEN t.ticket_id END) AS re_active_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS re_pending_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.process_status_id = 15 THEN t.ticket_id END) AS re_closed_tickets,
+
+        -- Procurement Details (exp_catg_id = 2)
+        COUNT(CASE WHEN t.exp_catg_id = 2 THEN t.ticket_id END) AS pro_raised_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 THEN t.ticket_id END) AS pro_active_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS pro_pending_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.process_status_id = 15 THEN t.ticket_id END) AS pro_closed_tickets,
+
+        -- Advance Details (exp_catg_id = 3)
+        COUNT(CASE WHEN t.exp_catg_id = 3 THEN t.ticket_id END) AS adv_raised_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 THEN t.ticket_id END) AS adv_active_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS adv_pending_tickets,
+        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.process_status_id = 15 THEN t.ticket_id END) AS adv_closed_tickets
+
+    FROM reports r
+    LEFT JOIN tickets t ON r.report_id = t.report_id
+    WHERE r.user_id = p_user_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_INSERT_USER_BANK_DETAILS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_INSERT_USER_BANK_DETAILS`(
+    IN p_updated_by INT,
+    IN p_employee_number varchar(50),
+    IN p_employee_name_on_bank VARCHAR(100),
+    IN p_employee_bank_name VARCHAR(30),
+    IN p_employee_account_number VARCHAR(20),
+    IN p_employee_IFSC VARCHAR(50)
+)
+BEGIN
+    DECLARE v_employee_id INT;
+    DECLARE v_user_id INT;
+    DECLARE v_bank_id INT;
+    DECLARE v_existing_bank_id INT;
+    DECLARE v_existing_account_number VARCHAR(20);
+    DECLARE v_existing_IFSC VARCHAR(50);
+    DECLARE v_existing_name_on_bank VARCHAR(100);
+    DECLARE v_existing_bank_name VARCHAR(30);
+
+    proc_end: BEGIN
+
+        -- Fetch employee_id
+        SELECT employee_id INTO v_employee_id
+        FROM employees
+        WHERE employee_number = p_employee_number;
+
+        -- If employee not found
+        IF v_employee_id IS NULL THEN
+            SELECT CONCAT('Employee with employee_number ', p_employee_number, ' not found') AS message, FALSE AS status;
+            LEAVE proc_end;
+        END IF;
+
+        -- Get user_id and existing bank_id
+        SELECT user_id, bank_id INTO v_user_id, v_existing_bank_id
+        FROM users
+        WHERE employee_id = v_employee_id;
+
+        -- Get latest bank details
+        SELECT bank_id, name_on_bank, bank_name, account_number, IFSC
+        INTO v_bank_id, v_existing_name_on_bank, v_existing_bank_name, v_existing_account_number, v_existing_IFSC
+        FROM user_bank
+        WHERE user_id = v_user_id and bank_id = v_existing_bank_id
+        ORDER BY created_at DESC
         LIMIT 1;
 
-        -- Step 6: Insert into tally_payment
-        INSERT INTO tally_payment (
-            voucher_type,
-            ledger,
-            amount,
-            `dr/cr`,
-            status_id,
-            created_by,
-            created_at
-        ) VALUES (
-            'Payment',
-            'Expenses Payable',
-            @tally_total,
-            'Dr',
-            1,
-            p_user_id,
-            NOW()
-        );
+        -- Case 1: No Existing Bank Data
+        IF v_bank_id IS NULL THEN
 
-        SET @last_tally_pay_id := LAST_INSERT_ID();
+            INSERT INTO user_bank (user_id, name_on_bank, bank_name, account_number, IFSC, status_id, created_at)
+            VALUES (v_user_id, p_employee_name_on_bank, p_employee_bank_name, p_employee_account_number, p_employee_IFSC, 1, NOW());
 
-        -- Step 7: Insert into tally_pay_bank (with bank_id and route_id)
-        INSERT INTO tally_pay_bank (
-            voucher_type,
-            tally_pay_id,
-            ledger,
-            amount,
-            `dr/cr`,
-            bank_id,
-            route_id,
-            status_id,
-            created_by,
-            created_at
+            SET v_bank_id = LAST_INSERT_ID();
+
+            UPDATE users 
+            SET bank_id = v_bank_id 
+            WHERE user_id = v_user_id;
+
+            UPDATE employees
+            SET employee_name_on_bank = p_employee_name_on_bank,
+                employee_bank_name = p_employee_bank_name,
+                employee_account_number = p_employee_account_number,
+                employee_IFSC = p_employee_IFSC
+            WHERE employee_id = v_employee_id;
+
+        -- Case 2: Existing Account Number Same
+        ELSEIF v_existing_account_number = p_employee_account_number THEN
+
+            -- Check if other details are different
+            IF v_existing_name_on_bank <> p_employee_name_on_bank
+               OR v_existing_bank_name <> p_employee_bank_name
+               OR v_existing_IFSC <> p_employee_IFSC THEN
+
+                -- Insert old record in history
+                INSERT INTO employee_history (employee_id, updated_by, updated_at, employee_name_on_bank, employee_bank_name, employee_account_number, employee_IFSC)
+                VALUES (v_employee_id, p_updated_by, NOW(), v_existing_name_on_bank, v_existing_bank_name, v_existing_account_number, v_existing_IFSC);
+
+                -- Update existing user_bank record
+                UPDATE user_bank
+                SET name_on_bank = p_employee_name_on_bank,
+                    bank_name = p_employee_bank_name,
+                    IFSC = p_employee_IFSC,
+                    updated_at = NOW()
+                WHERE bank_id = v_bank_id;
+
+                -- Update employees table
+                UPDATE employees
+                SET employee_name_on_bank = p_employee_name_on_bank,
+                    employee_bank_name = p_employee_bank_name,
+                    employee_IFSC = p_employee_IFSC
+                WHERE employee_id = v_employee_id;
+
+            ELSE
+                -- Case 3: Everything is same → No Action
+                SELECT 'Bank Details already exist. No changes done.' AS message, TRUE AS status;
+                LEAVE proc_end;
+            END IF;
+
+        -- Case 4: Different Account Number
+        ELSE
+
+            INSERT INTO user_bank (user_id, name_on_bank, bank_name, account_number, IFSC, status_id, created_at)
+            VALUES (v_user_id, p_employee_name_on_bank, p_employee_bank_name, p_employee_account_number, p_employee_IFSC, 1, NOW());
+
+            SET v_bank_id = LAST_INSERT_ID();
+
+            INSERT INTO employee_history (employee_id, updated_by, updated_at, employee_name_on_bank, employee_bank_name, employee_account_number, employee_IFSC)
+            VALUES (v_employee_id, p_updated_by, NOW(), v_existing_name_on_bank, v_existing_bank_name, v_existing_account_number, v_existing_IFSC);
+
+            INSERT INTO user_history (user_id, bank_id, updated_at, updated_by)
+            VALUES (v_user_id, v_existing_bank_id, NOW(), p_updated_by);
+
+            UPDATE users 
+            SET bank_id = v_bank_id 
+            WHERE user_id = v_user_id;
+
+            UPDATE employees
+            SET employee_name_on_bank = p_employee_name_on_bank,
+                employee_bank_name = p_employee_bank_name,
+                employee_account_number = p_employee_account_number,
+                employee_IFSC = p_employee_IFSC
+            WHERE employee_id = v_employee_id;
+
+        END IF;
+
+        -- Final Success Message
+        SELECT 'Employee Bank data inserted/updated successfully' AS message, TRUE AS status;
+
+    END proc_end;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_REVERT_REPORT` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_REVERT_REPORT`(
+    IN p_user_id INT,
+    IN p_report_id INT,
+    IN p_remarks TEXT
+)
+BEGIN
+    DECLARE report_pre_process_id INT;
+
+    -- Step 1: Get previous process status for the report
+    SELECT process_status_id INTO report_pre_process_id
+    FROM reports
+    WHERE report_id = p_report_id AND status_id = 1;
+
+    -- Step 2: Prepare eligible ticket_ids (those that do NOT have granted_amount)
+    DROP TEMPORARY TABLE IF EXISTS temp_ticket_ids;
+
+    CREATE TEMPORARY TABLE temp_ticket_ids (
+        ticket_id INT,
+        ticket_pre_process_id INT
+    );
+
+    INSERT INTO temp_ticket_ids (ticket_id, ticket_pre_process_id)
+	SELECT t.ticket_id, t.process_status_id
+	FROM tickets t
+	WHERE t.report_id = p_report_id
+	  AND t.status_id = 1
+	  AND t.granted_amount IS NULL
+	  AND NOT EXISTS (
+		  SELECT 1
+		  FROM payments p
+		  WHERE p.ticket_id = t.ticket_id
+	  );
+
+    -- Step 3: If eligible tickets found, proceed with update
+    IF EXISTS (SELECT 1 FROM temp_ticket_ids) THEN
+
+        -- Step 4: Nullify fields in re_ticket_details
+        UPDATE re_ticket_details rtd
+        JOIN temp_ticket_ids tmp ON rtd.ticket_id = tmp.ticket_id
+        SET rtd.m_granted_amount = NULL,
+            rtd.f_granted_amount = NULL,
+            rtd.f_granted_by = NULL;
+
+        -- Step 5: Update process_status_id for relevant tickets
+        UPDATE tickets t
+        JOIN temp_ticket_ids tmp ON t.ticket_id = tmp.ticket_id
+        SET t.process_status_id = 25;
+
+        -- Step 6: Update report process_status_id
+        UPDATE reports
+        SET process_status_id = 25,
+			manager_id = NULL
+        WHERE report_id = p_report_id;
+
+        -- Step 7: Insert report log
+        INSERT INTO report_logs (
+            report_id, pre_process_id, aft_process_id,
+            level_id, action_id, created_by, created_at, remarks
         )
-        SELECT 
-            'Payment',
-            @last_tally_pay_id,
-            bank_ledger,
-            SUM(paid_amount),
-            'Cr',
-            bank_id,
-            route_id,
-            1,
-            p_user_id,
-            NOW()
-        FROM temp_bank_summary
-        WHERE bank_ledger IS NOT NULL
-        GROUP BY bank_id, route_id, bank_ledger;
-
-        -- Step 8: Update tally_booking
-        UPDATE tally_booking
-        SET 
-            voucher_type = 'Journal',
-            tally_pay_id = @last_tally_pay_id,
-            `dr/cr` = 'Dr',
-            process_status_id = 24,
-            created_by = p_user_id,
-            created_at = NOW()
-        WHERE tally_booking_id IN (
-            SELECT tally_booking_id FROM temp_bank_summary
+        VALUES (
+            p_report_id, report_pre_process_id, 25,
+            1, 25, p_user_id, NOW(), p_remarks
         );
 
-        COMMIT;
+        -- Step 8: Insert ticket logs for each ticket
+        INSERT INTO ticket_logs (
+            ticket_id, pre_process_id, aft_process_id,
+            level_id, action_id, created_by, created_at, remarks
+        )
+        SELECT
+            tmp.ticket_id, tmp.ticket_pre_process_id, 25,
+            1, 25, p_user_id, NOW(), p_remarks
+        FROM temp_ticket_ids tmp;
 
-        SELECT 'Data Inserted Successfully' AS Message, 1 AS Success;
+        -- Step 9: Return success message
+        SELECT 'Report Reverted Successfully' AS Message, 1 AS Success;
 
-    END export_proc;
-END
+    ELSE
+        -- No eligible tickets to revert
+        SELECT 'Report Reversion Failed' AS Message, 0 AS Success;
+    END IF;
 
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 19-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
+    -- Final cleanup
+    DROP TEMPORARY TABLE IF EXISTS temp_ticket_ids;
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_UNDO_TALLY_DATA`(
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_UNDO_TALLY_DATA` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_UNDO_TALLY_DATA`(
     IN p_user_id INT,
     IN p_tally_booking_id TEXT,
     IN p_updated_remarks TEXT
@@ -2000,112 +2212,49 @@ BEGIN
         DROP TEMPORARY TABLE IF EXISTS temp_booking_ids;
         DROP TEMPORARY TABLE IF EXISTS temp_bank_summary;
     END;
-END
-
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 20-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_REVERT_REPORT`(
-    IN p_user_id INT,
-    IN p_report_id INT,
-    IN p_remarks TEXT
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_UPDATE_REPORT_CLOSE_STATUS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_UPDATE_REPORT_CLOSE_STATUS`(
+    IN p_report_id INT
 )
 BEGIN
-    DECLARE report_pre_process_id INT;
+    DECLARE v_all_closed INT DEFAULT 0;
+    
+    -- Check if all tickets for the given report_id have process_status_id = 15
+    SELECT 
+        COUNT(*) = SUM(CASE WHEN process_status_id = 15 THEN 1 ELSE 0 END)
+    INTO v_all_closed
+    FROM tickets
+    WHERE report_id = p_report_id;
 
-    -- Step 1: Get previous process status for the report
-    SELECT process_status_id INTO report_pre_process_id
-    FROM reports
-    WHERE report_id = p_report_id AND status_id = 1;
-
-    -- Step 2: Prepare eligible ticket_ids (those that do NOT have granted_amount)
-    DROP TEMPORARY TABLE IF EXISTS temp_ticket_ids;
-
-    CREATE TEMPORARY TABLE temp_ticket_ids (
-        ticket_id INT,
-        ticket_pre_process_id INT
-    );
-
-    INSERT INTO temp_ticket_ids (ticket_id, ticket_pre_process_id)
-	SELECT t.ticket_id, t.process_status_id
-	FROM tickets t
-	WHERE t.report_id = p_report_id
-	  AND t.status_id = 1
-	  AND t.granted_amount IS NULL
-	  AND NOT EXISTS (
-		  SELECT 1
-		  FROM payments p
-		  WHERE p.ticket_id = t.ticket_id
-	  );
-
-    -- Step 3: If eligible tickets found, proceed with update
-    IF EXISTS (SELECT 1 FROM temp_ticket_ids) THEN
-
-        -- Step 4: Nullify fields in re_ticket_details
-        UPDATE re_ticket_details rtd
-        JOIN temp_ticket_ids tmp ON rtd.ticket_id = tmp.ticket_id
-        SET rtd.m_granted_amount = NULL,
-            rtd.f_granted_amount = NULL,
-            rtd.f_granted_by = NULL;
-
-        -- Step 5: Update process_status_id for relevant tickets
-        UPDATE tickets t
-        JOIN temp_ticket_ids tmp ON t.ticket_id = tmp.ticket_id
-        SET t.process_status_id = 25;
-
-        -- Step 6: Update report process_status_id
-        UPDATE reports
-        SET process_status_id = 25,
-			manager_id = NULL
+    -- Update reports only if all tickets have process_status_id = 15
+    IF v_all_closed = 1 THEN
+        UPDATE reports 
+        SET process_status_id = 15
         WHERE report_id = p_report_id;
-
-        -- Step 7: Insert report log
-        INSERT INTO report_logs (
-            report_id, pre_process_id, aft_process_id,
-            level_id, action_id, created_by, created_at, remarks
-        )
-        VALUES (
-            p_report_id, report_pre_process_id, 25,
-            1, 25, p_user_id, NOW(), p_remarks
-        );
-
-        -- Step 8: Insert ticket logs for each ticket
-        INSERT INTO ticket_logs (
-            ticket_id, pre_process_id, aft_process_id,
-            level_id, action_id, created_by, created_at, remarks
-        )
-        SELECT
-            tmp.ticket_id, tmp.ticket_pre_process_id, 25,
-            1, 25, p_user_id, NOW(), p_remarks
-        FROM temp_ticket_ids tmp;
-
-        -- Step 9: Return success message
-        SELECT 'Report Reverted Successfully' AS Message, 1 AS Success;
-
-    ELSE
-        -- No eligible tickets to revert
-        SELECT 'Report Reversion Failed' AS Message, 0 AS Success;
     END IF;
-
-    -- Final cleanup
-    DROP TEMPORARY TABLE IF EXISTS temp_ticket_ids;
-
-END
+END ;;
+DELIMITER ;
 
 
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Uploaded In Main-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
 
 
------------------------------------------------------------------------------------------------------------------------------
-/* **************************************************************** 
-<-- Stored Procedure 21-->
-******************************************************************* */
------------------------------------------------------------------------------------------------------------------------------
-
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

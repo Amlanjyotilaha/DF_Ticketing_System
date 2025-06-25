@@ -685,7 +685,7 @@ CREATE TABLE `entities` (
 
 LOCK TABLES `entities` WRITE;
 /*!40000 ALTER TABLE `entities` DISABLE KEYS */;
-INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Educational Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation');
+INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Education Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation');
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 

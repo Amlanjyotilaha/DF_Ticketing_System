@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `df_ticketing` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE  IF NOT EXISTS `df_ticketing` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `df_ticketing`;
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: 13.212.83.175    Database: df_ticketing
+-- Host: 135.235.193.181    Database: df_ticketing
 -- ------------------------------------------------------
--- Server version	5.6.23-log
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `academic_cost_center`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `academic_cost_center` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cost_center_id` int(11) DEFAULT NULL,
-  `year_id` int(11) DEFAULT NULL,
-  `entity_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cost_center_id` int DEFAULT NULL,
+  `year_id` int DEFAULT NULL,
+  `entity_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cost_center_id` (`cost_center_id`),
   KEY `entity_id` (`entity_id`),
@@ -39,7 +39,7 @@ CREATE TABLE `academic_cost_center` (
   CONSTRAINT `academic_cost_center_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`),
   CONSTRAINT `academic_cost_center_ibfk_3` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`),
   CONSTRAINT `academic_cost_center_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,10 +59,10 @@ DROP TABLE IF EXISTS `academic_entity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `academic_entity` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `entity_id` int(11) DEFAULT NULL,
-  `year_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `entity_id` int DEFAULT NULL,
+  `year_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `entity_id` (`entity_id`),
   KEY `status_id` (`status_id`),
@@ -70,7 +70,7 @@ CREATE TABLE `academic_entity` (
   CONSTRAINT `academic_entity_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`),
   CONSTRAINT `academic_entity_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `academic_entity_ibfk_3` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `academic_entity` (
 
 LOCK TABLES `academic_entity` WRITE;
 /*!40000 ALTER TABLE `academic_entity` DISABLE KEYS */;
-INSERT INTO `academic_entity` VALUES (1,1, 2025, 1),(2,2, 2025, 1),(3,3, 2025, 1),(4,4, 2025, 1);
+INSERT INTO `academic_entity` VALUES (1,1,2025,1),(2,2,2025,1),(3,3,2025,1),(4,4,2025,1);
 /*!40000 ALTER TABLE `academic_entity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,10 +91,10 @@ DROP TABLE IF EXISTS `academic_expense_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `academic_expense_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `expence_category_id` int(11) DEFAULT NULL,
-  `year_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `expence_category_id` int DEFAULT NULL,
+  `year_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `expence_category_id` (`expence_category_id`),
   KEY `status_id` (`status_id`),
@@ -102,7 +102,7 @@ CREATE TABLE `academic_expense_category` (
   CONSTRAINT `academic_expense_category_ibfk_1` FOREIGN KEY (`expence_category_id`) REFERENCES `expense_category` (`expense_category_id`),
   CONSTRAINT `academic_expense_category_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `academic_expense_category_ibfk_3` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,10 +122,10 @@ DROP TABLE IF EXISTS `academic_organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `academic_organization` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `org_id` int(11) DEFAULT NULL,
-  `year_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `org_id` int DEFAULT NULL,
+  `year_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `org_id` (`org_id`),
   KEY `year_id` (`year_id`),
@@ -133,7 +133,7 @@ CREATE TABLE `academic_organization` (
   CONSTRAINT `academic_organization_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `organization` (`org_id`),
   CONSTRAINT `academic_organization_ibfk_2` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`),
   CONSTRAINT `academic_organization_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,15 +154,15 @@ DROP TABLE IF EXISTS `academic_year`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `academic_year` (
-  `year_id` int(11) NOT NULL AUTO_INCREMENT,
+  `year_id` int NOT NULL AUTO_INCREMENT,
   `year_name` varchar(20) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   PRIMARY KEY (`year_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `academic_year_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2026 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2026 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,17 +183,17 @@ DROP TABLE IF EXISTS `accommodation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `accommodation` (
-  `accommodation_id` int(11) NOT NULL AUTO_INCREMENT,
-  `reimb_dtls_id` int(11) DEFAULT NULL,
+  `accommodation_id` int NOT NULL AUTO_INCREMENT,
+  `reimb_dtls_id` int DEFAULT NULL,
   `hotel_name` varchar(200) DEFAULT NULL,
   `address` text,
   `check_in_date` datetime DEFAULT NULL,
   `check_out_date` datetime DEFAULT NULL,
-  `stay_days` int(11) DEFAULT NULL,
+  `stay_days` int DEFAULT NULL,
   PRIMARY KEY (`accommodation_id`),
   KEY `reimb_dtls_id` (`reimb_dtls_id`),
   CONSTRAINT `accommodation_ibfk_1` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,59 +206,6 @@ LOCK TABLES `accommodation` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `food`
---
-
-DROP TABLE IF EXISTS `food`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `food` (
-  `food_id` int(11) NOT NULL AUTO_INCREMENT,
-  `reimb_dtls_id` int(11) DEFAULT NULL,
-  `date` DATETIME DEFAULT NULL,
-  PRIMARY KEY (`food_id`),
-  KEY `reimb_dtls_id` (`reimb_dtls_id`),
-  CONSTRAINT `food_ibfk_1` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `food`
---
-
-LOCK TABLES `food` WRITE;
-/*!40000 ALTER TABLE `food` DISABLE KEYS */;
-/*!40000 ALTER TABLE `food` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `reimb_others`
---
-
-DROP TABLE IF EXISTS `reimb_others`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `reimb_others` (
-  `reimb_other_id` int(11) NOT NULL AUTO_INCREMENT,
-  `reimb_dtls_id` int(11) DEFAULT NULL,
-  `date` DATETIME DEFAULT NULL,
-  `remarks` TEXT DEFAULT NULL,
-  PRIMARY KEY (`reimb_other_id`),
-  KEY `reimb_dtls_id` (`reimb_dtls_id`),
-  CONSTRAINT `reimb_others_ibfk_1` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `reimb_others`
---
-
-LOCK TABLES `reimb_others` WRITE;
-/*!40000 ALTER TABLE `reimb_others` DISABLE KEYS */;
-/*!40000 ALTER TABLE `reimb_others` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `adv_ticket_details`
 --
 
@@ -266,15 +213,15 @@ DROP TABLE IF EXISTS `adv_ticket_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adv_ticket_details` (
-  `adv_dtls_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL,
+  `adv_dtls_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
+  `amount` int DEFAULT NULL,
   `manager_file` text,
   `description` text,
   PRIMARY KEY (`adv_dtls_id`),
   KEY `ticket_id` (`ticket_id`),
   CONSTRAINT `adv_ticket_details_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,29 +241,28 @@ DROP TABLE IF EXISTS `bills`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bills` (
-  `bill_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
-  `exp_catg_id` int(11) DEFAULT NULL,
-  `ticket_dtls_id` int(11) DEFAULT NULL,
+  `bill_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
+  `exp_catg_id` int DEFAULT NULL,
+  `ticket_dtls_id` int DEFAULT NULL,
   `bill_number` varchar(45) DEFAULT NULL,
   `bill_amount` varchar(100) DEFAULT NULL,
   `bill_date` datetime DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `bill_path` text,
   `created_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
   PRIMARY KEY (`bill_id`),
   KEY `ticket_id` (`ticket_id`),
   KEY `exp_catg_id` (`exp_catg_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `bills_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`),
   CONSTRAINT `bills_ibfk_2` FOREIGN KEY (`exp_catg_id`) REFERENCES `expense_category` (`expense_category_id`),
-  CONSTRAINT `bills_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status`(`status_id`) 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `bills_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Dumping data for table `bills`
@@ -327,7 +273,32 @@ LOCK TABLES `bills` WRITE;
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `budget_type`
+--
 
+DROP TABLE IF EXISTS `budget_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_type` (
+  `budget_id` int NOT NULL AUTO_INCREMENT,
+  `budget_name` varchar(255) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`budget_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `budget_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `budget_type`
+--
+
+LOCK TABLES `budget_type` WRITE;
+/*!40000 ALTER TABLE `budget_type` DISABLE KEYS */;
+INSERT INTO `budget_type` VALUES (1,'Revenue Budget',1),(2,'Capex Budget',1);
+/*!40000 ALTER TABLE `budget_type` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `categories`
@@ -337,13 +308,13 @@ DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categories` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int NOT NULL AUTO_INCREMENT,
   `category_type` varchar(30) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`category_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -352,159 +323,9 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES ('1','Food', '1'),('2','Travel', '1'),('3','Accommodation', '1'),('4','Others', '1');
+INSERT INTO `categories` VALUES (1,'Food',1),(2,'Travel',1),(3,'Accommodation',1),(4,'Others',1);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
---
--- Table structure for table `ledgers`
---
-
-DROP TABLE IF EXISTS `ledgers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ledgers` (
-  `ledger_id` int(11) NOT NULL AUTO_INCREMENT,
-  `entity_id` INT DEFAULT NULL,
-  `ledger_code` varchar(50) DEFAULT NULL,
-  `ledger_name` varchar(100) DEFAULT NULL,
-  `ledger_type` varchar(50) DEFAULT NULL,
-  `category_id` INT DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ledger_id`),
-  KEY `status_id` (`status_id`),
-  KEY `categories` (`category_id`),
-  CONSTRAINT `ledgers_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `ledgers_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ledgers`
---
-
-LOCK TABLES `ledgers` WRITE;
-/*!40000 ALTER TABLE `ledgers` DISABLE KEYS */;
-INSERT INTO `ledgers` (`ledger_id`, `ledger_code`, `ledger_name`, `ledger_type`, `category_id`, `status_id`) VALUES
-(1, '00001', 'Awards & Gifts-Program', 1, 4, 1),
-(2, '00002', 'Guest Expenses- Program', 1, 4, 1),
-(3, '00003', 'Travel Expenses-Program', 1, 2, 1),
-(4, '00004', 'Food Expenses-Program', 1, 1, 1),
-(5, '00005', 'Accommodation Expenses-Program', 1, 3, 1),
-(6, '00006', 'Cell phone Charges-Program', 1, 4, 1),
-(7, '00007', 'Electricity Charges-Program', 1, 4, 1),
-(8, '00008', 'Event Expenses-Program', 1, 4, 1),
-(9, '00009', 'Fuel Expenses - Office Vehicle', 1, 4, 1),
-(10, '00010', 'Housekeeping and Security Charges', 1, 4, 1),
-(11, '00011', 'Housekeeping Materials', 1, 4, 1),
-(12, '00012', 'Internet Broadband & Data Card Charges-Program', 1, 4, 1),
-(13, '00013', 'Lease & Rentals-Program', 1, 4, 1),
-(14, '00014', 'License & Renewals-Program', 1, 4, 1),
-(15, '00015', 'Medical Expenses-Program', 1, 4, 1),
-(16, '00016', 'News Paper & Periodicals-Program', 1, 4, 1),
-(17, '00017', 'Other Office Expenses-Program', 1, 4, 1),
-(18, '00018', 'Postage & Courier Charges-Program', 1, 4, 1),
-(19, '00019', 'Printing & Stationery- Program', 1, 4, 1),
-(20, '00020', 'Professional Fees- Program', 1, 4, 1),
-(21, '00021', 'Rates & Taxes-Program', 1, 4, 1),
-(22, '00022', 'Staff Welfare-Program', 1, 4, 1),
-(23, '00023', 'Telephone Charges-Program', 1, 4, 1),
-(24, '00024', 'Toll & Parking Charges-Program', 1, 4, 1),
-(25, '00025', 'Training Expenses-Program', 1, 4, 1),
-(26, '00026', 'Water Charges-Program', 1, 4, 1),
-(27, '00027', 'Web Maintenance & Domain Charges-Program', 1, 4, 1),
-(28, '00028', 'Fuel expenses- DG-Program', 1, 4, 1),
-(29, '00029', 'Awards & Gifts-Admin', 2, 4, 1),
-(30, '00030', 'Guest Expenses- Admin', 2, 4, 1),
-(31, '00031', 'Travel Expenses-Admin', 2, 2, 1),
-(32, '00032', 'Food Expenses-Admin', 2, 1, 1),
-(33, '00033', 'Accommodation Expenses-Admin', 2, 3, 1),
-(34, '00034', 'Cell phone Charges-Admin', 2, 4, 1),
-(35, '00035', 'Electricity Charges-Admin', 2, 4, 1),
-(36, '00036', 'Event Expenses-Admin', 2, 4, 1),
-(37, '00037', 'Internet Broadband & Data Card Charges-admin', 2, 4, 1),
-(38, '00038', 'Lease & Rentals-Admin', 2, 4, 1),
-(39, '00039', 'License & Renewals-Admin', 2, 4, 1),
-(40, '00040', 'Medical Expenses-Admin', 2, 4, 1),
-(41, '00041', 'Other Office Expenses-Admin', 2, 4, 1),
-(42, '00042', 'Postage & Courier Charges-Admin', 2, 4, 1),
-(43, '00043', 'Printing & Stationery- Admin', 2, 4, 1),
-(44, '00044', 'Professional Fees- Admin', 2, 4, 1),
-(45, '00045', 'Rates & Taxes- Admin', 2, 4, 1),
-(46, '00046', 'Repairs & Maintenance -Building-Admin', 2, 4, 1),
-(47, '00047', 'Repairs & Maintenance -Computers-Admin', 2, 4, 1),
-(48, '00048', 'Repairs & Maintenance -General-Admin', 2, 4, 1),
-(49, '00049', 'Repairs & Maintenance -Vehicles-Admin', 2, 4, 1),
-(50, '00050', 'Staff Welfare-Admin', 2, 4, 1),
-(51, '00051', 'Telephone Charges-Admin', 2, 4, 1),
-(52, '00052', 'Toll & Parking Charges-Admin', 2, 4, 1),
-(53, '00053', 'Training Expenses-Admin', 2, 4, 1),
-(54, '00054', 'Water Charges-Admin', 2, 4, 1),
-(55, '00055', 'Web Maintenance & Domain Charges-Admin', 2, 4, 1),
-(56, '00056', 'Fuel expenses- DG-Admin', 2, 4, 1),
-(57, '00057', 'Vehicle Insurance-Admin', 2, 4, 1),
-(58, '00058', 'Vehicle Tax-Admin', 2, 4, 1);
-/*!40000 ALTER TABLE `ledgers` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Table structure for table `budget_type`
---
-
-DROP TABLE IF EXISTS `budget_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `budget_type` (
-  `budget_id` int(11) NOT NULL AUTO_INCREMENT,
-  `budget_name` varchar(255) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`budget_id`),
-  KEY `status_id` (`status_id`),
-  CONSTRAINT `budget_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `budget_type`
---
-
-LOCK TABLES `budget_type` WRITE;
-/*!40000 ALTER TABLE `budget_type` DISABLE KEYS */;
-INSERT INTO `budget_type` VALUES (1,'Revenue Budget',1),(2,'Capex Budget', 1);
-/*!40000 ALTER TABLE `budget_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-
---
--- Table structure for table `expense`
---
-
-DROP TABLE IF EXISTS `expense`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `expense` (
-  `expense_id` int(11) NOT NULL AUTO_INCREMENT,
-  `expense_name` varchar(255) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`expense_id`),
-  KEY `status_id` (`status_id`),
-  CONSTRAINT `expense_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `expense`
---
-
-LOCK TABLES `expense` WRITE;
-/*!40000 ALTER TABLE `expense` DISABLE KEYS */;
-INSERT INTO `expense` VALUES (1,'Program Expense',1),(2,'General & Administrative Expense', 1);
-/*!40000 ALTER TABLE `expense` ENABLE KEYS */;
-UNLOCK TABLES;
-
 
 --
 -- Table structure for table `contribution_type`
@@ -514,13 +335,13 @@ DROP TABLE IF EXISTS `contribution_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contribution_type` (
-  `contribution_id` int(11) NOT NULL AUTO_INCREMENT,
+  `contribution_id` int NOT NULL AUTO_INCREMENT,
   `contribution_name` varchar(255) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`contribution_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `contribution_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -529,10 +350,9 @@ CREATE TABLE `contribution_type` (
 
 LOCK TABLES `contribution_type` WRITE;
 /*!40000 ALTER TABLE `contribution_type` DISABLE KEYS */;
-INSERT INTO `contribution_type` VALUES (1,'FC',1),(2,'NFC', 1);
+INSERT INTO `contribution_type` VALUES (1,'FC',1),(2,'NFC',1);
 /*!40000 ALTER TABLE `contribution_type` ENABLE KEYS */;
 UNLOCK TABLES;
-
 
 --
 -- Table structure for table `cost_center`
@@ -542,14 +362,14 @@ DROP TABLE IF EXISTS `cost_center`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cost_center` (
-  `cost_center_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cost_center_id` int NOT NULL AUTO_INCREMENT,
   `cost_center_name` varchar(255) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`cost_center_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `cost_center_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,14 +389,14 @@ DROP TABLE IF EXISTS `departments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `departments` (
-  `department_id` int(11) NOT NULL AUTO_INCREMENT,
+  `department_id` int NOT NULL AUTO_INCREMENT,
   `department_name` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`department_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `departments_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +408,127 @@ LOCK TABLES `departments` WRITE;
 /*!40000 ALTER TABLE `departments` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `employee_history`
+--
 
+DROP TABLE IF EXISTS `employee_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee_history` (
+  `employee_history_id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) DEFAULT NULL,
+  `employee_number` varchar(50) DEFAULT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `middle_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `display_name` varchar(100) DEFAULT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `work_email` varchar(100) DEFAULT NULL,
+  `DOB` varchar(30) DEFAULT NULL,
+  `gender` varchar(30) DEFAULT NULL,
+  `marital_status` varchar(30) DEFAULT NULL,
+  `marriage_date` varchar(30) DEFAULT NULL,
+  `blood_group` varchar(30) DEFAULT NULL,
+  `physically_handicapped` varchar(30) DEFAULT NULL,
+  `nationality` varchar(30) DEFAULT NULL,
+  `mobile` varchar(20) DEFAULT NULL,
+  `work_mobile` varchar(20) DEFAULT NULL,
+  `home_mobile` varchar(20) DEFAULT NULL,
+  `personal_email` varchar(100) DEFAULT NULL,
+  `skype` varchar(30) DEFAULT NULL,
+  `current_address_line_1` text,
+  `current_address_line_2` text,
+  `current_address_city` text,
+  `current_address_state` text,
+  `current_address_zip` text,
+  `current_address_country` text,
+  `permanent_address_line_1` text,
+  `permanent_address_line_2` text,
+  `permanent_address_city` text,
+  `permanent_address_state` text,
+  `permanent_address_zip` text,
+  `permanent_address_country` text,
+  `father_name` varchar(30) DEFAULT NULL,
+  `mother_name` varchar(30) DEFAULT NULL,
+  `spouse_name` varchar(30) DEFAULT NULL,
+  `children_name` varchar(30) DEFAULT NULL,
+  `attendance_number` varchar(30) DEFAULT NULL,
+  `location` varchar(100) DEFAULT NULL,
+  `location_country` varchar(30) DEFAULT NULL,
+  `business_unit` varchar(30) DEFAULT NULL,
+  `department` varchar(30) DEFAULT NULL,
+  `sub_department` varchar(30) DEFAULT NULL,
+  `job_title` varchar(100) DEFAULT NULL,
+  `secondary_job_title` varchar(100) DEFAULT NULL,
+  `reporting_manager_en` varchar(50) DEFAULT NULL,
+  `reporting_manager` varchar(100) DEFAULT NULL,
+  `dotted_line_manager` varchar(30) DEFAULT NULL,
+  `date_of_joining` varchar(30) DEFAULT NULL,
+  `leave_plan` varchar(100) DEFAULT NULL,
+  `band` varchar(30) DEFAULT NULL,
+  `pay_grade` varchar(30) DEFAULT NULL,
+  `time_type` varchar(30) DEFAULT NULL,
+  `worker_type` varchar(30) DEFAULT NULL,
+  `shift_policy_name` varchar(30) DEFAULT NULL,
+  `week_off_policy_name` varchar(30) DEFAULT NULL,
+  `tracking_policy_name` varchar(100) DEFAULT NULL,
+  `attendance_capture_scheme` varchar(30) DEFAULT NULL,
+  `holiday_list_name` varchar(30) DEFAULT NULL,
+  `expense_policy_name` varchar(30) DEFAULT NULL,
+  `notice_period` varchar(30) DEFAULT NULL,
+  `PAN_number` varchar(30) DEFAULT NULL,
+  `aadhaar_number` varchar(30) DEFAULT NULL,
+  `pf_number` varchar(30) DEFAULT NULL,
+  `UAN_number` varchar(30) DEFAULT NULL,
+  `employment_status` varchar(30) DEFAULT NULL,
+  `exit_date` varchar(30) DEFAULT NULL,
+  `comments` varchar(30) DEFAULT NULL,
+  `exit_status` varchar(30) DEFAULT NULL,
+  `termination_type` varchar(30) DEFAULT NULL,
+  `termination_reason` varchar(30) DEFAULT NULL,
+  `resignation_note` varchar(30) DEFAULT NULL,
+  `cost_center` varchar(225) DEFAULT NULL,
+  `entity` varchar(100) DEFAULT NULL,
+  `emergency_name` varchar(30) DEFAULT NULL,
+  `emergency_number` varchar(30) DEFAULT NULL,
+  `emergency_relation` varchar(30) DEFAULT NULL,
+  `emergency_address` text,
+  `employees_name` varchar(100) DEFAULT NULL,
+  `degree` varchar(30) DEFAULT NULL,
+  `specialization` varchar(30) DEFAULT NULL,
+  `year_of_completion` varchar(30) DEFAULT NULL,
+  `CGPA_or_percentage` varchar(100) DEFAULT NULL,
+  `university_or_college` varchar(100) DEFAULT NULL,
+  `company_name` varchar(100) DEFAULT NULL,
+  `previous_job_title` varchar(100) DEFAULT NULL,
+  `job_duration` varchar(30) DEFAULT NULL,
+  `certification` varchar(30) DEFAULT NULL,
+  `year_of_passing` varchar(30) DEFAULT NULL,
+  `institute` varchar(30) DEFAULT NULL,
+  `course_appraisal` varchar(30) DEFAULT NULL,
+  `pay_group` varchar(100) DEFAULT NULL,
+  `work_location` text,
+  `employee_name_on_bank` varchar(100) DEFAULT NULL,
+  `employee_bank_name` varchar(30) DEFAULT NULL,
+  `employee_account_number` varchar(20) DEFAULT NULL,
+  `employee_IFSC` varchar(50) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`employee_history_id`),
+  KEY `employee_id` (`employee_id`),
+  CONSTRAINT `employee_history_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_history`
+--
+
+LOCK TABLES `employee_history` WRITE;
+/*!40000 ALTER TABLE `employee_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `employee_history` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `employees`
@@ -702,7 +642,7 @@ CREATE TABLE `employees` (
   PRIMARY KEY (`employee_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -711,129 +651,8 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,'000010782',NULL,NULL,NULL,'Deepu Kumar',NULL,'deepu.kumar@dfmail.org',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'91-9065446115',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Software Development Engineer 1',NULL,'000010725','Gautham V Shanbhogue',NULL,NULL,NULL,'L2','L2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'DF -Technology','Deshpande Foundation',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'DCSE Building, B, V.B. Campus, Vidya Nagar,','Deepu Kumar','Canara Bank','3543912655','CBIN0284137',NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `employee_history`
---
-
-DROP TABLE IF EXISTS `employee_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee_history` (
-  `employee_history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) DEFAULT NULL,
-  `employee_number` varchar(50) DEFAULT NULL,
-  `first_name` varchar(100) DEFAULT NULL,
-  `middle_name` varchar(100) DEFAULT NULL,
-  `last_name` varchar(100) DEFAULT NULL,
-  `display_name` varchar(100) DEFAULT NULL,
-  `full_name` varchar(100) DEFAULT NULL,
-  `work_email` varchar(100) DEFAULT NULL,
-  `DOB` varchar(30) DEFAULT NULL,
-  `gender` varchar(30) DEFAULT NULL,
-  `marital_status` varchar(30) DEFAULT NULL,
-  `marriage_date` varchar(30) DEFAULT NULL,
-  `blood_group` varchar(30) DEFAULT NULL,
-  `physically_handicapped` varchar(30) DEFAULT NULL,
-  `nationality` varchar(30) DEFAULT NULL,
-  `mobile` varchar(20) DEFAULT NULL,
-  `work_mobile` varchar(20) DEFAULT NULL,
-  `home_mobile` varchar(20) DEFAULT NULL,
-  `personal_email` varchar(100) DEFAULT NULL,
-  `skype` varchar(30) DEFAULT NULL,
-  `current_address_line_1` text,
-  `current_address_line_2` text,
-  `current_address_city` text,
-  `current_address_state` text,
-  `current_address_zip` text,
-  `current_address_country` text,
-  `permanent_address_line_1` text,
-  `permanent_address_line_2` text,
-  `permanent_address_city` text,
-  `permanent_address_state` text,
-  `permanent_address_zip` text,
-  `permanent_address_country` text,
-  `father_name` varchar(30) DEFAULT NULL,
-  `mother_name` varchar(30) DEFAULT NULL,
-  `spouse_name` varchar(30) DEFAULT NULL,
-  `children_name` varchar(30) DEFAULT NULL,
-  `attendance_number` varchar(30) DEFAULT NULL,
-  `location` varchar(100) DEFAULT NULL,
-  `location_country` varchar(30) DEFAULT NULL,
-  `business_unit` varchar(30) DEFAULT NULL,
-  `department` varchar(30) DEFAULT NULL,
-  `sub_department` varchar(30) DEFAULT NULL,
-  `job_title` varchar(100) DEFAULT NULL,
-  `secondary_job_title` varchar(100) DEFAULT NULL,
-  `reporting_manager_en` varchar(50) DEFAULT NULL,
-  `reporting_manager` varchar(100) DEFAULT NULL,
-  `dotted_line_manager` varchar(30) DEFAULT NULL,
-  `date_of_joining` varchar(30) DEFAULT NULL,
-  `leave_plan` varchar(100) DEFAULT NULL,
-  `band` varchar(30) DEFAULT NULL,
-  `pay_grade` varchar(30) DEFAULT NULL,
-  `time_type` varchar(30) DEFAULT NULL,
-  `worker_type` varchar(30) DEFAULT NULL,
-  `shift_policy_name` varchar(30) DEFAULT NULL,
-  `week_off_policy_name` varchar(30) DEFAULT NULL,
-  `tracking_policy_name` varchar(100) DEFAULT NULL,
-  `attendance_capture_scheme` varchar(30) DEFAULT NULL,
-  `holiday_list_name` varchar(30) DEFAULT NULL,
-  `expense_policy_name` varchar(30) DEFAULT NULL,
-  `notice_period` varchar(30) DEFAULT NULL,
-  `PAN_number` varchar(30) DEFAULT NULL,
-  `aadhaar_number` varchar(30) DEFAULT NULL,
-  `pf_number` varchar(30) DEFAULT NULL,
-  `UAN_number` varchar(30) DEFAULT NULL,
-  `employment_status` varchar(30) DEFAULT NULL,
-  `exit_date` varchar(30) DEFAULT NULL,
-  `comments` varchar(30) DEFAULT NULL,
-  `exit_status` varchar(30) DEFAULT NULL,
-  `termination_type` varchar(30) DEFAULT NULL,
-  `termination_reason` varchar(30) DEFAULT NULL,
-  `resignation_note` varchar(30) DEFAULT NULL,
-  `cost_center` varchar(225) DEFAULT NULL,
-  `entity` varchar(100) DEFAULT NULL,
-  `emergency_name` varchar(30) DEFAULT NULL,
-  `emergency_number` varchar(30) DEFAULT NULL,
-  `emergency_relation` varchar(30) DEFAULT NULL,
-  `emergency_address` text,
-  `employees_name` varchar(100) DEFAULT NULL,
-  `degree` varchar(30) DEFAULT NULL,
-  `specialization` varchar(30) DEFAULT NULL,
-  `year_of_completion` varchar(30) DEFAULT NULL,
-  `CGPA_or_percentage` varchar(100) DEFAULT NULL,
-  `university_or_college` varchar(100) DEFAULT NULL,
-  `company_name` varchar(100) DEFAULT NULL,
-  `previous_job_title` varchar(100) DEFAULT NULL,
-  `job_duration` varchar(30) DEFAULT NULL,
-  `certification` varchar(30) DEFAULT NULL,
-  `year_of_passing` varchar(30) DEFAULT NULL,
-  `institute` varchar(30) DEFAULT NULL,
-  `course_appraisal` varchar(30) DEFAULT NULL,
-  `pay_group` varchar(100) DEFAULT NULL,
-  `work_location` text,
-  `employee_name_on_bank` varchar(100) DEFAULT NULL,
-  `employee_bank_name` varchar(30) DEFAULT NULL,
-  `employee_account_number` varchar(20) DEFAULT NULL,
-  `employee_IFSC` varchar(50) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`employee_history_id`),
-  KEY `employee_id` (`employee_id`),
-  CONSTRAINT `employee_history_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employee_history`
---
-
-LOCK TABLES `employee_history` WRITE;
-/*!40000 ALTER TABLE `employee_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employee_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -844,12 +663,12 @@ DROP TABLE IF EXISTS `entities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `entities` (
-  `entity_id` int(11) NOT NULL AUTO_INCREMENT,
-  `org_id` int(11) DEFAULT NULL,
+  `entity_id` int NOT NULL AUTO_INCREMENT,
+  `org_id` int DEFAULT NULL,
   `entity_name` varchar(255) DEFAULT NULL,
   `address` text,
   `entity_code` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `logo` varchar(50) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`entity_id`),
@@ -857,7 +676,7 @@ CREATE TABLE `entities` (
   KEY `status_id` (`status_id`),
   CONSTRAINT `entities_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `organization` (`org_id`),
   CONSTRAINT `entities_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -871,6 +690,33 @@ INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B
 UNLOCK TABLES;
 
 --
+-- Table structure for table `expense`
+--
+
+DROP TABLE IF EXISTS `expense`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `expense` (
+  `expense_id` int NOT NULL AUTO_INCREMENT,
+  `expense_name` varchar(255) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`expense_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `expense_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expense`
+--
+
+LOCK TABLES `expense` WRITE;
+/*!40000 ALTER TABLE `expense` DISABLE KEYS */;
+INSERT INTO `expense` VALUES (1,'Program Expense',1),(2,'General & Administrative Expense',1);
+/*!40000 ALTER TABLE `expense` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `expense_category`
 --
 
@@ -878,14 +724,14 @@ DROP TABLE IF EXISTS `expense_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `expense_category` (
-  `expense_category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `expense_category_id` int NOT NULL AUTO_INCREMENT,
   `category` varchar(30) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`expense_category_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `expense_category_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -894,8 +740,67 @@ CREATE TABLE `expense_category` (
 
 LOCK TABLES `expense_category` WRITE;
 /*!40000 ALTER TABLE `expense_category` DISABLE KEYS */;
-INSERT INTO `expense_category`  VALUES (1, 'Reimbursement', '1', 'Reimbursement'), ('2', 'Procurement', '1', 'Procurement'),('3', 'Advance', '1', 'Advance');
+INSERT INTO `expense_category` VALUES (1,'Reimbursement',1,'Reimbursement'),(2,'Procurement',1,'Procurement'),(3,'Advance',1,'Advance');
 /*!40000 ALTER TABLE `expense_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `food`
+--
+
+DROP TABLE IF EXISTS `food`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `food` (
+  `food_id` int NOT NULL AUTO_INCREMENT,
+  `reimb_dtls_id` int DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`food_id`),
+  KEY `reimb_dtls_id` (`reimb_dtls_id`),
+  CONSTRAINT `food_ibfk_1` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `food`
+--
+
+LOCK TABLES `food` WRITE;
+/*!40000 ALTER TABLE `food` DISABLE KEYS */;
+/*!40000 ALTER TABLE `food` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ledgers`
+--
+
+DROP TABLE IF EXISTS `ledgers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ledgers` (
+  `ledger_id` int NOT NULL AUTO_INCREMENT,
+  `entity_id` int DEFAULT NULL,
+  `ledger_code` varchar(50) DEFAULT NULL,
+  `ledger_name` varchar(100) DEFAULT NULL,
+  `ledger_type` varchar(50) DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`ledger_id`),
+  KEY `status_id` (`status_id`),
+  KEY `categories` (`category_id`),
+  CONSTRAINT `ledgers_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
+  CONSTRAINT `ledgers_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ledgers`
+--
+
+LOCK TABLES `ledgers` WRITE;
+/*!40000 ALTER TABLE `ledgers` DISABLE KEYS */;
+INSERT INTO `ledgers` VALUES (1,NULL,'00001','Awards & Gifts-Program','1',4,1),(2,NULL,'00002','Guest Expenses- Program','1',4,1),(3,NULL,'00003','Travel Expenses-Program','1',2,1),(4,NULL,'00004','Food Expenses-Program','1',1,1),(5,NULL,'00005','Accommodation Expenses-Program','1',3,1),(6,NULL,'00006','Cell phone Charges-Program','1',4,1),(7,NULL,'00007','Electricity Charges-Program','1',4,1),(8,NULL,'00008','Event Expenses-Program','1',4,1),(9,NULL,'00009','Fuel Expenses - Office Vehicle','1',4,1),(10,NULL,'00010','Housekeeping and Security Charges','1',4,1),(11,NULL,'00011','Housekeeping Materials','1',4,1),(12,NULL,'00012','Internet Broadband & Data Card Charges-Program','1',4,1),(13,NULL,'00013','Lease & Rentals-Program','1',4,1),(14,NULL,'00014','License & Renewals-Program','1',4,1),(15,NULL,'00015','Medical Expenses-Program','1',4,1),(16,NULL,'00016','News Paper & Periodicals-Program','1',4,1),(17,NULL,'00017','Other Office Expenses-Program','1',4,1),(18,NULL,'00018','Postage & Courier Charges-Program','1',4,1),(19,NULL,'00019','Printing & Stationery- Program','1',4,1),(20,NULL,'00020','Professional Fees- Program','1',4,1),(21,NULL,'00021','Rates & Taxes-Program','1',4,1),(22,NULL,'00022','Staff Welfare-Program','1',4,1),(23,NULL,'00023','Telephone Charges-Program','1',4,1),(24,NULL,'00024','Toll & Parking Charges-Program','1',4,1),(25,NULL,'00025','Training Expenses-Program','1',4,1),(26,NULL,'00026','Water Charges-Program','1',4,1),(27,NULL,'00027','Web Maintenance & Domain Charges-Program','1',4,1),(28,NULL,'00028','Fuel expenses- DG-Program','1',4,1),(29,NULL,'00029','Awards & Gifts-Admin','2',4,1),(30,NULL,'00030','Guest Expenses- Admin','2',4,1),(31,NULL,'00031','Travel Expenses-Admin','2',2,1),(32,NULL,'00032','Food Expenses-Admin','2',1,1),(33,NULL,'00033','Accommodation Expenses-Admin','2',3,1),(34,NULL,'00034','Cell phone Charges-Admin','2',4,1),(35,NULL,'00035','Electricity Charges-Admin','2',4,1),(36,NULL,'00036','Event Expenses-Admin','2',4,1),(37,NULL,'00037','Internet Broadband & Data Card Charges-admin','2',4,1),(38,NULL,'00038','Lease & Rentals-Admin','2',4,1),(39,NULL,'00039','License & Renewals-Admin','2',4,1),(40,NULL,'00040','Medical Expenses-Admin','2',4,1),(41,NULL,'00041','Other Office Expenses-Admin','2',4,1),(42,NULL,'00042','Postage & Courier Charges-Admin','2',4,1),(43,NULL,'00043','Printing & Stationery- Admin','2',4,1),(44,NULL,'00044','Professional Fees- Admin','2',4,1),(45,NULL,'00045','Rates & Taxes- Admin','2',4,1),(46,NULL,'00046','Repairs & Maintenance -Building-Admin','2',4,1),(47,NULL,'00047','Repairs & Maintenance -Computers-Admin','2',4,1),(48,NULL,'00048','Repairs & Maintenance -General-Admin','2',4,1),(49,NULL,'00049','Repairs & Maintenance -Vehicles-Admin','2',4,1),(50,NULL,'00050','Staff Welfare-Admin','2',4,1),(51,NULL,'00051','Telephone Charges-Admin','2',4,1),(52,NULL,'00052','Toll & Parking Charges-Admin','2',4,1),(53,NULL,'00053','Training Expenses-Admin','2',4,1),(54,NULL,'00054','Water Charges-Admin','2',4,1),(55,NULL,'00055','Web Maintenance & Domain Charges-Admin','2',4,1),(56,NULL,'00056','Fuel expenses- DG-Admin','2',4,1),(57,NULL,'00057','Vehicle Insurance-Admin','2',4,1),(58,NULL,'00058','Vehicle Tax-Admin','2',4,1);
+/*!40000 ALTER TABLE `ledgers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -906,14 +811,14 @@ DROP TABLE IF EXISTS `levels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `levels` (
-  `level_id` int(11) NOT NULL AUTO_INCREMENT,
+  `level_id` int NOT NULL AUTO_INCREMENT,
   `level_name` varchar(100) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`level_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `level_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -922,9 +827,7 @@ CREATE TABLE `levels` (
 
 LOCK TABLES `levels` WRITE;
 /*!40000 ALTER TABLE `levels` DISABLE KEYS */;
-INSERT INTO `levels` VALUES (1,'User', '1', 'At any condition it is at the initial stage(User Stage)'),(2,'Manager', '1', 'At this stage the report is with the Manager.'),
-(3,'Finance Processor', '1', 'At this stage the report is with Finance Processor'),(4,'Finance Approver', '1', 'At this stage the report is with Finance Approver'),(5,'Excel Ready for Payment', '1', 'At this stage excel is ready to be downloaded'),(6,'FA Excel Downloaded for Payment', '1', 'At this stage the ticket has been downloaded in excel for Bank Payment'),(7,'UTR Uploaded', '1', 'At this stage the UTR number is being uploaded'),(8,NULL, '1', 'Just Blank');
-;
+INSERT INTO `levels` VALUES (1,'User',1,'At any condition it is at the initial stage(User Stage)'),(2,'Manager',1,'At this stage the report is with the Manager.'),(3,'Finance Processor',1,'At this stage the report is with Finance Processor'),(4,'Finance Approver',1,'At this stage the report is with Finance Approver'),(5,'Excel Ready for Payment',1,'At this stage excel is ready to be downloaded'),(6,'FA Excel Downloaded for Payment',1,'At this stage the ticket has been downloaded in excel for Bank Payment'),(7,'UTR Uploaded',1,'At this stage the UTR number is being uploaded'),(8,NULL,1,'Just Blank');
 /*!40000 ALTER TABLE `levels` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -936,18 +839,18 @@ DROP TABLE IF EXISTS `login_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login_details` (
-  `login_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
+  `login_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
   `login_type` varchar(30) DEFAULT NULL,
   `login_time` datetime DEFAULT NULL,
   `logout_time` datetime DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`login_id`),
   KEY `status_id` (`status_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `login_details_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `login_details_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -956,6 +859,7 @@ CREATE TABLE `login_details` (
 
 LOCK TABLES `login_details` WRITE;
 /*!40000 ALTER TABLE `login_details` DISABLE KEYS */;
+INSERT INTO `login_details` VALUES (1,1,'google','2025-06-25 11:46:51','2025-06-25 11:46:52',5),(2,1,'google','2025-06-25 12:00:38',NULL,1);
 /*!40000 ALTER TABLE `login_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -967,11 +871,11 @@ DROP TABLE IF EXISTS `master_status`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `master_status` (
-  `status_id` int(11) NOT NULL AUTO_INCREMENT,
+  `status_id` int NOT NULL AUTO_INCREMENT,
   `status` varchar(50) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -980,7 +884,7 @@ CREATE TABLE `master_status` (
 
 LOCK TABLES `master_status` WRITE;
 /*!40000 ALTER TABLE `master_status` DISABLE KEYS */;
-INSERT INTO `master_status` VALUES (1,'Active','Active'),(2,'Inactive','Inactive'),(3,'Deleted','Deleted'),(4,'Resigned','Employee has Resigned'),(5,'Completed','Completed'),(6,'In Progress','Process is currently ongoing'),(7,'Manager Pending','Manager Approval Pending'),(8,'Manager Rejected','Manager declined the request'),(9,'FP Pending','Awaiting action from the Finance Processor'),(10,'FA Pending','Finance Approver Approval Pending'),(11,'FA Rejected','Finance Approver declined the request'),(12,'FA Approved','Finance Approver has Approved'),(13,'Payment Progress','Payment is yet to be processed by the bank'),(14,'Payment Completed','The payment has been successfully processed'),(15,'Closed','The process is closed'),(16,'Approved','Approved action by manager or finance '),(17,'Rejected','Rejected action by manager or finance'),(18,'Proceed','Proceed action by manager or finance'),(19,'Initialized','Report and Ticket raised but not submitted'),(20,'System Error','Internal server error'),(21,NULL,'Just Blank'),(22,'Download Cancelled','Excel download for payment cancelled'),(23,'Tally Pending','Tally Excel pending for Download'),(24,'Tally Processed','Tally Excel have been Downloaded'), (25,'Reverted','Recall all tickets in a report');
+INSERT INTO `master_status` VALUES (1,'Active','Active'),(2,'Inactive','Inactive'),(3,'Deleted','Deleted'),(4,'Resigned','Employee has Resigned'),(5,'Completed','Completed'),(6,'In Progress','Process is currently ongoing'),(7,'Manager Pending','Manager Approval Pending'),(8,'Manager Rejected','Manager declined the request'),(9,'FP Pending','Awaiting action from the Finance Processor'),(10,'FA Pending','Finance Approver Approval Pending'),(11,'FA Rejected','Finance Approver declined the request'),(12,'FA Approved','Finance Approver has Approved'),(13,'Payment Progress','Payment is yet to be processed by the bank'),(14,'Payment Completed','The payment has been successfully processed'),(15,'Closed','The process is closed'),(16,'Approved','Approved action by manager or finance '),(17,'Rejected','Rejected action by manager or finance'),(18,'Proceed','Proceed action by manager or finance'),(19,'Initialized','Report and Ticket raised but not submitted'),(20,'System Error','Internal server error'),(21,NULL,'Just Blank'),(22,'Download Cancelled','Excel download for payment cancelled'),(23,'Tally Pending','Tally Excel pending for Download'),(24,'Tally Processed','Tally Excel have been Downloaded'),(25,'Reverted','Recall all tickets in a report');
 /*!40000 ALTER TABLE `master_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -992,19 +896,19 @@ DROP TABLE IF EXISTS `menus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `menus` (
-  `menu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) DEFAULT NULL,
+  `menu_id` int NOT NULL AUTO_INCREMENT,
+  `parent_id` int DEFAULT NULL,
   `menu_name` varchar(50) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
   `sort` varchar(50) DEFAULT NULL,
-  `create_by` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `create_by` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `action` varchar(30) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`menu_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `menus_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1025,16 +929,16 @@ DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization` (
-  `org_id` int(11) NOT NULL AUTO_INCREMENT,
+  `org_id` int NOT NULL AUTO_INCREMENT,
   `org_name` varchar(50) DEFAULT NULL,
   `org_code` varchar(50) DEFAULT NULL,
   `address` text,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `logo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`org_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `organization_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1048,6 +952,52 @@ INSERT INTO `organization` VALUES (1,'Deshpande Foundation','DF','DCSE Building,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `organization_bank`
+--
+
+DROP TABLE IF EXISTS `organization_bank`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organization_bank` (
+  `org_bank_id` int NOT NULL AUTO_INCREMENT,
+  `org_id` int DEFAULT NULL,
+  `entity_id` int DEFAULT NULL,
+  `account_type` varchar(50) DEFAULT NULL,
+  `client_code` varchar(100) DEFAULT NULL,
+  `entity_bank_name` varchar(100) DEFAULT NULL,
+  `entity_bank_account_no` varchar(50) DEFAULT NULL,
+  `entity_name_on_bank` varchar(100) DEFAULT NULL,
+  `entity_bank_IFSC` varchar(50) DEFAULT NULL,
+  `bank_ledger` text,
+  `bank_address` text,
+  `bank_contact_no` varchar(30) DEFAULT NULL,
+  `bank_contact_person` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `entity_bank_format` text,
+  `status_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`org_bank_id`),
+  KEY `status_id` (`status_id`),
+  KEY `org_id` (`org_id`),
+  KEY `entity_id` (`entity_id`),
+  CONSTRAINT `organization_bank_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
+  CONSTRAINT `organization_bank_ibfk_2` FOREIGN KEY (`org_id`) REFERENCES `organization` (`org_id`),
+  CONSTRAINT `organization_bank_ibfk_3` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `organization_bank`
+--
+
+LOCK TABLES `organization_bank` WRITE;
+/*!40000 ALTER TABLE `organization_bank` DISABLE KEYS */;
+INSERT INTO `organization_bank` VALUES (1,1,1,'FCRA','DESHPANDE','HDFC BANK','50100114012217','Deshpande Foundation','HDFC0000254','HDFC Bank A/c No-50100114012217','Tb Revankar Complex,Vivekanand Hospital Road,Hubli, karnataka- 580029','9343982426','Krishnag Desai',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(2,1,1,'FCRA','DESHPANDE','ICICI BANK','015701014774','Deshpande Foundation','ICIC0000157','ICICI Bank A/c No-015701014774','Icici Bank Ltd, Eureka Junction, Travellers Bungalow Road, Hubli, Karnataka, 580029','8971912459','Vinay Joshi',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(3,1,1,'FCRA','DESHPANDE','RATNAKAR BANK LTD','309023289619','Deshpande Foundation','RATN0000056','RBL Bank A/c NO.-309023289619','Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001','9538926434','Anandkumar Chimmalagi',NULL,'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(4,1,1,'FCRA','DESHPANDE','Kotak BANK','6411841218','Deshpande Foundation','KKBK0000446','Kotak Bank A/c No.-6411841218','Club Road, Corporation Ward No.46, Old No.1, Hubli Dharwad-500 020, Karnataka','6364570480','Muzammil Ahmedb',NULL,'Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(5,1,1,'FCRA','DESHPANDE','YES BANK','024994600000027','Deshpande Foundation','YESB0000249','Yes Bank A/c No-024994600000027','Ground Floor,Svb City Centre Club Road,Hubli Karnataka 580020','9986123798','Firozkhan Pathan',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(6,1,1,'FCRA','DESHPANDE','SBI BANK','33058846735','Deshpande Foundation','SBIN0009297','State Bank of India A/c No-33058846735','Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021','9342893567','Jayshree',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(7,1,1,'FCRA','DESHPANDE','SBI BANK','40095443444','Deshpande Foundation','SBIN0000691','State Bank of India A/c No 40095443444-Main FCRA','\"11Sansad Marg, New Delhi 110 001\nState: Delhi\"','9711906089','Mohammed Shahid',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(8,1,1,'Non-FCRA','DESHPANDE','HDFC BANK','50100462351706','Deshpande Foundation','HDFC0006090','HDFC Bank A/c No: 50100462351706','Gr Flr Anusharan Arcade Nagshanti Building Shirur Park Road Vidyanagari Hubli Karnataka 580030','9343982426','Krishnag Desai',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(9,1,1,'Non-FCRA','DESHPANDE','RATNAKAR BANK LTD','309003312050','Deshpande Foundation','RATN0000056','RBL Bank A/c No.-309003312050','Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001','9538926434','Anandkumar Chimmalagi',NULL,'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(10,1,1,'Non-FCRA','DESHPANDE','SBI BANK','37058263175','Deshpande Foundation','SBIN0009297','SBI Bank A/c No.-37058263175','Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021','9342893567','Jayshree',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(11,1,2,'Non-FCRA','DESHTI','Canara Bank','1628101016715','Deshpande Education Trust','CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(12,1,2,'OD','DESHTI','Canara Bank','1628257005280','Deshpande Education Trust','CNRB0001628','Canara Bank OD A/c.No.1628257005280','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(13,1,2,'Non-FCRA','DESHTI','State Bank of India','33058845324','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 33058845324 HBL','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(14,1,2,'Non-FCRA','DESHTI','State Bank of India','37592898899','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 37592898899 AP','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(15,1,2,'Non-FCRA','DESHTI','State Bank of India','37592924740','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 37592924740 KKT','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(16,1,2,'FCRA','DESHTI','State Bank of India','40095732865','Deshpande Education Trust','SBIN0000691','SBI Bank A/c No: 40095732865(FCRA)','Parliment Street, N. D. Main Branch, New Delhi','8026599990',NULL,'fcrasupport9.00691@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(17,1,2,'FCRA','DESHTI','Kotak Mahindra','714421269','Deshpande Education Trust','KKBK0000446','Kotak Bank A/c No:0714421269 (FCRA)','Club Road, Hubballi','+91 63645 70480',NULL,'muzammil.ahmedb@kotak.com','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(18,1,2,'Non-FCRA','DESHTI','Kotak Mahindra','746116324','Deshpande Education Trust','KKBK0000446','Kotak Bank A/c No:0746116324 (Non FCRA)','Club Road, Hubballi','+91 63645 70480',NULL,'muzammil.ahmedb@kotak.com','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(19,1,2,'FCRA','DESHTI','RBL Bank Ltd','309023236264','Deshpande Education Trust','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(20,1,2,'Non-FCRA','DESHTI','RBL Bank Ltd','309006956664','Deshpande Education Trust','RATN0000056','RBL Bank A/c No: 309006956664','Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(21,1,2,'OD','DESHTI','RBL Bank Ltd','609001110406','Deshpande Education Trust','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(22,1,2,'CSR','DESHTI','HDFC','50200105967093','Deshpande Education Trust','HDFC0006090','HDFC Bank A/C No : 50200105967093','Vidyanagar Hubli','+91 93439 82426',NULL,'krishnag.desai@hdfcbank.com',NULL,2,'2025-06-24 13:17:48',NULL),(23,1,3,'FCRA',NULL,'RBL Bank Ltd','309023300170','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(24,1,3,'FCRA',NULL,'RBL Bank Ltd','300000580030','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(25,1,3,'FCRA',NULL,'State Bank of India','40095425888','Foundation for Sandboxstartup Initiatives','SBIN0009297',NULL,'Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(26,1,3,'Non-FCRA',NULL,'Canara Bank','1628101016715','Foundation for Sandboxstartup Initiatives','CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(27,1,3,'Non-FCRA',NULL,'RBL Bank Ltd','309006967837','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(28,1,3,'Non-FCRA',NULL,'State Bank of India','35823266728','Foundation for Sandboxstartup Initiatives','SBIN0009297','State Bank of India C.A/c.No.35823266728-Statutory','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(29,1,3,'Non-FCRA',NULL,'State Bank of India','35834648411','Foundation for Sandboxstartup Initiatives','SBIN0009297','State Bank of India SB A/c. No.35834648411-Accelara','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(30,1,3,'Non-FCRA',NULL,'Bank of Baroda','07790100021289','Foundation for Sandboxstartup Initiatives',NULL,'Bank of Baroda SB A/c. No. 07790100021289-Prayas',NULL,NULL,NULL,NULL,NULL,2,'2025-06-24 13:17:48',NULL),(31,1,3,'Non-FCRA',NULL,'Union Bank of India','066922010001223','Foundation for Sandboxstartup Initiatives',NULL,'Union Bank of India SB.A/c.No.066922010001223-SISFS',NULL,NULL,NULL,NULL,NULL,2,'2025-06-24 13:17:48',NULL);
+/*!40000 ALTER TABLE `organization_bank` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `payment_mode`
 --
 
@@ -1055,13 +1005,13 @@ DROP TABLE IF EXISTS `payment_mode`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payment_mode` (
-  `mode_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mode_id` int NOT NULL AUTO_INCREMENT,
   `mode_name` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`mode_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `payment_mode_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1070,8 +1020,7 @@ CREATE TABLE `payment_mode` (
 
 LOCK TABLES `payment_mode` WRITE;
 /*!40000 ALTER TABLE `payment_mode` DISABLE KEYS */;
-INSERT INTO `df_ticketing`.`payment_mode` (`mode_name`, `status_id`) VALUES ('Online', '1');
-INSERT INTO `df_ticketing`.`payment_mode` (`mode_name`, `status_id`) VALUES ('Cash', '1');
+INSERT INTO `payment_mode` VALUES (1,'Online',1),(2,'Cash',1);
 /*!40000 ALTER TABLE `payment_mode` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1083,15 +1032,15 @@ DROP TABLE IF EXISTS `payment_route`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payment_route` (
-  `route_id` int(11) NOT NULL AUTO_INCREMENT,
+  `route_id` int NOT NULL AUTO_INCREMENT,
   `route_from` varchar(100) DEFAULT NULL,
   `route_to` varchar(100) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`route_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `payment_route_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1100,12 +1049,32 @@ CREATE TABLE `payment_route` (
 
 LOCK TABLES `payment_route` WRITE;
 /*!40000 ALTER TABLE `payment_route` DISABLE KEYS */;
-INSERT INTO `df_ticketing`.`payment_route` (`route_from`, `route_to`, `status_id`, `description`) VALUES ('Organization', 'User', '1', 'Payment from Organization to User');
-INSERT INTO `df_ticketing`.`payment_route` (`route_from`, `route_to`, `status_id`, `description`) VALUES ('User', 'Organization', '1', 'Payment from User to Organization');
-INSERT INTO `df_ticketing`.`payment_route` (`route_from`, `route_to`, `status_id`, `description`) VALUES ('Organization', 'Vendor', '1', 'Payment from Organization to Vendor');
-INSERT INTO `df_ticketing`.`payment_route` (`route_from`, `route_to`, `status_id`, `description`) VALUES ('Vendor', 'Organization', '1', 'Payment from Vendor to Organization');
-
+INSERT INTO `payment_route` VALUES (1,'Organization','User',1,'Payment from Organization to User'),(2,'User','Organization',1,'Payment from User to Organization'),(3,'Organization','Vendor',1,'Payment from Organization to Vendor'),(4,'Vendor','Organization',1,'Payment from Vendor to Organization');
 /*!40000 ALTER TABLE `payment_route` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `payment_type`
+--
+
+DROP TABLE IF EXISTS `payment_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment_type` (
+  `pay_type_id` int NOT NULL AUTO_INCREMENT,
+  `pay_type` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`pay_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment_type`
+--
+
+LOCK TABLES `payment_type` WRITE;
+/*!40000 ALTER TABLE `payment_type` DISABLE KEYS */;
+INSERT INTO `payment_type` VALUES (1,'NEFT'),(2,'IMPS'),(3,'RTGS'),(4,'IFT');
+/*!40000 ALTER TABLE `payment_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1116,23 +1085,23 @@ DROP TABLE IF EXISTS `payments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payments` (
-  `payment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
+  `payment_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
   `transaction_id` varchar(45) DEFAULT NULL,
-  `route_id` int(11) DEFAULT NULL,
-  `pay_type_id` int(11) DEFAULT NULL,
-  `paid_from` int(11) DEFAULT NULL,
-  `paid_to` int(11) DEFAULT NULL,
-  `paid_from_bank` int(11) DEFAULT NULL,
-  `paid_to_bank` int(11) DEFAULT NULL,
+  `route_id` int DEFAULT NULL,
+  `pay_type_id` int DEFAULT NULL,
+  `paid_from` int DEFAULT NULL,
+  `paid_to` int DEFAULT NULL,
+  `paid_from_bank` int DEFAULT NULL,
+  `paid_to_bank` int DEFAULT NULL,
   `amount` varchar(30) DEFAULT NULL,
   `UTR_number` varchar(100) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `payment_mode_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `payment_mode_id` int DEFAULT NULL,
   `payment_date` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `level_id` int(11) DEFAULT NULL,
+  `level_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`payment_id`),
   UNIQUE KEY `unique_transaction_id` (`transaction_id`),
@@ -1144,13 +1113,13 @@ CREATE TABLE `payments` (
   KEY `created_by` (`created_by`),
   KEY `level_id` (`level_id`),
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`),
+  CONSTRAINT `payments_ibfk_10` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
   CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `payments_ibfk_3` FOREIGN KEY (`payment_mode_id`) REFERENCES `payment_mode` (`mode_id`),
   CONSTRAINT `payments_ibfk_4` FOREIGN KEY (`route_id`) REFERENCES `payment_route` (`route_id`),
   CONSTRAINT `payments_ibfk_5` FOREIGN KEY (`pay_type_id`) REFERENCES `payment_type` (`pay_type_id`),
-  CONSTRAINT `payments_ibfk_9` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`),
-  CONSTRAINT `payments_ibfk_10` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `payments_ibfk_9` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1170,20 +1139,20 @@ DROP TABLE IF EXISTS `pf_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pf_details` (
-  `pf_id` int(11) NOT NULL AUTO_INCREMENT,
-  `pf_establishment_id` int(11) DEFAULT NULL,
+  `pf_id` int NOT NULL AUTO_INCREMENT,
+  `pf_establishment_id` int DEFAULT NULL,
   `pf_details_available` varchar(255) DEFAULT NULL,
   `pf_number` varchar(50) DEFAULT NULL,
   `pf_joining_date` date DEFAULT NULL,
   `name_on_pf_account` varchar(50) DEFAULT NULL,
   `UAN` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`pf_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `pf_details_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1203,8 +1172,8 @@ DROP TABLE IF EXISTS `pro_ticket_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pro_ticket_details` (
-  `pro_dtls_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
+  `pro_dtls_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
   `procurement_type` varchar(30) DEFAULT NULL,
   `particulars` varchar(30) DEFAULT NULL,
   `description` text,
@@ -1212,7 +1181,7 @@ CREATE TABLE `pro_ticket_details` (
   PRIMARY KEY (`pro_dtls_id`),
   KEY `ticket_id` (`ticket_id`),
   CONSTRAINT `pro_ticket_details_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1232,20 +1201,20 @@ DROP TABLE IF EXISTS `re_ticket_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `re_ticket_details` (
-  `reimb_dtls_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `ledger_id` int(11) DEFAULT NULL,
+  `reimb_dtls_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `ledger_id` int DEFAULT NULL,
   `total_expense` varchar(100) DEFAULT NULL,
   `m_granted_amount` varchar(100) DEFAULT NULL,
   `f_granted_amount` varchar(100) DEFAULT NULL,
-  `f_granted_by` int(11) DEFAULT NULL,
+  `f_granted_by` int DEFAULT NULL,
   `exp_pay_date` datetime DEFAULT NULL,
   `reimbursed` varchar(100) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `description` text,
-  `updated_by` int(11) DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`reimb_dtls_id`),
   KEY `ticket_id` (`ticket_id`),
@@ -1256,7 +1225,7 @@ CREATE TABLE `re_ticket_details` (
   CONSTRAINT `re_ticket_details_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
   CONSTRAINT `re_ticket_details_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `re_ticket_details_ibfk_4` FOREIGN KEY (`ledger_id`) REFERENCES `ledgers` (`ledger_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1269,6 +1238,33 @@ LOCK TABLES `re_ticket_details` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reimb_others`
+--
+
+DROP TABLE IF EXISTS `reimb_others`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reimb_others` (
+  `reimb_other_id` int NOT NULL AUTO_INCREMENT,
+  `reimb_dtls_id` int DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `remarks` text,
+  PRIMARY KEY (`reimb_other_id`),
+  KEY `reimb_dtls_id` (`reimb_dtls_id`),
+  CONSTRAINT `reimb_others_ibfk_1` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reimb_others`
+--
+
+LOCK TABLES `reimb_others` WRITE;
+/*!40000 ALTER TABLE `reimb_others` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reimb_others` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reimbursement_history`
 --
 
@@ -1276,11 +1272,11 @@ DROP TABLE IF EXISTS `reimbursement_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reimbursement_history` (
-  `reimb_hst_id` int(11) NOT NULL AUTO_INCREMENT,
-  `reimb_dtls_id` int(11) DEFAULT NULL,
-  `ticket_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `ledger_id` int(11) DEFAULT NULL,
+  `reimb_hst_id` int NOT NULL AUTO_INCREMENT,
+  `reimb_dtls_id` int DEFAULT NULL,
+  `ticket_id` int DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `ledger_id` int DEFAULT NULL,
   `total_expense` varchar(100) DEFAULT NULL,
   `m_granted_amount` varchar(100) DEFAULT NULL,
   `f_granted_amount` varchar(100) DEFAULT NULL,
@@ -1289,18 +1285,18 @@ CREATE TABLE `reimbursement_history` (
   `address` text,
   `check_in_date` datetime DEFAULT NULL,
   `check_out_date` datetime DEFAULT NULL,
-  `stay_days` int(11) DEFAULT NULL,
-  `vehicle_id` int(11) DEFAULT NULL,
+  `stay_days` int DEFAULT NULL,
+  `vehicle_id` int DEFAULT NULL,
   `start_odo` varchar(100) DEFAULT NULL,
   `end_odo` varchar(100) DEFAULT NULL,
-  `start_odo_path` text DEFAULT NULL,
-  `end_odo_path` text DEFAULT NULL,
-  `distance` int(11) DEFAULT NULL,
+  `start_odo_path` text,
+  `end_odo_path` text,
+  `distance` int DEFAULT NULL,
   `from` varchar(100) DEFAULT NULL,
   `to` varchar(100) DEFAULT NULL,
   `travel_date` datetime DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `description` text,
   `edit_description` text,
@@ -1313,7 +1309,7 @@ CREATE TABLE `reimbursement_history` (
   CONSTRAINT `reimbursement_history_ibfk_2` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`),
   CONSTRAINT `reimbursement_history_ibfk_3` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`),
   CONSTRAINT `reimbursement_history_ibfk_4` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1333,19 +1329,19 @@ DROP TABLE IF EXISTS `report_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `report_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `report_id` int(11) DEFAULT NULL,
+  `history_id` int NOT NULL AUTO_INCREMENT,
+  `report_id` int DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `description` text,
+  `updated_by` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `edit_description` text,
   PRIMARY KEY (`history_id`),
   KEY `report_id` (`report_id`),
   CONSTRAINT `report_history_ibfk_1` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1365,15 +1361,15 @@ DROP TABLE IF EXISTS `report_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `report_logs` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT,
-  `report_id` int(11) DEFAULT NULL,
-  `pre_status_id` int(11) DEFAULT NULL,
-  `aft_status_id` int(11) DEFAULT NULL,
-  `pre_process_id` int(11) DEFAULT NULL,
-  `aft_process_id` int(11) DEFAULT NULL,
-  `level_id` int(11) DEFAULT NULL,
-  `action_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `log_id` int NOT NULL AUTO_INCREMENT,
+  `report_id` int DEFAULT NULL,
+  `pre_status_id` int DEFAULT NULL,
+  `aft_status_id` int DEFAULT NULL,
+  `pre_process_id` int DEFAULT NULL,
+  `aft_process_id` int DEFAULT NULL,
+  `level_id` int DEFAULT NULL,
+  `action_id` int DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `remarks` text,
   PRIMARY KEY (`log_id`),
@@ -1384,14 +1380,14 @@ CREATE TABLE `report_logs` (
   KEY `pre_process_id` (`pre_process_id`),
   KEY `aft_process_id` (`aft_process_id`),
   KEY `action_id` (`action_id`),
+  CONSTRAINT `fk_report_logs_level` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
   CONSTRAINT `report_logs_ibfk_1` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`),
   CONSTRAINT `report_logs_ibfk_2` FOREIGN KEY (`pre_status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `fk_report_logs_level` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
   CONSTRAINT `report_logs_ibfk_4` FOREIGN KEY (`aft_status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `report_logs_ibfk_5` FOREIGN KEY (`pre_process_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `report_logs_ibfk_6` FOREIGN KEY (`aft_process_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `report_logs_ibfk_7` FOREIGN KEY (`action_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1411,16 +1407,16 @@ DROP TABLE IF EXISTS `reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reports` (
-  `report_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `year_id` int(11) DEFAULT NULL,
-  `org_id` int(11) DEFAULT NULL,
-  `entity_id` int(11) DEFAULT NULL,
+  `report_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `year_id` int DEFAULT NULL,
+  `org_id` int DEFAULT NULL,
+  `entity_id` int DEFAULT NULL,
   `report_code` varchar(30) DEFAULT NULL,
-  `manager_id` int(11) DEFAULT NULL,
+  `manager_id` int DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `process_status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `process_status_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
@@ -1440,7 +1436,7 @@ CREATE TABLE `reports` (
   CONSTRAINT `reports_ibfk_4` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`),
   CONSTRAINT `reports_ibfk_5` FOREIGN KEY (`org_id`) REFERENCES `organization` (`org_id`),
   CONSTRAINT `reports_ibfk_6` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1453,6 +1449,36 @@ LOCK TABLES `reports` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `role_actions`
+--
+
+DROP TABLE IF EXISTS `role_actions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role_actions` (
+  `role_action_id` int NOT NULL AUTO_INCREMENT,
+  `role_id` int DEFAULT NULL,
+  `action` varchar(100) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`role_action_id`),
+  KEY `role_id` (`role_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `role_action_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
+  CONSTRAINT `role_action_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `role_actions`
+--
+
+LOCK TABLES `role_actions` WRITE;
+/*!40000 ALTER TABLE `role_actions` DISABLE KEYS */;
+INSERT INTO `role_actions` VALUES (1,1,'*',1),(2,2,'home',1),(3,2,'config',1),(4,2,'contactus',1),(5,2,'reports',1),(6,2,'reports/report',1),(7,2,'reports/ticket',1),(8,2,'userprofile',1),(9,3,'home',1),(10,3,'reports',1),(11,3,'reports/report',1),(12,3,'reports/ticket',1),(13,3,'financeapproval',1),(14,3,'financeapproval/ticket',1),(15,3,'contactus',1),(16,3,'userprofile',1),(17,4,'home',1),(18,4,'reports',1),(19,4,'reports/report',1),(20,4,'reports/ticket',1),(21,4,'financeapproval',1),(22,4,'financeapproval/ticket',1),(23,4,'financepanel',1),(24,4,'financepanel/ticket',1),(25,4,'contactus',1),(26,4,'userprofile',1),(27,5,'home',1),(28,5,'operations',1),(29,5,'reports',1),(30,5,'reports/report',1),(31,5,'reports/ticket',1),(32,5,'contactus',1),(33,5,'userprofile',1),(34,6,'home',1),(35,6,'reports',1),(36,6,'reports/report',1),(37,6,'reports/ticket',1),(38,6,'hrportal',1),(39,6,'hrportal/newemployee',1),(40,6,'contactus',1),(41,6,'userprofile',1),(42,7,'home',1),(43,7,'reports',1),(44,7,'reports/report',1),(45,7,'reports/ticket',1),(46,7,'contactus',1),(47,7,'userprofile',1),(48,8,'home',1),(49,8,'reports',1),(50,8,'reports/report',1),(51,8,'reports/ticket',1),(52,8,'myteam',1),(53,8,'myteam/report',1),(54,8,'myteam/ticket',1),(55,8,'contactus',1),(56,8,'userprofile',1),(57,2,'summary',1),(58,3,'summary',1),(59,4,'summary',1);
+/*!40000 ALTER TABLE `role_actions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `role_menu`
 --
 
@@ -1460,10 +1486,10 @@ DROP TABLE IF EXISTS `role_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role_menu` (
-  `role_menu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) DEFAULT NULL,
-  `menu_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `role_menu_id` int NOT NULL AUTO_INCREMENT,
+  `role_id` int DEFAULT NULL,
+  `menu_id` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`role_menu_id`),
   KEY `status_id` (`status_id`),
   KEY `role_id` (`role_id`),
@@ -1471,7 +1497,7 @@ CREATE TABLE `role_menu` (
   CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
   CONSTRAINT `role_menu_ibfk_3` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1492,16 +1518,16 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
-  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `create_by` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`role_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1522,17 +1548,17 @@ DROP TABLE IF EXISTS `sub_departments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sub_departments` (
-  `sub_department_id` int(11) NOT NULL AUTO_INCREMENT,
-  `department_id` int(11) DEFAULT NULL,
+  `sub_department_id` int NOT NULL AUTO_INCREMENT,
+  `department_id` int DEFAULT NULL,
   `sub_department_name` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`sub_department_id`),
   KEY `department_id` (`department_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `sub_departments_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`),
   CONSTRAINT `sub_departments_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1545,65 +1571,129 @@ LOCK TABLES `sub_departments` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tickets`
+-- Table structure for table `tally_booking`
 --
 
-DROP TABLE IF EXISTS `tickets`;
+DROP TABLE IF EXISTS `tally_booking`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tickets` (
-  `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
-  `entity_id` int(11) DEFAULT NULL,
-  `report_id` int(11) DEFAULT NULL,
-  `year_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `ticket_number` varchar(45) DEFAULT NULL,
-  `cost_center_id` int(11) DEFAULT NULL,
-  `expense_id` int(11) DEFAULT NULL,
-  `budget_id` int(11) DEFAULT NULL,
-  `contribution_id` int(11) DEFAULT NULL,
-  `exp_catg_id` int(11) DEFAULT NULL,
-  `granted_amount` varchar(100) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `process_status_id` int(11) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+CREATE TABLE `tally_booking` (
+  `tally_booking_id` int NOT NULL AUTO_INCREMENT,
+  `voucher_type` varchar(100) DEFAULT NULL,
+  `ticket_id` int DEFAULT NULL,
+  `expense_category_id` int DEFAULT NULL,
+  `ticket_dtls_id` int DEFAULT NULL,
+  `payment_id` int DEFAULT NULL,
+  `paid_amount` varchar(100) DEFAULT NULL,
+  `tally_pay_id` int DEFAULT NULL,
+  `dr/cr` varchar(10) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `process_status_id` int DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`ticket_id`),
-  UNIQUE KEY `unique_ticket_number` (`ticket_number`),
-  KEY `entity_id` (`entity_id`),
-  KEY `report_id` (`report_id`),
-  KEY `exp_catg_id` (`exp_catg_id`),
+  `update_remarks` text,
+  PRIMARY KEY (`tally_booking_id`),
+  KEY `ticket_id` (`ticket_id`),
+  KEY `expense_category_id` (`expense_category_id`),
+  KEY `payment_id` (`payment_id`),
   KEY `status_id` (`status_id`),
   KEY `process_status_id` (`process_status_id`),
-  KEY `year_id` (`year_id`),
-  KEY `cost_center_id` (`cost_center_id`),
-  KEY `contribution_id` (`contribution_id`),
-  KEY `budget_id` (`budget_id`),
-  KEY `expense_id` (`expense_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`),
-  CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`),
-  CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`exp_catg_id`) REFERENCES `expense_category` (`expense_category_id`),
-  CONSTRAINT `ticket_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `ticket_ibfk_5` FOREIGN KEY (`process_status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `ticket_ibfk_6` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`),
-  CONSTRAINT `ticket_ibfk_7` FOREIGN KEY (`cost_center_id`) REFERENCES `cost_center` (`cost_center_id`),
-  CONSTRAINT `ticket_ibfk_8` FOREIGN KEY (`contribution_id`) REFERENCES `contribution_type` (`contribution_id`),
-  CONSTRAINT `ticket_ibfk_9` FOREIGN KEY (`budget_id`) REFERENCES `budget_type` (`budget_id`),
-  CONSTRAINT `ticket_ibfk_10` FOREIGN KEY (`expense_id`) REFERENCES `expense` (`expense_id`),
-  CONSTRAINT `ticket_ibfk_11` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `tally_booking_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`),
+  CONSTRAINT `tally_booking_ibfk_2` FOREIGN KEY (`expense_category_id`) REFERENCES `expense_category` (`expense_category_id`),
+  CONSTRAINT `tally_booking_ibfk_3` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
+  CONSTRAINT `tally_booking_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
+  CONSTRAINT `tally_booking_ibfk_6` FOREIGN KEY (`process_status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tickets`
+-- Dumping data for table `tally_booking`
 --
 
-LOCK TABLES `tickets` WRITE;
-/*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
+LOCK TABLES `tally_booking` WRITE;
+/*!40000 ALTER TABLE `tally_booking` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tally_booking` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tally_pay_bank`
+--
+
+DROP TABLE IF EXISTS `tally_pay_bank`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tally_pay_bank` (
+  `tally_pay_bank_id` int NOT NULL AUTO_INCREMENT,
+  `voucher_type` varchar(100) DEFAULT NULL,
+  `tally_pay_id` int DEFAULT NULL,
+  `route_id` int DEFAULT NULL,
+  `bank_id` int DEFAULT NULL,
+  `ledger` varchar(100) DEFAULT NULL,
+  `amount` varchar(225) DEFAULT NULL,
+  `dr_cr` varchar(10) DEFAULT NULL,
+  `led_narration` text,
+  `narration` text,
+  `status_id` int DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `update_remarks` text,
+  PRIMARY KEY (`tally_pay_bank_id`),
+  KEY `tally_pay_id` (`tally_pay_id`),
+  KEY `status_id` (`status_id`),
+  KEY `route_id` (`route_id`),
+  CONSTRAINT `fk_tpb_route_id` FOREIGN KEY (`route_id`) REFERENCES `payment_route` (`route_id`),
+  CONSTRAINT `fk_tpb_status_id` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
+  CONSTRAINT `fk_tpb_tally_pay_id` FOREIGN KEY (`tally_pay_id`) REFERENCES `tally_payment` (`tally_pay_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tally_pay_bank`
+--
+
+LOCK TABLES `tally_pay_bank` WRITE;
+/*!40000 ALTER TABLE `tally_pay_bank` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tally_pay_bank` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tally_payment`
+--
+
+DROP TABLE IF EXISTS `tally_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tally_payment` (
+  `tally_pay_id` int NOT NULL AUTO_INCREMENT,
+  `voucher_type` varchar(100) DEFAULT NULL,
+  `ledger` varchar(100) DEFAULT NULL,
+  `amount` varchar(225) DEFAULT NULL,
+  `dr/cr` varchar(10) DEFAULT NULL,
+  `led_narration` text,
+  `narration` text,
+  `status_id` int DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `update_remarks` text,
+  PRIMARY KEY (`tally_pay_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `tally_payment_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tally_payment`
+--
+
+LOCK TABLES `tally_payment` WRITE;
+/*!40000 ALTER TABLE `tally_payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tally_payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1614,20 +1704,20 @@ DROP TABLE IF EXISTS `ticket_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ticket_history` (
-  `ticket_hst_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
-  `cost_center_id` int(11) DEFAULT NULL,
-  `expense_id` int(11) DEFAULT NULL,
-  `budget_id` int(11) DEFAULT NULL,
-  `contribution_id` int(11) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `ticket_hst_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
+  `cost_center_id` int DEFAULT NULL,
+  `expense_id` int DEFAULT NULL,
+  `budget_id` int DEFAULT NULL,
+  `contribution_id` int DEFAULT NULL,
+  `description` text,
+  `updated_by` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `edit_description` text,
   PRIMARY KEY (`ticket_hst_id`),
   KEY `ticket_id` (`ticket_id`),
   CONSTRAINT `ticket_history_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1647,15 +1737,15 @@ DROP TABLE IF EXISTS `ticket_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ticket_logs` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_id` int(11) DEFAULT NULL,
-  `pre_status_id` int(11) DEFAULT NULL,
-  `aft_status_id` int(11) DEFAULT NULL,
-  `pre_process_id` int(11) DEFAULT NULL,
-  `aft_process_id` int(11) DEFAULT NULL,
-  `level_id` int(11) DEFAULT NULL,
-  `action_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+  `log_id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int DEFAULT NULL,
+  `pre_status_id` int DEFAULT NULL,
+  `aft_status_id` int DEFAULT NULL,
+  `pre_process_id` int DEFAULT NULL,
+  `aft_process_id` int DEFAULT NULL,
+  `level_id` int DEFAULT NULL,
+  `action_id` int DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `remarks` text,
   PRIMARY KEY (`log_id`),
@@ -1666,14 +1756,14 @@ CREATE TABLE `ticket_logs` (
   KEY `pre_process_id` (`pre_process_id`),
   KEY `aft_process_id` (`aft_process_id`),
   KEY `action_id` (`action_id`),
+  CONSTRAINT `fk_ticket_logs_level` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
   CONSTRAINT `ticket_logs_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`),
   CONSTRAINT `ticket_logs_ibfk_2` FOREIGN KEY (`pre_status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `fk_ticket_logs_level` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
   CONSTRAINT `ticket_logs_ibfk_4` FOREIGN KEY (`aft_status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `ticket_logs_ibfk_5` FOREIGN KEY (`pre_process_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `ticket_logs_ibfk_6` FOREIGN KEY (`aft_process_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `ticket_logs_ibfk_7` FOREIGN KEY (`action_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1686,6 +1776,68 @@ LOCK TABLES `ticket_logs` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tickets`
+--
+
+DROP TABLE IF EXISTS `tickets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tickets` (
+  `ticket_id` int NOT NULL AUTO_INCREMENT,
+  `entity_id` int DEFAULT NULL,
+  `report_id` int DEFAULT NULL,
+  `year_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `ticket_number` varchar(45) DEFAULT NULL,
+  `cost_center_id` int DEFAULT NULL,
+  `expense_id` int DEFAULT NULL,
+  `budget_id` int DEFAULT NULL,
+  `contribution_id` int DEFAULT NULL,
+  `exp_catg_id` int DEFAULT NULL,
+  `granted_amount` varchar(100) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `process_status_id` int DEFAULT NULL,
+  `description` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`ticket_id`),
+  UNIQUE KEY `unique_ticket_number` (`ticket_number`),
+  KEY `entity_id` (`entity_id`),
+  KEY `report_id` (`report_id`),
+  KEY `exp_catg_id` (`exp_catg_id`),
+  KEY `status_id` (`status_id`),
+  KEY `process_status_id` (`process_status_id`),
+  KEY `year_id` (`year_id`),
+  KEY `cost_center_id` (`cost_center_id`),
+  KEY `contribution_id` (`contribution_id`),
+  KEY `budget_id` (`budget_id`),
+  KEY `expense_id` (`expense_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`),
+  CONSTRAINT `ticket_ibfk_10` FOREIGN KEY (`expense_id`) REFERENCES `expense` (`expense_id`),
+  CONSTRAINT `ticket_ibfk_11` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`),
+  CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`exp_catg_id`) REFERENCES `expense_category` (`expense_category_id`),
+  CONSTRAINT `ticket_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
+  CONSTRAINT `ticket_ibfk_5` FOREIGN KEY (`process_status_id`) REFERENCES `master_status` (`status_id`),
+  CONSTRAINT `ticket_ibfk_6` FOREIGN KEY (`year_id`) REFERENCES `academic_year` (`year_id`),
+  CONSTRAINT `ticket_ibfk_7` FOREIGN KEY (`cost_center_id`) REFERENCES `cost_center` (`cost_center_id`),
+  CONSTRAINT `ticket_ibfk_8` FOREIGN KEY (`contribution_id`) REFERENCES `contribution_type` (`contribution_id`),
+  CONSTRAINT `ticket_ibfk_9` FOREIGN KEY (`budget_id`) REFERENCES `budget_type` (`budget_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tickets`
+--
+
+LOCK TABLES `tickets` WRITE;
+/*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `travels`
 --
 
@@ -1693,23 +1845,23 @@ DROP TABLE IF EXISTS `travels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `travels` (
-  `travel_id` int(11) NOT NULL AUTO_INCREMENT,
-  `reimb_dtls_id` int(11) DEFAULT NULL,
-  `vehicle_id` int(11) DEFAULT NULL,
-  `from` VARCHAR(100) DEFAULT NULL,
-  `to` VARCHAR(100) DEFAULT NULL,
+  `travel_id` int NOT NULL AUTO_INCREMENT,
+  `reimb_dtls_id` int DEFAULT NULL,
+  `vehicle_id` int DEFAULT NULL,
+  `from` varchar(100) DEFAULT NULL,
+  `to` varchar(100) DEFAULT NULL,
   `start_odo` varchar(100) DEFAULT NULL,
   `end_odo` varchar(100) DEFAULT NULL,
-  `start_odo_path` text DEFAULT NULL,
-  `end_odo_path` text DEFAULT NULL,
-  `distance` VARCHAR(10) DEFAULT NULL,
-  `travel_date` DATETIME DEFAULT NULL,
+  `start_odo_path` text,
+  `end_odo_path` text,
+  `distance` varchar(10) DEFAULT NULL,
+  `travel_date` datetime DEFAULT NULL,
   PRIMARY KEY (`travel_id`),
   KEY `vehicle_id` (`vehicle_id`),
   KEY `reimb_dtls_id` (`reimb_dtls_id`),
   CONSTRAINT `travel_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`),
   CONSTRAINT `travel_ibfk_2` FOREIGN KEY (`reimb_dtls_id`) REFERENCES `re_ticket_details` (`reimb_dtls_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1729,13 +1881,13 @@ DROP TABLE IF EXISTS `user_bank`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_bank` (
-  `bank_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
+  `bank_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
   `name_on_bank` varchar(100) DEFAULT NULL,
   `bank_name` varchar(30) DEFAULT NULL,
   `account_number` varchar(20) DEFAULT NULL,
   `IFSC` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`bank_id`),
@@ -1743,7 +1895,7 @@ CREATE TABLE `user_bank` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_bank_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `user_bank_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1755,119 +1907,6 @@ LOCK TABLES `user_bank` WRITE;
 /*!40000 ALTER TABLE `user_bank` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
---
--- Table structure for table `organization_bank`
---
-
-DROP TABLE IF EXISTS `organization_bank`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `organization_bank` (
-  `org_bank_id` int(11) NOT NULL AUTO_INCREMENT,
-  `org_id` int(11) DEFAULT NULL,
-  `entity_id` int(11) DEFAULT NULL,
-  `account_type` VARCHAR(50) DEFAULT NULL,
-  `client_code` VARCHAR(100) DEFAULT NULL,
-  `entity_bank_name` varchar(100) DEFAULT NULL,
-  `entity_bank_account_no` varchar(50) DEFAULT NULL,
-  `entity_name_on_bank` varchar(100) DEFAULT NULL,
-  `entity_bank_IFSC` varchar(50) DEFAULT NULL,
-  `bank_ledger` text DEFAULT NULL,
-  `bank_address` TEXT DEFAULT NULL,
-  `bank_contact_no` VARCHAR(30) DEFAULT NULL,
-  `bank_contact_person` VARCHAR(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `entity_bank_format` text DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`org_bank_id`),
-  KEY `status_id` (`status_id`),
-  KEY `org_id` (`org_id`),
-  KEY `entity_id` (`entity_id`),
-  CONSTRAINT `organization_bank_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `organization_bank_ibfk_2` FOREIGN KEY (`org_id`) REFERENCES `organization` (`org_id`),
-  CONSTRAINT `organization_bank_ibfk_3` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `organization_bank`
---
-
-LOCK TABLES `organization_bank` WRITE;
-/*!40000 ALTER TABLE `organization_bank` DISABLE KEYS */;
-INSERT INTO `df_ticketing`.`organization_bank` (`org_bank_id`, `org_id`, `entity_id`, `account_type`,`client_code`, `entity_bank_name`, `entity_bank_account_no`, `entity_name_on_bank`, `entity_bank_IFSC`,`bank_ledger`, `bank_address`, `bank_contact_no`, `bank_contact_person`, `entity_bank_format`, `status_id`, `created_at`) VALUES 
-('1', '1', '1', 'FCRA','DESHPANDE', 'HDFC BANK', '50100114012217', 'Deshpande Foundation', 'HDFC0000254','HDFC Bank A/c No-50100114012217', 'Tb Revankar Complex,Vivekanand Hospital Road,Hubli, karnataka- 580029', '9343982426', 'Krishnag Desai', NULL, '2', NOW()),
-('2', '1', '1', 'FCRA','DESHPANDE', 'ICICI BANK', '015701014774', 'Deshpande Foundation', 'ICIC0000157','ICICI Bank A/c No-015701014774', 'Icici Bank Ltd, Eureka Junction, Travellers Bungalow Road, Hubli, Karnataka, 580029', '8971912459', 'Vinay Joshi', NULL, '2', NOW()),
-('3', '1', '1', 'FCRA','DESHPANDE', 'RATNAKAR BANK LTD', '309023289619', 'Deshpande Foundation', 'RATN0000056', 'RBL Bank A/c NO.-309023289619', 'Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001', '9538926434', 'Anandkumar Chimmalagi', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('4', '1', '1', 'FCRA','DESHPANDE', 'Kotak BANK', '6411841218', 'Deshpande Foundation', 'KKBK0000446','Kotak Bank A/c No.-6411841218', 'Club Road, Corporation Ward No.46, Old No.1, Hubli Dharwad-500 020, Karnataka', '6364570480', 'Muzammil Ahmedb', 'Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20', '1', NOW()),
-('5', '1', '1', 'FCRA', 'DESHPANDE','YES BANK', '024994600000027', 'Deshpande Foundation', 'YESB0000249','Yes Bank A/c No-024994600000027', 'Ground Floor,Svb City Centre Club Road,Hubli Karnataka 580020', '9986123798', 'Firozkhan Pathan', NULL, '2', NOW()),
-('6', '1', '1', 'FCRA', 'DESHPANDE','SBI BANK', '33058846735', 'Deshpande Foundation', 'SBIN0009297','State Bank of India A/c No-33058846735', 'Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021', '9342893567', 'Jayshree', NULL, '2', NOW()),
-('7', '1', '1', 'FCRA','DESHPANDE','SBI BANK', '40095443444', 'Deshpande Foundation', 'SBIN0000691','State Bank of India A/c No 40095443444-Main FCRA', '\"11Sansad Marg, New Delhi 110 001\nState: Delhi\"', '9711906089', 'Mohammed Shahid', NULL, '2', NOW()),
-('8', '1', '1', 'Non-FCRA','DESHPANDE', 'HDFC BANK', '50100462351706', 'Deshpande Foundation', 'HDFC0006090','HDFC Bank A/c No: 50100462351706', 'Gr Flr Anusharan Arcade Nagshanti Building Shirur Park Road Vidyanagari Hubli Karnataka 580030', '9343982426', 'Krishnag Desai', NULL, '2', NOW()),
-('9', '1', '1', 'Non-FCRA', 'DESHPANDE','RATNAKAR BANK LTD', '309003312050', 'Deshpande Foundation', 'RATN0000056','RBL Bank A/c No.-309003312050', 'Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001', '9538926434', 'Anandkumar Chimmalagi', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('10', '1', '1', 'Non-FCRA','DESHPANDE', 'SBI BANK', '37058263175', 'Deshpande Foundation', 'SBIN0009297','SBI Bank A/c No.-37058263175', 'Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021', '9342893567', 'Jayshree', NULL, '2', NOW());
-INSERT INTO `df_ticketing`.`organization_bank` (`org_bank_id`, `org_id`, `entity_id`, `account_type`, `client_code`, `entity_bank_name`, `entity_bank_account_no`, `entity_name_on_bank`, `entity_bank_IFSC`, `bank_ledger`, `bank_address`, `bank_contact_no`, `email`, `entity_bank_format`, `status_id`, `created_at`) VALUES 
-('11', '1', '2', 'Non-FCRA', 'DESHTI', 'Canara Bank', '1628101016715', 'Deshpande Education Trust', 'CNRB0001628', 'Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021', '+91 94498 67176', 'cb1628@canarabank.com', NULL, '2', NOW()),
-('12', '1', '2', 'OD', 'DESHTI', 'Canara Bank', '1628257005280', 'Deshpande Education Trust', 'CNRB0001628','Canara Bank OD A/c.No.1628257005280', '1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021', '+91 94498 67176', 'cb1628@canarabank.com', NULL, '2', NOW()),
-('13', '1', '2', 'Non-FCRA', 'DESHTI', 'State Bank of India', '33058845324', 'Deshpande Education Trust', 'SBIN0009297','SBI Bank A/c No: 33058845324 HBL', 'Vidyanagar, Hubballi', '+91 93428 93567', 'SBI.09297@sbi.co.in', NULL, '2', NOW()),
-('14', '1', '2', 'Non-FCRA', 'DESHTI', 'State Bank of India', '37592898899', 'Deshpande Education Trust', 'SBIN0009297','SBI Bank A/c No: 37592898899 AP', 'Vidyanagar, Hubballi', '+91 93428 93567', 'SBI.09297@sbi.co.in', NULL, '2', NOW()),
-('15', '1', '2', 'Non-FCRA', 'DESHTI', 'State Bank of India', '37592924740', 'Deshpande Education Trust', 'SBIN0009297','SBI Bank A/c No: 37592924740 KKT', 'Vidyanagar, Hubballi', '+91 93428 93567', 'SBI.09297@sbi.co.in', NULL, '2', NOW()),
-('16', '1', '2', 'FCRA', 'DESHTI', 'State Bank of India', '40095732865', 'Deshpande Education Trust', 'SBIN0000691','SBI Bank A/c No: 40095732865(FCRA)', 'Parliment Street, N. D. Main Branch, New Delhi', '8026599990', 'fcrasupport9.00691@sbi.co.in', NULL, '2', NOW()),
-('17', '1', '2', 'FCRA', 'DESHTI', 'Kotak Mahindra', '714421269', 'Deshpande Education Trust', 'KKBK0000446','Kotak Bank A/c No:0714421269 (FCRA)', 'Club Road, Hubballi', '+91 63645 70480', 'muzammil.ahmedb@kotak.com', 'Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20', '1', NOW()),
-('18', '1', '2', 'Non-FCRA', 'DESHTI', 'Kotak Mahindra', '746116324', 'Deshpande Education Trust', 'KKBK0000446','Kotak Bank A/c No:0746116324 (Non FCRA)', 'Club Road, Hubballi', '+91 63645 70480', 'muzammil.ahmedb@kotak.com', 'Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20', '1', NOW()),
-('19', '1', '2', 'FCRA', 'DESHTI', 'RBL Bank Ltd', '309023236264', 'Deshpande Education Trust', 'RATN0000056',NULL, 'Jubilee Circle, Dharwad', '+91 95389 26434', 'anand.chimmalagi@rblbank.com', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('20', '1', '2', 'Non-FCRA', 'DESHTI', 'RBL Bank Ltd', '309006956664', 'Deshpande Education Trust', 'RATN0000056','RBL Bank A/c No: 309006956664', 'Jubilee Circle, Dharwad', '+91 95389 26434', 'anand.chimmalagi@rblbank.com', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('21', '1', '2', 'OD', 'DESHTI', 'RBL Bank Ltd', '609001110406', 'Deshpande Education Trust', 'RATN0000056',NULL, 'Jubilee Circle, Dharwad', '+91 95389 26434', 'anand.chimmalagi@rblbank.com', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('22', '1', '2', 'CSR', 'DESHTI', 'HDFC', '50200105967093', 'Deshpande Education Trust', 'HDFC0006090','HDFC Bank A/C No : 50200105967093', 'Vidyanagar Hubli', '+91 93439 82426', 'krishnag.desai@hdfcbank.com', NULL, '2', NOW());
-INSERT INTO `df_ticketing`.`organization_bank` 
-(`org_bank_id`, `org_id`, `entity_id`, `account_type`, `entity_bank_name`, `entity_bank_account_no`, `entity_name_on_bank`, `entity_bank_IFSC`,`bank_ledger`, `bank_address`, `bank_contact_no`, `email`, `entity_bank_format`, `status_id`, `created_at`) 
-VALUES 
-('23', '1', '3', 'FCRA', 'RBL Bank Ltd', '309023300170', 'Foundation for Sandboxstartup Initiatives', 'RATN0000056',NULL, 'Jubilee Circle, Dharwad', '+91 95389 26434', 'anand.chimmalagi@rblbank.com', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('24', '1', '3', 'FCRA', 'RBL Bank Ltd', '300000580030', 'Foundation for Sandboxstartup Initiatives', 'RATN0000056',NULL, 'Jubilee Circle, Dharwad', '+91 95389 26434', 'anand.chimmalagi@rblbank.com', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('25', '1', '3', 'FCRA', 'State Bank of India', '40095425888', 'Foundation for Sandboxstartup Initiatives', 'SBIN0009297',NULL, 'Vidyanagar, Hubballi', '+91 93428 93567', 'SBI.09297@sbi.co.in', NULL, '2', NOW()),
-('26', '1', '3', 'Non-FCRA', 'Canara Bank', '1628101016715', 'Foundation for Sandboxstartup Initiatives', 'CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR', '1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021', '+91 94498 67176', 'cb1628@canarabank.com', NULL, '2', NOW()),
-('27', '1', '3', 'Non-FCRA', 'RBL Bank Ltd', '309006967837', 'Foundation for Sandboxstartup Initiatives', 'RATN0000056',NULL, 'Jubilee Circle, Dharwad', '+91 95389 26434', 'anand.chimmalagi@rblbank.com', 'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ', '1', NOW()),
-('28', '1', '3', 'Non-FCRA', 'State Bank of India', '35823266728', 'Foundation for Sandboxstartup Initiatives', 'SBIN0009297','State Bank of India C.A/c.No.35823266728-Statutory', 'Vidyanagar, Hubballi', '+91 93428 93567', 'SBI.09297@sbi.co.in', NULL, '2', NOW()),
-('29', '1', '3', 'Non-FCRA', 'State Bank of India', '35834648411', 'Foundation for Sandboxstartup Initiatives', 'SBIN0009297','State Bank of India SB A/c. No.35834648411-Accelara', 'Vidyanagar, Hubballi', '+91 93428 93567', 'SBI.09297@sbi.co.in', NULL, '2', NOW()),
-('30', '1', '3', 'Non-FCRA', 'Bank of Baroda', '07790100021289', 'Foundation for Sandboxstartup Initiatives',NULL, 'Bank of Baroda SB A/c. No. 07790100021289-Prayas',NULL, NULL, NULL, NULL, '2', NOW()),
-('31', '1', '3', 'Non-FCRA', 'Union Bank of India', '066922010001223', 'Foundation for Sandboxstartup Initiatives',NULL, 'Union Bank of India SB.A/c.No.066922010001223-SISFS',NULL, NULL, NULL, NULL, '2', NOW());
-
-/*!40000 ALTER TABLE `organization_bank` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Table structure for table payment_type
---
-
-DROP TABLE IF EXISTS payment_type;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE payment_type (
-  pay_type_id int(11) NOT NULL AUTO_INCREMENT,
-  pay_type varchar(30) DEFAULT NULL,
-  PRIMARY KEY (pay_type_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table payment_type
---
-
-LOCK TABLES payment_type WRITE;
-/*!40000 ALTER TABLE payment_type DISABLE KEYS */;
-INSERT INTO `df_ticketing`.`payment_type` (`pay_type`) VALUES ('NEFT');
-INSERT INTO `df_ticketing`.`payment_type` (`pay_type`) VALUES ('IMPS');
-INSERT INTO `df_ticketing`.`payment_type` (`pay_type`) VALUES ('RTGS');
-INSERT INTO `df_ticketing`.`payment_type` (`pay_type`) VALUES ('IFT');
-/*!40000 ALTER TABLE payment_type ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-
 --
 -- Table structure for table `user_history`
 --
@@ -1876,9 +1915,9 @@ DROP TABLE IF EXISTS `user_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_history` (
-  `user_history_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `employee_id` int(11) DEFAULT NULL,
+  `user_history_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
   `employee_number` varchar(50) DEFAULT NULL,
   `user_name` varchar(100) DEFAULT NULL,
   `work_email` varchar(100) DEFAULT NULL,
@@ -1887,35 +1926,35 @@ CREATE TABLE `user_history` (
   `gender` varchar(10) DEFAULT NULL,
   `PAN_number` varchar(50) DEFAULT NULL,
   `aadhaar_number` varchar(30) DEFAULT NULL,
-  `enrollment_number` int(11) DEFAULT NULL,
+  `enrollment_number` int DEFAULT NULL,
   `DOB` varchar(30) DEFAULT NULL,
-  `entity_id` int(11) DEFAULT NULL,
-  `cost_center_id` int(11) DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
-  `sub_department_id` int(11) DEFAULT NULL,
+  `entity_id` int DEFAULT NULL,
+  `cost_center_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `sub_department_id` int DEFAULT NULL,
   `job_title` varchar(100) DEFAULT NULL,
   `secondary_job_title` varchar(100) DEFAULT NULL,
-  `manager_user_id` int(11) DEFAULT NULL,
+  `manager_user_id` int DEFAULT NULL,
   `personal_email` varchar(100) DEFAULT NULL,
   `father_name` varchar(50) DEFAULT NULL,
   `mother_name` varchar(50) DEFAULT NULL,
   `blood_group` varchar(20) DEFAULT NULL,
   `nationality` varchar(30) DEFAULT NULL,
-  `bank_id` int(11) DEFAULT NULL,
-  `pf_id` int(11) DEFAULT NULL,
+  `bank_id` int DEFAULT NULL,
+  `pf_id` int DEFAULT NULL,
   `pay_group` varchar(100) DEFAULT NULL,
   `band` varchar(30) DEFAULT NULL,
   `pay_grade` varchar(100) DEFAULT NULL,
   `work_location` text,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `updated_by` int DEFAULT NULL,
   PRIMARY KEY (`user_history_id`),
   KEY `user_id` (`user_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `user_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `user_history_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1935,12 +1974,12 @@ DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_roles` (
-  `user_role_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `role_id` int(11) DEFAULT NULL,
+  `user_role_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `role_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `created_by` varchar(50) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
   PRIMARY KEY (`user_role_id`),
   KEY `status_id` (`status_id`),
   KEY `role_id` (`role_id`),
@@ -1948,7 +1987,7 @@ CREATE TABLE `user_roles` (
   CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
   CONSTRAINT `user_roles_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1957,6 +1996,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
+INSERT INTO `user_roles` VALUES (1,1,7,'2025-06-25 11:43:26','System',1),(2,1,1,'2025-06-25 11:43:26','System',1);
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1968,8 +2008,8 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) DEFAULT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int DEFAULT NULL,
   `employee_number` varchar(50) DEFAULT NULL,
   `user_name` varchar(100) DEFAULT NULL,
   `work_email` varchar(100) DEFAULT NULL,
@@ -1978,28 +2018,28 @@ CREATE TABLE `users` (
   `gender` varchar(10) DEFAULT NULL,
   `PAN_number` varchar(50) DEFAULT NULL,
   `aadhaar_number` varchar(30) DEFAULT NULL,
-  `enrollment_number` int(11) DEFAULT NULL,
+  `enrollment_number` int DEFAULT NULL,
   `DOB` varchar(30) DEFAULT NULL,
-  `entity_id` int(11) DEFAULT NULL,
-  `cost_center_id` int(11) DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
-  `sub_department_id` int(11) DEFAULT NULL,
+  `entity_id` int DEFAULT NULL,
+  `cost_center_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `sub_department_id` int DEFAULT NULL,
   `job_title` varchar(100) DEFAULT NULL,
   `secondary_job_title` varchar(100) DEFAULT NULL,
-  `manager_user_id` int(11) DEFAULT NULL,
+  `manager_user_id` int DEFAULT NULL,
   `personal_email` varchar(100) DEFAULT NULL,
   `father_name` varchar(50) DEFAULT NULL,
   `mother_name` varchar(50) DEFAULT NULL,
   `blood_group` varchar(20) DEFAULT NULL,
   `nationality` varchar(30) DEFAULT NULL,
-  `bank_id` int(11) DEFAULT NULL,
-  `pf_id` int(11) DEFAULT NULL,
+  `bank_id` int DEFAULT NULL,
+  `pf_id` int DEFAULT NULL,
   `pay_group` varchar(100) DEFAULT NULL,
   `band` varchar(30) DEFAULT NULL,
   `pay_grade` varchar(100) DEFAULT NULL,
   `work_location` text,
-  `sended_email` int(11) DEFAULT 0,
-  `status_id` int(11) DEFAULT NULL,
+  `sended_email` int DEFAULT '0',
+  `status_id` int DEFAULT NULL,
   `timestamp` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `department_id` (`department_id`),
@@ -2018,7 +2058,7 @@ CREATE TABLE `users` (
   CONSTRAINT `users_ibfk_6` FOREIGN KEY (`pf_id`) REFERENCES `pf_details` (`pf_id`),
   CONSTRAINT `users_ibfk_7` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
   CONSTRAINT `users_ibfk_8` FOREIGN KEY (`sub_department_id`) REFERENCES `sub_departments` (`sub_department_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2027,6 +2067,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,1,'000010782','Deepu Kumar','deepu.kumar@dfmail.org','$2b$10$CxlSjM9vLF2QUrdtwYp8Vea7a/VVrOqTkJ4Nuuc/ElH55XYBiy2/S',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'2025-06-25 11:46:30');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2038,12 +2079,12 @@ DROP TABLE IF EXISTS `vehicles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vehicles` (
-  `vehicle_id` int(11) NOT NULL AUTO_INCREMENT,
+  `vehicle_id` int NOT NULL AUTO_INCREMENT,
   `vehicle_type` varchar(30) DEFAULT NULL,
-  `per_km_amount` int(11) DEFAULT NULL,
+  `per_km_amount` int DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`vehicle_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2052,126 +2093,8 @@ CREATE TABLE `vehicles` (
 
 LOCK TABLES `vehicles` WRITE;
 /*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
-INSERT INTO `vehicles` (`vehicle_id`, `vehicle_type`, `description`) VALUES ('1', 'Car', 'Four Wheeler'),('2', 'Bike', '2 Wheeler'),
-('3', 'Bus', 'Bus'),('4', 'Train', 'Train'),('5', 'Flight', 'Flight'),('6', 'Auto/Taxi', 'Auto / Taxi');
+INSERT INTO `vehicles` VALUES (1,'Car',NULL,'Four Wheeler'),(2,'Bike',NULL,'2 Wheeler'),(3,'Bus',NULL,'Bus'),(4,'Train',NULL,'Train'),(5,'Flight',NULL,'Flight'),(6,'Auto/Taxi',NULL,'Auto / Taxi');
 /*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table role_actions
---
-
-DROP TABLE IF EXISTS role_actions;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE role_actions (
-  role_action_id INT(11) NOT NULL AUTO_INCREMENT,
-  role_id INT(11) DEFAULT NULL,
-  action VARCHAR(100) DEFAULT NULL,
-  status_id INT(11) DEFAULT NULL,
-  PRIMARY KEY (role_action_id),
-  KEY role_id (role_id),
-  KEY status_id (status_id),
-  CONSTRAINT role_action_ibfk_1 FOREIGN KEY (role_id) REFERENCES roles (role_id),
-  CONSTRAINT role_action_ibfk_2 FOREIGN KEY (status_id) REFERENCES master_status (status_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `role_actions`
---
-
-LOCK TABLES `role_actions` WRITE;
-/*!40000 ALTER TABLE `role_actions` DISABLE KEYS */;
-INSERT INTO `df_ticketing`.`role_actions` (`role_action_id`, `role_id`, `action`, `status_id`) VALUES
-(1, 1, '*', 1),
-(2, 2, 'home', 1),
-(3, 2, 'config', 1),
-(4, 2, 'contactus', 1),
-(5, 2, 'reports', 1),
-(6, 2, 'reports/report', 1),
-(7, 2, 'reports/ticket', 1),
-(8, 2, 'userprofile', 1),
-(9, 3, 'home', 1),
-(10, 3, 'reports', 1),
-(11, 3, 'reports/report', 1),
-(12, 3, 'reports/ticket', 1),
-(13, 3, 'financeapproval', 1),
-(14, 3, 'financeapproval/ticket', 1),
-(15, 3, 'contactus', 1),
-(16, 3, 'userprofile', 1),
-(17, 4, 'home', 1),
-(18, 4, 'reports', 1),
-(19, 4, 'reports/report', 1),
-(20, 4, 'reports/ticket', 1),
-(21, 4, 'financeapproval', 1),
-(22, 4, 'financeapproval/ticket', 1),
-(23, 4, 'financepanel', 1),
-(24, 4, 'financepanel/ticket', 1),
-(25, 4, 'contactus', 1),
-(26, 4, 'userprofile', 1),
-(27, 5, 'home', 1),
-(28, 5, 'operations', 1),
-(29, 5, 'reports', 1),
-(30, 5, 'reports/report', 1),
-(31, 5, 'reports/ticket', 1),
-(32, 5, 'contactus', 1),
-(33, 5, 'userprofile', 1),
-(34, 6, 'home', 1),
-(35, 6, 'reports', 1),
-(36, 6, 'reports/report', 1),
-(37, 6, 'reports/ticket', 1),
-(38, 6, 'hrportal', 1),
-(39, 6, 'hrportal/newemployee', 1),
-(40, 6, 'contactus', 1),
-(41, 6, 'userprofile', 1),
-(42, 7, 'home', 1),
-(43, 7, 'reports', 1),
-(44, 7, 'reports/report', 1),
-(45, 7, 'reports/ticket', 1),
-(46, 7, 'contactus', 1),
-(47, 7, 'userprofile', 1),
-(48, 8, 'home', 1),
-(49, 8, 'reports', 1),
-(50, 8, 'reports/report', 1),
-(51, 8, 'reports/ticket', 1),
-(52, 8, 'myteam', 1),
-(53, 8, 'myteam/report', 1),
-(54, 8, 'myteam/ticket', 1),
-(55, 8, 'contactus', 1),
-(56, 8, 'userprofile', 1),
-(57, 2, 'summary', 1),
-(58, 3, 'summary', 1),
-(59, 4, 'summary', 1);
-/*!40000 ALTER TABLE `role_actions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `vendors`
---
-
-DROP TABLE IF EXISTS `vendors`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `vendors` (
-  `vendor_id` int(11) NOT NULL AUTO_INCREMENT,
-  `vendor_name` varchar(30) DEFAULT NULL,
-  `phone` int(10) DEFAULT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `address` text,
-  `GST` varchar(50) DEFAULT NULL,
-  `vendor_type` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`vendor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `vendors`
---
-
-LOCK TABLES `vendors` WRITE;
-/*!40000 ALTER TABLE `vendors` DISABLE KEYS */;
-/*!40000 ALTER TABLE `vendors` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2182,8 +2105,8 @@ DROP TABLE IF EXISTS `vendor_bank`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vendor_bank` (
-  `vendor_bank_id` int(11) NOT NULL AUTO_INCREMENT,
-  `vendor_id` int(11) DEFAULT NULL,
+  `vendor_bank_id` int NOT NULL AUTO_INCREMENT,
+  `vendor_id` int DEFAULT NULL,
   `name_on_bank` varchar(100) DEFAULT NULL,
   `bank_name` varchar(30) DEFAULT NULL,
   `bank_branch` varchar(20) DEFAULT NULL,
@@ -2192,7 +2115,7 @@ CREATE TABLE `vendor_bank` (
   PRIMARY KEY (`vendor_bank_id`),
   KEY `vendor_id` (`vendor_id`),
   CONSTRAINT `vendor_bank_ibfk_1` FOREIGN KEY (`vendor_id`) REFERENCES `vendors` (`vendor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2204,132 +2127,32 @@ LOCK TABLES `vendor_bank` WRITE;
 /*!40000 ALTER TABLE `vendor_bank` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
 --
--- Table structure for table `tally_booking`
+-- Table structure for table `vendors`
 --
 
-DROP TABLE IF EXISTS `tally_booking`;
+DROP TABLE IF EXISTS `vendors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tally_booking` (
-  `tally_booking_id` int(11) NOT NULL AUTO_INCREMENT,
-  `voucher_type` varchar(100) DEFAULT NULL,
-  `ticket_id` int(11) DEFAULT NULL,
-  `expense_category_id` int(11) DEFAULT NULL,
-  `ticket_dtls_id` int(11) DEFAULT NULL,
-  `payment_id` int(11) DEFAULT NULL,
-  `paid_amount` varchar(100) DEFAULT NULL,
-  `tally_pay_id` int(11) DEFAULT NULL,
-  `dr/cr` varchar(10) DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `process_status_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `update_remarks` text,
-  PRIMARY KEY (`tally_booking_id`),
-  KEY `ticket_id` (`ticket_id`),
-  KEY `expense_category_id` (`expense_category_id`),
-  KEY `payment_id` (`payment_id`),
-  KEY `status_id` (`status_id`),
-  KEY `process_status_id` (`process_status_id`),
-  CONSTRAINT `tally_booking_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`),
-  CONSTRAINT `tally_booking_ibfk_2` FOREIGN KEY (`expense_category_id`) REFERENCES `expense_category` (`expense_category_id`),
-  CONSTRAINT `tally_booking_ibfk_3` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
-  CONSTRAINT `tally_booking_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `tally_booking_ibfk_6` FOREIGN KEY (`process_status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `vendors` (
+  `vendor_id` int NOT NULL AUTO_INCREMENT,
+  `vendor_name` varchar(30) DEFAULT NULL,
+  `phone` int DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `address` text,
+  `GST` varchar(50) DEFAULT NULL,
+  `vendor_type` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tally_booking`
+-- Dumping data for table `vendors`
 --
 
-LOCK TABLES `tally_booking` WRITE;
-/*!40000 ALTER TABLE `tally_booking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tally_booking` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tally_payment`
---
-
-DROP TABLE IF EXISTS `tally_payment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tally_payment` (
-  `tally_pay_id` int(11) NOT NULL AUTO_INCREMENT,
-  `voucher_type` varchar(100) DEFAULT NULL,
-  `ledger` varchar(100) DEFAULT NULL,
-  `amount` varchar(225) DEFAULT NULL,
-  `dr/cr` varchar(10) DEFAULT NULL,
-  `led_narration` text DEFAULT NULL,
-  `narration` text DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `update_remarks` text DEFAULT NULL,
-  PRIMARY KEY (`tally_pay_id`),
-  KEY `status_id` (`status_id`),
-  CONSTRAINT `tally_payment_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tally_payment`
---
-
-LOCK TABLES `tally_payment` WRITE;
-/*!40000 ALTER TABLE `tally_payment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tally_payment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tally_pay_bank`
---
-
-DROP TABLE IF EXISTS `tally_pay_bank`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tally_pay_bank` (
-  `tally_pay_bank_id` int(11) NOT NULL AUTO_INCREMENT,
-  `voucher_type` varchar(100) DEFAULT NULL,
-  `tally_pay_id` int(11) DEFAULT NULL,
-  `route_id` int(11) DEFAULT NULL,
-  `bank_id` int(11) DEFAULT NULL,
-  `ledger` varchar(100) DEFAULT NULL,
-  `amount` varchar(225) DEFAULT NULL,
-  `dr_cr` varchar(10) DEFAULT NULL,
-  `led_narration` text DEFAULT NULL,
-  `narration` text DEFAULT NULL,
-  `status_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `update_remarks` text DEFAULT NULL,
-  PRIMARY KEY (`tally_pay_bank_id`),
-  KEY `tally_pay_id` (`tally_pay_id`),
-  KEY `status_id` (`status_id`),
-  KEY `route_id` (`route_id`),
-  CONSTRAINT `fk_tpb_tally_pay_id` FOREIGN KEY (`tally_pay_id`) REFERENCES `tally_payment` (`tally_pay_id`),
-  CONSTRAINT `fk_tpb_status_id` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `fk_tpb_route_id` FOREIGN KEY (`route_id`) REFERENCES `payment_route` (`route_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Dumping data for table `tally_pay_bank`
---
-
-LOCK TABLES `tally_pay_bank` WRITE;
-/*!40000 ALTER TABLE `tally_pay_bank` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tally_pay_bank` ENABLE KEYS */;
+LOCK TABLES `vendors` WRITE;
+/*!40000 ALTER TABLE `vendors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vendors` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -2339,6 +2162,8 @@ UNLOCK TABLES;
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -2347,4 +2172,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-08 14:58:49
+-- Dump completed on 2025-06-25 12:24:04
