@@ -740,10 +740,14 @@ ADD CONSTRAINT fk_tally_pay_bank_route_id
 */
 
 /* **************************************************************** 
-<-- 14/06/2025-->
+<-- 25/06/2025-->
 ******************************************************************* */
 
 /*
-
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '19');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '21');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '23');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '24');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '27');
 
 */
