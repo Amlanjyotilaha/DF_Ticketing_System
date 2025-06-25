@@ -4,7 +4,7 @@
 ******************************************************************* */
 ---------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_API_GET_USER_ORG_DETAILS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_ORG_DETAILS`(
     IN p_org_id INT,
     IN p_entity_name VARCHAR(255),
     IN p_cost_center_name VARCHAR(255),
@@ -127,19 +127,10 @@ END;
 ******************************************************************* */
 -------------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_API_GET_USER_PROFILE_DETAILS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_PROFILE_DETAILS`(
     IN p_User_ID INT
 )
 BEGIN
-    DECLARE v_User_Exists INT DEFAULT 0;
-
-    -- Check if the user exists and is active
-    SELECT COUNT(*) INTO v_User_Exists
-    FROM users 
-    WHERE user_id = p_User_ID AND status_id = 1;
-
-    -- If the user does exist
-    IF v_User_Exists = 1 THEN
 
         -- Result 1: Fetch user profile details & login details
         SELECT 
@@ -149,7 +140,7 @@ BEGIN
             sd.sub_department_name,u.job_title, u.secondary_job_title, u.manager_user_id, rm.user_name AS manager_name,
             u.personal_email, u.father_name, u.mother_name, u.blood_group, 
             u.nationality, u.bank_id,ub.name_on_bank, ub.bank_name, ub.account_number, ub.IFSC, u.pf_id,
-            pf.pf_establishment_id, pf.pf_details_available, pf.pf_number,DATE_FORMAT(pf.pf_joining_date, '%d-%m-%Y') AS pf_joining_date,
+            pf.pf_establishment_id, pf.pf_details_available, pf.pf_number,DATE_FORMAT(pf.pf_joining_date, '%d-%m-%y') AS pf_joining_date,
             pf.name_on_pf_account, pf.UAN,
             u.pay_grade, u.work_location, 
             u.status_id, ms.status , 
@@ -166,7 +157,8 @@ BEGIN
             LEFT JOIN pf_details pf ON u.pf_id = pf.pf_id AND pf.status_id = 1
             LEFT JOIN master_status ms ON u.status_id = ms.status_id
             LEFT JOIN login_details ld ON ld.user_id = p_User_ID AND ld.status_id = 1
-        WHERE u.user_id = p_User_ID AND u.status_id = 1;
+        WHERE u.user_id = p_User_ID
+        GROUP BY u.user_id;
 
         -- Result 2: Fetch user role details 
         SELECT ur.role_id, r.role_name
@@ -174,7 +166,6 @@ BEGIN
             LEFT JOIN roles r ON r.role_id = ur.role_id
         WHERE ur.user_id = p_User_ID AND ur.status_id = 1;
 
-    END IF;
 END
 
 --------------------------------------------------------------------------------------------------------------------------
@@ -183,7 +174,7 @@ END
 ******************************************************************* */
 --------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_API_GET_USER_ROLE_MENU_DETAILS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_USER_ROLE_MENU_DETAILS`(
     IN p_user_id INT
 )
 BEGIN
@@ -223,7 +214,8 @@ BEGIN
             rm.menu_id AS menu_id,
             m.menu_name AS menu_name,
             m.action AS action,
-            m.description AS description
+            m.description AS description,
+            m.sort
         FROM users u
         INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.status_id = 1
         INNER JOIN roles r ON ur.role_id = r.role_id AND r.status_id = 1
@@ -253,7 +245,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_API_SET_USER_ROLES`()
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_SET_USER_ROLES`()
 BEGIN
     -- Step 1: Update user_role.status_id = 2 for users whose status has changed in the users table
     UPDATE user_roles ur
@@ -292,12 +284,24 @@ BEGIN
         AND ur.status_id = 1
     );
 
-    -- Step 3: Insert from temporary table to user_roles, ensuring no skipped IDs
+    -- Step 3: Insert from temporary table to user_roles
     INSERT INTO user_roles (user_id, role_id, status_id, created_at, created_by)
     SELECT user_id, role_id, 1, NOW(), 'System'
     FROM tmp_new_roles;
 
-    -- Drop the Temporary Table after use
+    --  Step 4: Deactivate role 8 for users who are no longer managers
+    UPDATE user_roles
+	SET status_id = 2
+	WHERE role_id = 8
+	  AND status_id = 1
+	  AND user_id NOT IN (
+		  SELECT DISTINCT manager_user_id
+		  FROM users
+		  WHERE manager_user_id IS NOT NULL
+          AND status_id =1
+	  );
+
+    -- Step 5: Drop the Temporary Table after use
     DROP TEMPORARY TABLE tmp_new_roles;
 END
 
@@ -308,54 +312,100 @@ END
 <-- Stored Procedure 5-->
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_API_GET_REPORT_DETAILS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_REPORT_DETAILS`(
     IN p_report_id INT
 )
 BEGIN
-    -- Result 1: Fetch Report Details
-    SELECT 
-        r.report_id, r.user_id, r.year_id, r.org_id, o.org_name, 
-        r.entity_id, e.entity_name, r.report_code, r.manager_id, 
-        m.user_name AS manager_name, m.work_email AS manager_email, 
-        m.mobile AS manager_phone, m.gender AS manager_gender, 
-        r.name, r.status_id, ms1.status AS report_status, 
-        r.process_status_id, ms2.status AS process_status, 
-        DATE_FORMAT(r.created_at, '%d-%m-%Y') AS created_at, DATE_FORMAT(r.start_date, '%d-%m-%Y') AS start_date, DATE_FORMAT(r.end_date, '%d-%m-%Y') AS end_date, r.description, DATE_FORMAT(r.updated_at, '%d-%m-%Y') AS updated_at
-    FROM reports r
-    LEFT JOIN master_status ms1 ON r.status_id = ms1.status_id
-    LEFT JOIN master_status ms2 ON r.process_status_id = ms2.status_id
-    LEFT JOIN organization o ON r.org_id = o.org_id
-    LEFT JOIN entities e ON r.entity_id = e.entity_id
-    LEFT JOIN users m ON r.manager_id = m.user_id
-    WHERE r.report_id = p_report_id;
+    DECLARE v_status_id INT;
 
-    -- Result 2: Fetch Report Logs
-    SELECT 
-        rl.log_id, rl.report_id, 
-        rl.pre_status_id, ms1.status AS pre_status, 
-        rl.aft_status_id, ms2.status AS aft_status, 
-        rl.pre_process_id, ms3.status AS pre_process, 
-        rl.aft_process_id, ms4.status AS aft_process, 
-        rl.level_id, l.level_name, 
-        rl.created_by, u.user_name AS creater_name, DATE_FORMAT(rl.created_at, '%d-%m-%Y') AS created_at
-    FROM report_logs rl
-    LEFT JOIN master_status ms1 ON rl.pre_status_id = ms1.status_id
-    LEFT JOIN master_status ms2 ON rl.aft_status_id = ms2.status_id
-    LEFT JOIN master_status ms3 ON rl.pre_process_id = ms3.status_id
-    LEFT JOIN master_status ms4 ON rl.aft_process_id = ms4.status_id
-    LEFT JOIN levels l ON rl.level_id = l.level_id
-    LEFT JOIN users u ON rl.created_by = u.user_id
-    WHERE rl.report_id = p_report_id;
+    -- Fetch status_id for the report
+    SELECT status_id INTO v_status_id
+    FROM reports
+    WHERE report_id = p_report_id;
 
-    -- Result 3: Fetch Report History
-    SELECT 
-        rh.history_id, rh.report_id, rh.name, 
-        DATE_FORMAT(rh.start_date, '%d-%m-%Y') AS start_date, DATE_FORMAT(rh.end_date, '%d-%m-%Y') AS end_date, rh.description, 
-        rh.updated_by, u.user_name AS updater_name, 
-        DATE_FORMAT(rh.updated_at, '%d-%m-%Y') AS updated_at, rh.edit_description
-    FROM report_history rh
-    LEFT JOIN users u ON rh.updated_by = u.user_id
-    WHERE rh.report_id = p_report_id;
+    -- Result 1: Report Details
+    IF v_status_id = 1 THEN
+        SELECT 
+            r.report_id, r.user_id, r.year_id, r.org_id, o.org_name, 
+            r.entity_id, e.entity_name, r.report_code, r.manager_id, 
+            m.user_name AS manager_name, m.work_email AS manager_email, 
+            m.mobile AS manager_phone, m.gender AS manager_gender, 
+            r.name, r.status_id, ms1.status AS report_status, 
+            r.process_status_id, ms2.status AS process_status, 
+            DATE_FORMAT(r.created_at, '%d-%m-%Y') AS created_at, 
+            DATE_FORMAT(r.start_date, '%d-%m-%Y') AS start_date, 
+            DATE_FORMAT(r.end_date, '%d-%m-%Y') AS end_date, 
+            r.description, 
+            DATE_FORMAT(r.updated_at, '%d-%m-%Y') AS updated_at
+        FROM reports r
+        LEFT JOIN master_status ms1 ON r.status_id = ms1.status_id
+        LEFT JOIN master_status ms2 ON r.process_status_id = ms2.status_id
+        LEFT JOIN organization o ON r.org_id = o.org_id
+        LEFT JOIN entities e ON r.entity_id = e.entity_id
+        LEFT JOIN users m ON r.manager_id = m.user_id
+        WHERE r.report_id = p_report_id;
+    ELSE
+        SELECT 
+            NULL AS report_id, NULL AS user_id, NULL AS year_id, NULL AS org_id, NULL AS org_name, 
+            NULL AS entity_id, NULL AS entity_name, NULL AS report_code, NULL AS manager_id, 
+            NULL AS manager_name, NULL AS manager_email, NULL AS manager_phone, NULL AS manager_gender, 
+            NULL AS name, NULL AS status_id, NULL AS report_status, 
+            NULL AS process_status_id, NULL AS process_status, 
+            NULL AS created_at, NULL AS start_date, NULL AS end_date, 
+            NULL AS description, NULL AS updated_at;
+    END IF;
+
+    -- Result 2: Report Logs
+    IF v_status_id = 1 THEN
+        SELECT 
+            rl.log_id, rl.report_id, 
+            rl.pre_status_id, ms1.status AS pre_status, 
+            rl.aft_status_id, ms2.status AS aft_status, 
+            rl.pre_process_id, ms3.status AS pre_process, 
+            rl.aft_process_id, ms4.status AS aft_process, 
+            rl.level_id, l.level_name, 
+            rl.created_by, u.user_name AS creater_name, 
+            DATE_FORMAT(rl.created_at, '%d-%m-%Y') AS created_at
+        FROM report_logs rl
+        LEFT JOIN master_status ms1 ON rl.pre_status_id = ms1.status_id
+        LEFT JOIN master_status ms2 ON rl.aft_status_id = ms2.status_id
+        LEFT JOIN master_status ms3 ON rl.pre_process_id = ms3.status_id
+        LEFT JOIN master_status ms4 ON rl.aft_process_id = ms4.status_id
+        LEFT JOIN levels l ON rl.level_id = l.level_id
+        LEFT JOIN users u ON rl.created_by = u.user_id
+        WHERE rl.report_id = p_report_id;
+    ELSE
+        SELECT 
+            NULL AS log_id, NULL AS report_id, 
+            NULL AS pre_status_id, NULL AS pre_status, 
+            NULL AS aft_status_id, NULL AS aft_status, 
+            NULL AS pre_process_id, NULL AS pre_process, 
+            NULL AS aft_process_id, NULL AS aft_process, 
+            NULL AS level_id, NULL AS level_name, 
+            NULL AS created_by, NULL AS creater_name, NULL AS created_at;
+    END IF;
+
+    -- Result 3: Report History
+    IF v_status_id = 1 THEN
+        SELECT 
+            rh.history_id, rh.report_id, rh.name, 
+            DATE_FORMAT(rh.start_date, '%d-%m-%Y') AS start_date, 
+            DATE_FORMAT(rh.end_date, '%d-%m-%Y') AS end_date, 
+            rh.description, 
+            rh.updated_by, u.user_name AS updater_name, 
+            DATE_FORMAT(rh.updated_at, '%d-%m-%Y') AS updated_at, 
+            rh.edit_description
+        FROM report_history rh
+        LEFT JOIN users u ON rh.updated_by = u.user_id
+        WHERE rh.report_id = p_report_id;
+    ELSE
+        SELECT 
+            NULL AS history_id, NULL AS report_id, NULL AS name, 
+            NULL AS start_date, NULL AS end_date, 
+            NULL AS description, 
+            NULL AS updated_by, NULL AS updater_name, 
+            NULL AS updated_at, NULL AS edit_description;
+    END IF;
 END
 
 -----------------------------------------------------------------------------------------------------------------------------
@@ -363,7 +413,7 @@ END
 <-- Stored Procedure 6-->
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_API_GET_TICKET_DETAILS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_API_GET_TICKET_DETAILS`(
     IN p_ticket_id INT
 )
 BEGIN
@@ -375,7 +425,7 @@ SELECT
 INTO v_exp_catg_id FROM
     tickets
 WHERE
-    ticket_id = p_ticket_id;
+    ticket_id = p_ticket_id and status_id =1;
 
 		-- If exp_catg_id is NULL or not 1, return NULL results and exit
 		IF v_exp_catg_id IS NULL OR v_exp_catg_id != 1 THEN
@@ -399,7 +449,7 @@ WHERE
 				NULL AS contribution_name,
 				NULL AS exp_catg_id, 
 				NULL AS expanse_category, 
-                NULL AS granted_amount,
+				NULL AS granted_amount, 
 				NULL AS status_id, 
 				NULL AS ticket_status,
 				NULL AS process_status_id,
@@ -623,6 +673,10 @@ WHERE
 				DATE_FORMAT(t.updated_at, '%d-%m-%Y') AS t_updated_at
 			FROM
 				tickets t
+                	LEFT JOIN
+				reports r ON t.report_id = r.report_id
+                	LEFT JOIN
+				users u ON r.manager_id= u.user_id	
 					LEFT JOIN
 				master_status ms1 ON t.status_id = ms1.status_id
 					LEFT JOIN
@@ -640,13 +694,9 @@ WHERE
 					LEFT JOIN
 				contribution_type ct ON t.contribution_id = ct.contribution_id
 					LEFT JOIN
-				users u ON t.updated_by = u.user_id					
-					LEFT JOIN
 				users u1 ON t.updated_by = u1.user_id
-					LEFT JOIN
-				reports r ON t.report_id = r.report_id
 			WHERE
-				t.ticket_id = p_ticket_id;
+				t.ticket_id = p_ticket_id AND r.status_id = 1;
 
 			-- Result 2: Fetch Reimbursement Details and Ticket Bills
 			SELECT 
@@ -1018,7 +1068,7 @@ END
 <-- Stored Procedure 7-->
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_USER_REPORT_NUMBERS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_REPORT_NUMBERS`(
     IN p_user_id INT
 )
 BEGIN
@@ -1058,7 +1108,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_MANAGER_REPORTS_NUMBER`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_REPORTS_NUMBER`(
     IN p_user_id INT
 )
 BEGIN
@@ -1087,7 +1137,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_INSERT_USER_BANK_DETAILS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_INSERT_USER_BANK_DETAILS`(
     IN p_updated_by INT,
     IN p_employee_number varchar(50),
     IN p_employee_name_on_bank VARCHAR(100),
@@ -1222,7 +1272,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_MANAGER_TICKETS_NUMBER`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_TICKETS_NUMBER`(
     IN p_report_id INT
 )
 BEGIN
@@ -1243,7 +1293,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_UPDATE_REPORT_CLOSE_STATUS`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_UPDATE_REPORT_CLOSE_STATUS`(
     IN p_report_id INT
 )
 BEGIN
@@ -1271,7 +1321,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_COST_CENTER_BY_YEAR`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_COST_CENTER_BY_YEAR`(
     IN p_Year_ID VARCHAR(10),
     IN p_User_ID VARCHAR(50)
 )
@@ -1334,7 +1384,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_LEDGERS_BY_USER_ID`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_LEDGERS_BY_USER_ID`(
     IN p_user_id INT
 )
 BEGIN
@@ -1364,7 +1414,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_USER_ENTITIES`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_ENTITIES`(
     IN p_user_id INT,
     IN p_year_id VARCHAR(10)
 )
@@ -1446,7 +1496,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_USERS_FA_FP_BY_ENTITY`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USERS_FA_FP_BY_ENTITY`(
     p_entity_id INT
 )
 BEGIN
@@ -1475,7 +1525,7 @@ END
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_GET_TALLY_LIST`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_TALLY_LIST`(
     IN p_status_id VARCHAR(10),
     IN p_entity_id VARCHAR(10),
     IN p_expense_category_id VARCHAR(10),
@@ -1662,12 +1712,12 @@ BEGIN
 END
 -----------------------------------------------------------------------------------------------------------------------------
 /* **************************************************************** 
-<-- Stored Procedure 18-->
+<-- Stored Procedure 17-->
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_EXPORT_TALLY_DATA`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EXPORT_TALLY_DATA`(
     IN p_user_id INT,
     IN p_tally_booking_ids TEXT
 )
@@ -1955,5 +2005,98 @@ END
 -----------------------------------------------------------------------------------------------------------------------------
 /* **************************************************************** 
 <-- Stored Procedure 20-->
+******************************************************************* */
+-----------------------------------------------------------------------------------------------------------------------------
+
+CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_REVERT_REPORT`(
+    IN p_user_id INT,
+    IN p_report_id INT,
+    IN p_remarks TEXT
+)
+BEGIN
+    DECLARE report_pre_process_id INT;
+
+    -- Step 1: Get previous process status for the report
+    SELECT process_status_id INTO report_pre_process_id
+    FROM reports
+    WHERE report_id = p_report_id AND status_id = 1;
+
+    -- Step 2: Prepare eligible ticket_ids (those that do NOT have granted_amount)
+    DROP TEMPORARY TABLE IF EXISTS temp_ticket_ids;
+
+    CREATE TEMPORARY TABLE temp_ticket_ids (
+        ticket_id INT,
+        ticket_pre_process_id INT
+    );
+
+    INSERT INTO temp_ticket_ids (ticket_id, ticket_pre_process_id)
+	SELECT t.ticket_id, t.process_status_id
+	FROM tickets t
+	WHERE t.report_id = p_report_id
+	  AND t.status_id = 1
+	  AND t.granted_amount IS NULL
+	  AND NOT EXISTS (
+		  SELECT 1
+		  FROM payments p
+		  WHERE p.ticket_id = t.ticket_id
+	  );
+
+    -- Step 3: If eligible tickets found, proceed with update
+    IF EXISTS (SELECT 1 FROM temp_ticket_ids) THEN
+
+        -- Step 4: Nullify fields in re_ticket_details
+        UPDATE re_ticket_details rtd
+        JOIN temp_ticket_ids tmp ON rtd.ticket_id = tmp.ticket_id
+        SET rtd.m_granted_amount = NULL,
+            rtd.f_granted_amount = NULL,
+            rtd.f_granted_by = NULL;
+
+        -- Step 5: Update process_status_id for relevant tickets
+        UPDATE tickets t
+        JOIN temp_ticket_ids tmp ON t.ticket_id = tmp.ticket_id
+        SET t.process_status_id = 25;
+
+        -- Step 6: Update report process_status_id
+        UPDATE reports
+        SET process_status_id = 25,
+			manager_id = NULL
+        WHERE report_id = p_report_id;
+
+        -- Step 7: Insert report log
+        INSERT INTO report_logs (
+            report_id, pre_process_id, aft_process_id,
+            level_id, action_id, created_by, created_at, remarks
+        )
+        VALUES (
+            p_report_id, report_pre_process_id, 25,
+            1, 25, p_user_id, NOW(), p_remarks
+        );
+
+        -- Step 8: Insert ticket logs for each ticket
+        INSERT INTO ticket_logs (
+            ticket_id, pre_process_id, aft_process_id,
+            level_id, action_id, created_by, created_at, remarks
+        )
+        SELECT
+            tmp.ticket_id, tmp.ticket_pre_process_id, 25,
+            1, 25, p_user_id, NOW(), p_remarks
+        FROM temp_ticket_ids tmp;
+
+        -- Step 9: Return success message
+        SELECT 'Report Reverted Successfully' AS Message, 1 AS Success;
+
+    ELSE
+        -- No eligible tickets to revert
+        SELECT 'Report Reversion Failed' AS Message, 0 AS Success;
+    END IF;
+
+    -- Final cleanup
+    DROP TEMPORARY TABLE IF EXISTS temp_ticket_ids;
+
+END
+
+-----------------------------------------------------------------------------------------------------------------------------
+/* **************************************************************** 
+<-- Stored Procedure 21-->
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------

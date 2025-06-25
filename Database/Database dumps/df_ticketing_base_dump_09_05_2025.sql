@@ -79,7 +79,7 @@ CREATE TABLE `academic_entity` (
 
 LOCK TABLES `academic_entity` WRITE;
 /*!40000 ALTER TABLE `academic_entity` DISABLE KEYS */;
-INSERT INTO `academic_entity` VALUES (1,1, 2025, 1),(2,2, 2025, 1),(3,3, 2025, 1);
+INSERT INTO `academic_entity` VALUES (1,1, 2025, 1),(2,2, 2025, 1),(3,3, 2025, 1),(4,4, 2025, 1);
 /*!40000 ALTER TABLE `academic_entity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -386,68 +386,6 @@ CREATE TABLE `ledgers` (
 
 LOCK TABLES `ledgers` WRITE;
 /*!40000 ALTER TABLE `ledgers` DISABLE KEYS */;
-/*
-INSERT INTO `ledgers` (`ledger_id`, `ledger_code`, `ledger_name`, `ledger_type`, `category_id`, `status_id`) VALUES
-(1, '00001', 'Awards & Gifts-Program', 'Program', 4, 1),
-(2, '00002', 'Guest Expenses- Program', 'Program', 4, 1),
-(3, '00003', 'Travel Expenses-Program', 'Program', 2, 1),
-(4, '00004', 'Food Expenses-Program', 'Program', 1, 1),
-(5, '00005', 'Accommodation Expenses-Program', 'Program', 3, 1),
-(6, '00006', 'Cell phone Charges-Program', 'Program', 4, 1),
-(7, '00007', 'Electricity Charges-Program', 'Program', 4, 1),
-(8, '00008', 'Event Expenses-Program', 'Program', 4, 1),
-(9, '00009', 'Fuel Expenses - Office Vehicle', 'Program', 4, 1),
-(10, '00010', 'Housekeeping and Security Charges', 'Program', 4, 1),
-(11, '00011', 'Housekeeping Materials', 'Program', 4, 1),
-(12, '00012', 'Internet Broadband & Data Card Charges-Program', 'Program', 4, 1),
-(13, '00013', 'Lease & Rentals-Program', 'Program', 4, 1),
-(14, '00014', 'License & Renewals-Program', 'Program', 4, 1),
-(15, '00015', 'Medical Expenses-Program', 'Program', 4, 1),
-(16, '00016', 'News Paper & Periodicals-Program', 'Program', 4, 1),
-(17, '00017', 'Other Office Expenses-Program', 'Program', 4, 1),
-(18, '00018', 'Postage & Courier Charges-Program', 'Program', 4, 1),
-(19, '00019', 'Printing & Stationery- Program', 'Program', 4, 1),
-(20, '00020', 'Professional Fees- Program', 'Program', 4, 1),
-(21, '00021', 'Rates & Taxes-Program', 'Program', 4, 1),
-(22, '00022', 'Staff Welfare-Program', 'Program', 4, 1),
-(23, '00023', 'Telephone Charges-Program', 'Program', 4, 1),
-(24, '00024', 'Toll & Parking Charges-Program', 'Program', 4, 1),
-(25, '00025', 'Training Expenses-Program', 'Program', 4, 1),
-(26, '00026', 'Water Charges-Program', 'Program', 4, 1),
-(27, '00027', 'Web Maintenance & Domain Charges-Program', 'Program', 4, 1),
-(28, '00028', 'Fuel expenses- DG-Program', 'Program', 4, 1),
-(29, '00029', 'Awards & Gifts-Admin', 'Admin', 4, 1),
-(30, '00030', 'Guest Expenses- Admin', 'Admin', 4, 1),
-(31, '00031', 'Travel Expenses-Admin', 'Admin', 2, 1),
-(32, '00032', 'Food Expenses-Admin', 'Admin', 1, 1),
-(33, '00033', 'Accommodation Expenses-Admin', 'Admin', 3, 1),
-(34, '00034', 'Cell phone Charges-Admin', 'Admin', 4, 1),
-(35, '00035', 'Electricity Charges-Admin', 'Admin', 4, 1),
-(36, '00036', 'Event Expenses-Admin', 'Admin', 4, 1),
-(37, '00037', 'Internet Broadband & Data Card Charges-admin', 'Admin', 4, 1),
-(38, '00038', 'Lease & Rentals-Admin', 'Admin', 4, 1),
-(39, '00039', 'License & Renewals-Admin', 'Admin', 4, 1),
-(40, '00040', 'Medical Expenses-Admin', 'Admin', 4, 1),
-(41, '00041', 'Other Office Expenses-Admin', 'Admin', 4, 1),
-(42, '00042', 'Postage & Courier Charges-Admin', 'Admin', 4, 1),
-(43, '00043', 'Printing & Stationery- Admin', 'Admin', 4, 1),
-(44, '00044', 'Professional Fees- Admin', 'Admin', 4, 1),
-(45, '00045', 'Rates & Taxes- Admin', 'Admin', 4, 1),
-(46, '00046', 'Repairs & Maintenance -Building-Admin', 'Admin', 4, 1),
-(47, '00047', 'Repairs & Maintenance -Computers-Admin', 'Admin', 4, 1),
-(48, '00048', 'Repairs & Maintenance -General-Admin', 'Admin', 4, 1),
-(49, '00049', 'Repairs & Maintenance -Vehicles-Admin', 'Admin', 4, 1),
-(50, '00050', 'Staff Welfare-Admin', 'Admin', 4, 1),
-(51, '00051', 'Telephone Charges-Admin', 'Admin', 4, 1),
-(52, '00052', 'Toll & Parking Charges-Admin', 'Admin', 4, 1),
-(53, '00053', 'Training Expenses-Admin', 'Admin', 4, 1),
-(54, '00054', 'Water Charges-Admin', 'Admin', 4, 1),
-(55, '00055', 'Web Maintenance & Domain Charges-Admin', 'Admin', 4, 1),
-(56, '00056', 'Fuel expenses- DG-Admin', 'Admin', 4, 1),
-(57, '00057', 'Vehicle Insurance-Admin', 'Admin', 4, 1),
-(58, '00058', 'Vehicle Tax-Admin', 'Admin', 4, 1);
-*/
-
 INSERT INTO `ledgers` (`ledger_id`, `ledger_code`, `ledger_name`, `ledger_type`, `category_id`, `status_id`) VALUES
 (1, '00001', 'Awards & Gifts-Program', 1, 4, 1),
 (2, '00002', 'Guest Expenses- Program', 1, 4, 1),
@@ -908,7 +846,7 @@ CREATE TABLE `entities` (
 
 LOCK TABLES `entities` WRITE;
 /*!40000 ALTER TABLE `entities` DISABLE KEYS */;
-INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Educational Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup');
+INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Educational Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation');
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1022,7 +960,7 @@ CREATE TABLE `master_status` (
 
 LOCK TABLES `master_status` WRITE;
 /*!40000 ALTER TABLE `master_status` DISABLE KEYS */;
-INSERT INTO `master_status` VALUES (1,'Active','Active'),(2,'Inactive','Inactive'),(3,'Deleted','Deleted'),(4,'Resigned','Employee has Resigned'),(5,'Completed','Completed'),(6,'In Progress','Process is currently ongoing'),(7,'Manager Pending','Manager Approval Pending'),(8,'Manager Rejected','Manager declined the request'),(9,'FP Pending','Awaiting action from the Finance Processor'),(10,'FA Pending','Finance Approver Approval Pending'),(11,'FA Rejected','Finance Approver declined the request'),(12,'FA Approved','Finance Approver has Approved'),(13,'Payment Progress','Payment is yet to be processed by the bank'),(14,'Payment Completed','The payment has been successfully processed'),(15,'Closed','The process is closed'),(16,'Approved','Approved action by manager or finance '),(17,'Rejected','Rejected action by manager or finance'),(18,'Proceed','Proceed action by manager or finance'),(19,'Initialized','Report and Ticket raised but not submitted'),(20,'System Error','Internal server error'),(21,NULL,'Just Blank'),(22,'Download Cancelled','Excel download for payment cancelled'),(23,'Tally Pending','Tally Excel pending for Download'),(24,'Tally Processed','Tally Excel have been Downloaded');
+INSERT INTO `master_status` VALUES (1,'Active','Active'),(2,'Inactive','Inactive'),(3,'Deleted','Deleted'),(4,'Resigned','Employee has Resigned'),(5,'Completed','Completed'),(6,'In Progress','Process is currently ongoing'),(7,'Manager Pending','Manager Approval Pending'),(8,'Manager Rejected','Manager declined the request'),(9,'FP Pending','Awaiting action from the Finance Processor'),(10,'FA Pending','Finance Approver Approval Pending'),(11,'FA Rejected','Finance Approver declined the request'),(12,'FA Approved','Finance Approver has Approved'),(13,'Payment Progress','Payment is yet to be processed by the bank'),(14,'Payment Completed','The payment has been successfully processed'),(15,'Closed','The process is closed'),(16,'Approved','Approved action by manager or finance '),(17,'Rejected','Rejected action by manager or finance'),(18,'Proceed','Proceed action by manager or finance'),(19,'Initialized','Report and Ticket raised but not submitted'),(20,'System Error','Internal server error'),(21,NULL,'Just Blank'),(22,'Download Cancelled','Excel download for payment cancelled'),(23,'Tally Pending','Tally Excel pending for Download'),(24,'Tally Processed','Tally Excel have been Downloaded'), (25,'Reverted','Recall all tickets in a report');
 /*!40000 ALTER TABLE `master_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1601,9 +1539,9 @@ CREATE TABLE `tickets` (
   `user_id` int(11) DEFAULT NULL,
   `ticket_number` varchar(45) DEFAULT NULL,
   `cost_center_id` int(11) DEFAULT NULL,
-  `expense_id ` int(11) DEFAULT NULL,
-  `budget_id ` int(11) DEFAULT NULL,
-  `contribution_id ` int(11) DEFAULT NULL,
+  `expense_id` int(11) DEFAULT NULL,
+  `budget_id` int(11) DEFAULT NULL,
+  `contribution_id` int(11) DEFAULT NULL,
   `exp_catg_id` int(11) DEFAULT NULL,
   `granted_amount` varchar(100) DEFAULT NULL,
   `status_id` int(11) DEFAULT NULL,
@@ -1621,9 +1559,9 @@ CREATE TABLE `tickets` (
   KEY `process_status_id` (`process_status_id`),
   KEY `year_id` (`year_id`),
   KEY `cost_center_id` (`cost_center_id`),
-  KEY `contribution_id ` (`contribution_id `),
-  KEY `budget_id ` (`budget_id `),
-  KEY `expense_id ` (`expense_id `),
+  KEY `contribution_id` (`contribution_id`),
+  KEY `budget_id` (`budget_id`),
+  KEY `expense_id` (`expense_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`entity_id`),
   CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`),
@@ -1659,9 +1597,9 @@ CREATE TABLE `ticket_history` (
   `ticket_hst_id` int(11) NOT NULL AUTO_INCREMENT,
   `ticket_id` int(11) DEFAULT NULL,
   `cost_center_id` int(11) DEFAULT NULL,
-  `expense_id ` int(11) DEFAULT NULL,
-  `budget_id ` int(11) DEFAULT NULL,
-  `contribution_id ` int(11) DEFAULT NULL,
+  `expense_id` int(11) DEFAULT NULL,
+  `budget_id` int(11) DEFAULT NULL,
+  `contribution_id` int(11) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -1703,7 +1641,7 @@ CREATE TABLE `ticket_logs` (
   PRIMARY KEY (`log_id`),
   KEY `ticket_id` (`ticket_id`),
   KEY `pre_status_id` (`pre_status_id`),
-  KEY `role_id` (`role_id`),
+  KEY `level_id` (`level_id`),
   KEY `aft_status_id` (`aft_status_id`),
   KEY `pre_process_id` (`pre_process_id`),
   KEY `aft_process_id` (`aft_process_id`),
@@ -1949,11 +1887,14 @@ CREATE TABLE `user_history` (
   `band` varchar(30) DEFAULT NULL,
   `pay_grade` varchar(100) DEFAULT NULL,
   `work_location` text,
+  `status_id` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_history_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `user_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `user_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `user_history_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2278,7 +2219,7 @@ CREATE TABLE `tally_booking` (
   CONSTRAINT `tally_booking_ibfk_2` FOREIGN KEY (`expense_category_id`) REFERENCES `expense_category` (`expense_category_id`),
   CONSTRAINT `tally_booking_ibfk_3` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
   CONSTRAINT `tally_booking_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`),
-  CONSTRAINT `tally_booking_ibfk_6` FOREIGN KEY (`process_status_id`) REFERENCES `master_status` (`process_status_id`)
+  CONSTRAINT `tally_booking_ibfk_6` FOREIGN KEY (`process_status_id`) REFERENCES `master_status` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
