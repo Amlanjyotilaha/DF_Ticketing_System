@@ -744,6 +744,7 @@ ADD CONSTRAINT fk_tally_pay_bank_route_id
 ******************************************************************* */
 
 /*
+Organization bank without ledgers are marked as inactive
 UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '19');
 UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '21');
 UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '23');

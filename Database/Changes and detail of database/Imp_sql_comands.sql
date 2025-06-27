@@ -62,7 +62,7 @@ SET GLOBAL event_scheduler = ON;
 <-- Procedure to add new academic year  -->
 ******************************************************************* */
 
-CREATE DEFINER=`ruser`@`%` PROCEDURE `USP_CREATE_NEW_ACADEMIC_YEAR`()
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_CREATE_NEW_ACADEMIC_YEAR`()
 BEGIN
     DECLARE v_Year_ID INT;
     DECLARE v_Year_Name VARCHAR(10);
