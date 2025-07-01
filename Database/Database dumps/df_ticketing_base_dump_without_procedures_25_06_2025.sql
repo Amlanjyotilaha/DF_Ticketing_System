@@ -1632,7 +1632,7 @@ CREATE TABLE `tally_pay_bank` (
   `bank_id` int DEFAULT NULL,
   `ledger` varchar(100) DEFAULT NULL,
   `amount` varchar(225) DEFAULT NULL,
-  `dr_cr` varchar(10) DEFAULT NULL,
+  `dr/cr` varchar(10) DEFAULT NULL,
   `led_narration` text,
   `narration` text,
   `status_id` int DEFAULT NULL,

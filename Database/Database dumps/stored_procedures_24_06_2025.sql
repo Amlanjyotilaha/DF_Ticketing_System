@@ -1131,13 +1131,10 @@ CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EXPORT_TALLY_DATA`(
 )
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        GET DIAGNOSTICS CONDITION 1
-            @sqlstate = RETURNED_SQLSTATE,
-            @errmsg = MESSAGE_TEXT;
-        ROLLBACK;
-        SELECT 'Data Insertion Failed' AS Message, 0 AS Success;
-    END;
+	BEGIN
+		ROLLBACK;
+		SELECT 'Data Insertion Failed' AS Message, 0 AS Success;
+	END;
 
     export_proc: BEGIN
 
@@ -1205,18 +1202,16 @@ BEGIN
         -- Step 4: Compute total paid amount
         SELECT SUM(paid_amount) INTO @tally_total FROM temp_bank_summary;
 
-        -- Step 5: Compute bank total and get bank_ledger
-        SELECT 
-            SUM(paid_amount), 
-            bank_ledger 
-        INTO 
-            @payment_grand_total, 
-            @bank_ledger
-        FROM 
-            temp_bank_summary
-        WHERE 
-            bank_ledger IS NOT NULL
+        -- Step 5: Get any one bank_ledger from non-null rows
+        SELECT bank_ledger INTO @bank_ledger
+        FROM temp_bank_summary
+        WHERE bank_ledger IS NOT NULL
         LIMIT 1;
+
+        -- Also compute the total for bank_ledger related payments
+        SELECT SUM(paid_amount) INTO @payment_grand_total
+        FROM temp_bank_summary
+        WHERE bank_ledger IS NOT NULL;
 
         -- Step 6: Insert into tally_payment
         INSERT INTO tally_payment (
@@ -1239,7 +1234,7 @@ BEGIN
 
         SET @last_tally_pay_id := LAST_INSERT_ID();
 
-        -- Step 7: Insert into tally_pay_bank (with bank_id and route_id)
+        -- Step 7: Insert into tally_pay_bank
         INSERT INTO tally_pay_bank (
             voucher_type,
             tally_pay_id,
@@ -1285,7 +1280,7 @@ BEGIN
         SELECT 'Data Inserted Successfully' AS Message, 1 AS Success;
 
     END export_proc;
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1484,184 +1479,182 @@ CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_TALLY_LIST`(
     IN p_limit VARCHAR(10)
 )
 BEGIN
-        DROP TEMPORARY TABLE IF EXISTS temp_tally_list;
+    DROP TEMPORARY TABLE IF EXISTS temp_tally_list;
 
-        CREATE TEMPORARY TABLE temp_tally_list
-        SELECT 
-			-- Conditional logic for last_tally_pay_id based on p_status_id
-			CASE
-				WHEN p_status_id = '23' THEN (SELECT IFNULL(MAX(tally_pay_id), 0) + 1 FROM tally_payment)
-				ELSE
-					CASE
-						WHEN tb.tally_pay_id IS NOT NULL THEN tb.tally_pay_id
-						ELSE (SELECT IFNULL(MAX(tally_pay_id), 0) + 1 FROM tally_payment)
-					END
-			END AS last_tally_pay_id,
-			tb.tally_booking_id, 
-            tb.voucher_type,
-            tb.ticket_id, 
-            tb.expense_category_id,
-            ex.category AS expense_category,
-            tb.ticket_dtls_id,
-            tb.tally_pay_id, 
-            tb.paid_amount,
-            tb.`dr/cr`, 
-            tb.status_id AS tally_booking_status_id, 
-            ms1.status AS tally_booking_status,
-            tb.process_status_id AS tally_process_status_id,
-            ms2.status AS tally_process_status,
-            
-            t.entity_id,
-            e.entity_name,
-            t.report_id,
-            t.ticket_number,
-            t.cost_center_id,
-            cc.cost_center_name,
-            t.contribution_id,
-            ct.contribution_name,
-            t.granted_amount AS ticket_granted_amount,
-            t.process_status_id AS ticket_process_status_id,
-            ms.status AS ticket_process_status,
-            t.description AS ticket_description,
-            DATE_FORMAT(t.created_at, '%d-%m-%Y') AS ticket_created_date,
-
-            rm.reimb_dtls_id,
-            rm.category_id,
-            cat.category_type,
-            rm.ledger_id,
-            ld.ledger_name,
-            rm.total_expense,
-            rm.m_granted_amount,
-            rm.f_granted_amount,
-            
-            u.employee_number,
-            
-            p.payment_id,
-            p.transaction_id,
-            p.route_id,
-            p.pay_type_id,
-            pt.pay_type,
-            p.paid_from,
-            CASE
-                WHEN p.route_id = 1 THEN e1.entity_name
-                WHEN p.route_id = 2 THEN u1.user_name
-                WHEN p.route_id = 3 THEN e1.entity_name
-                WHEN p.route_id = 4 THEN v1.vendor_name
-            END AS paid_from_name,
-            p.paid_to,
-            CASE
-                WHEN p.route_id = 1 THEN u2.user_name
-                WHEN p.route_id = 2 THEN e2.entity_name
-                WHEN p.route_id = 3 THEN v2.vendor_name
-                WHEN p.route_id = 4 THEN e2.entity_name
-            END AS paid_to_name,
-            p.paid_from_bank,
-            CASE
-                WHEN p.route_id IN (1 , 3) THEN ob_from.entity_bank_name
-                WHEN p.route_id = 2 THEN ub_from.bank_name
-                WHEN p.route_id = 4 THEN vb_from.bank_name
-            END AS paid_from_bank_name,
-            CASE
-                WHEN p.route_id IN (1 , 3) THEN ob_from.entity_bank_account_no
-                WHEN p.route_id = 2 THEN ub_from.account_number
-                WHEN p.route_id = 4 THEN vb_from.account_number
-            END AS paid_from_account_number,
-            CASE
-                WHEN p.route_id IN (1 , 3) THEN ob_from.entity_name_on_bank
-                WHEN p.route_id = 2 THEN ub_from.name_on_bank
-                WHEN p.route_id = 4 THEN vb_from.name_on_bank
-            END AS paid_from_name_on_bank,
-            CASE
-                WHEN p.route_id IN (1 , 3) THEN ob_from.entity_bank_IFSC
-                WHEN p.route_id = 2 THEN ub_from.IFSC
-                WHEN p.route_id = 4 THEN vb_from.IFSC
-            END AS paid_from_IFSC,
-            CASE
-                WHEN p.route_id IN (1 , 3) THEN ob_from.bank_ledger
-            END AS paid_from_bank_ledger,
-            p.paid_to_bank,
-            CASE
-                WHEN p.route_id = 1 THEN ub_to.bank_name
-                WHEN p.route_id IN (2 , 4) THEN ob_to.entity_bank_name
-                WHEN p.route_id = 3 THEN vb_to.bank_name
-            END AS paid_to_bank_name,
-            CASE
-                WHEN p.route_id = 1 THEN ub_to.account_number
-                WHEN p.route_id IN (2 , 4) THEN ob_to.entity_bank_account_no
-                WHEN p.route_id = 3 THEN vb_to.account_number
-            END AS paid_to_account_number,
-            CASE
-                WHEN p.route_id = 1 THEN ub_to.name_on_bank
-                WHEN p.route_id IN (2 , 4) THEN ob_to.entity_name_on_bank
-                WHEN p.route_id = 3 THEN vb_to.name_on_bank
-            END AS paid_to_name_on_bank,
-            CASE
-                WHEN p.route_id = 1 THEN ub_to.IFSC
-                WHEN p.route_id IN (2 , 4) THEN ob_to.entity_bank_IFSC
-                WHEN p.route_id = 3 THEN vb_to.IFSC
-            END AS paid_to_IFSC,
-            CASE
-                WHEN p.route_id IN (2 , 4) THEN ob_to.bank_ledger
-            END AS paid_to_bank_ledger,
-            p.amount,
-            p.UTR_number,
-            p.status_id AS payment_status_id,
-            ms3.status AS payment_status,
-            DATE_FORMAT(p.payment_date, '%d-%m-%Y') AS payment_date
-
-        FROM tally_booking tb
-        LEFT JOIN tickets t ON tb.ticket_id = t.ticket_id AND t.status_id = 1
-        LEFT JOIN entities e ON t.entity_id = e.entity_id
-        LEFT JOIN cost_center cc ON t.cost_center_id = cc.cost_center_id
-        LEFT JOIN contribution_type ct ON t.contribution_id = ct.contribution_id
-        LEFT JOIN expense_category ex ON tb.expense_category_id = ex.expense_category_id
-        LEFT JOIN master_status ms ON t.process_status_id = ms.status_id
-        LEFT JOIN master_status ms1 ON tb.status_id = ms1.status_id
-        LEFT JOIN master_status ms2 ON tb.process_status_id = ms2.status_id
+    CREATE TEMPORARY TABLE temp_tally_list
+    SELECT 
+        -- Conditional logic for last_tally_pay_id based on p_status_id
+        CASE
+            WHEN p_status_id = '23' THEN (SELECT IFNULL(MAX(tally_pay_id), 0) + 1 FROM tally_payment)
+            ELSE
+                CASE
+                    WHEN tb.tally_pay_id IS NOT NULL THEN tb.tally_pay_id
+                    ELSE (SELECT IFNULL(MAX(tally_pay_id), 0) + 1 FROM tally_payment)
+                END
+        END AS last_tally_pay_id,
+        tb.tally_booking_id, 
+        tb.voucher_type,
+        tb.ticket_id, 
+        tb.expense_category_id,
+        ex.category AS expense_category,
+        tb.ticket_dtls_id,
+        tb.tally_pay_id, 
+        tb.paid_amount,
+        tb.`dr/cr`, 
+        tb.status_id AS tally_booking_status_id, 
+        ms1.status AS tally_booking_status,
+        tb.process_status_id AS tally_process_status_id,
+        ms2.status AS tally_process_status,
         
-        LEFT JOIN users u ON t.user_id = u.user_id 
+        t.entity_id,
+        e.entity_name,
+        t.report_id,
+        t.ticket_number,
+        t.cost_center_id,
+        cc.cost_center_name,
+        t.contribution_id,
+        ct.contribution_name,
+        t.granted_amount AS ticket_granted_amount,
+        t.process_status_id AS ticket_process_status_id,
+        ms.status AS ticket_process_status,
+        t.description AS ticket_description,
+        DATE_FORMAT(t.created_at, '%d-%m-%Y') AS ticket_created_date,
+
+        rm.reimb_dtls_id,
+        rm.category_id,
+        cat.category_type,
+        rm.ledger_id,
+        ld.ledger_name,
+        rm.total_expense,
+        rm.m_granted_amount,
+        rm.f_granted_amount,
         
-        LEFT JOIN payments p ON tb.ticket_id = p.ticket_id AND p.status_id =14
-        LEFT JOIN payment_type pt ON p.pay_type_id = pt.pay_type_id
-        LEFT JOIN entities e1 ON p.paid_from = e1.entity_id AND p.route_id IN (1 , 3)
-        LEFT JOIN users u1 ON p.paid_from = u1.user_id AND p.route_id = 2
-        LEFT JOIN vendors v1 ON p.paid_from = v1.vendor_id AND p.route_id = 4
-        LEFT JOIN users u2 ON p.paid_to = u2.user_id AND p.route_id = 1
-        LEFT JOIN entities e2 ON p.paid_to = e2.entity_id AND p.route_id IN (2 , 4)
-        LEFT JOIN vendors v2 ON p.paid_to = v2.vendor_id AND p.route_id = 3
-        LEFT JOIN organization_bank ob_from ON p.paid_from_bank = ob_from.org_bank_id AND p.route_id IN (1 , 3)
-        LEFT JOIN user_bank ub_from ON p.paid_from_bank = ub_from.bank_id AND p.route_id = 2
-        LEFT JOIN vendor_bank vb_from ON p.paid_from_bank = vb_from.vendor_bank_id AND p.route_id = 4
-        LEFT JOIN user_bank ub_to ON p.paid_to_bank = ub_to.bank_id AND p.route_id = 1
-        LEFT JOIN organization_bank ob_to ON p.paid_to_bank = ob_to.org_bank_id AND p.route_id IN (2 , 4)
-        LEFT JOIN vendor_bank vb_to ON p.paid_to_bank = vb_to.vendor_bank_id AND p.route_id = 3
-        LEFT JOIN master_status ms3 ON p.status_id = ms3.status_id
+        u.employee_number,
         
-        LEFT JOIN re_ticket_details rm ON tb.ticket_dtls_id = rm.reimb_dtls_id AND tb.expense_category_id = 1 AND rm.status_id = 1
-        LEFT JOIN categories cat ON rm.category_id = cat.category_id
-        LEFT JOIN ledgers ld ON rm.ledger_id = ld.ledger_id
-        
-        WHERE 
-			tb.status_id = 1 
-			AND (tb.process_status_id = p_status_id OR p_status_id = '*')
-			AND (tb.expense_category_id = p_expense_category_id OR p_expense_category_id = '*')
-			AND (t.entity_id = p_entity_id OR p_entity_id = '*')
-		ORDER BY tb.created_at DESC;
+        p.payment_id,
+        p.transaction_id,
+        p.route_id,
+        p.pay_type_id,
+        pt.pay_type,
+        p.paid_from,
+        CASE
+            WHEN p.route_id = 1 THEN e1.entity_name
+            WHEN p.route_id = 2 THEN u1.user_name
+            WHEN p.route_id = 3 THEN e1.entity_name
+            WHEN p.route_id = 4 THEN v1.vendor_name
+        END AS paid_from_name,
+        p.paid_to,
+        CASE
+            WHEN p.route_id = 1 THEN u2.user_name
+            WHEN p.route_id = 2 THEN e2.entity_name
+            WHEN p.route_id = 3 THEN v2.vendor_name
+            WHEN p.route_id = 4 THEN e2.entity_name
+        END AS paid_to_name,
+        p.paid_from_bank,
+        CASE
+            WHEN p.route_id IN (1 , 3) THEN ob_from.entity_bank_name
+            WHEN p.route_id = 2 THEN ub_from.bank_name
+            WHEN p.route_id = 4 THEN vb_from.bank_name
+        END AS paid_from_bank_name,
+        CASE
+            WHEN p.route_id IN (1 , 3) THEN ob_from.entity_bank_account_no
+            WHEN p.route_id = 2 THEN ub_from.account_number
+            WHEN p.route_id = 4 THEN vb_from.account_number
+        END AS paid_from_account_number,
+        CASE
+            WHEN p.route_id IN (1 , 3) THEN ob_from.entity_name_on_bank
+            WHEN p.route_id = 2 THEN ub_from.name_on_bank
+            WHEN p.route_id = 4 THEN vb_from.name_on_bank
+        END AS paid_from_name_on_bank,
+        CASE
+            WHEN p.route_id IN (1 , 3) THEN ob_from.entity_bank_IFSC
+            WHEN p.route_id = 2 THEN ub_from.IFSC
+            WHEN p.route_id = 4 THEN vb_from.IFSC
+        END AS paid_from_IFSC,
+        CASE
+            WHEN p.route_id IN (1 , 3) THEN ob_from.bank_ledger
+        END AS paid_from_bank_ledger,
+        p.paid_to_bank,
+        CASE
+            WHEN p.route_id = 1 THEN ub_to.bank_name
+            WHEN p.route_id IN (2 , 4) THEN ob_to.entity_bank_name
+            WHEN p.route_id = 3 THEN vb_to.bank_name
+        END AS paid_to_bank_name,
+        CASE
+            WHEN p.route_id = 1 THEN ub_to.account_number
+            WHEN p.route_id IN (2 , 4) THEN ob_to.entity_bank_account_no
+            WHEN p.route_id = 3 THEN vb_to.account_number
+        END AS paid_to_account_number,
+        CASE
+            WHEN p.route_id = 1 THEN ub_to.name_on_bank
+            WHEN p.route_id IN (2 , 4) THEN ob_to.entity_name_on_bank
+            WHEN p.route_id = 3 THEN vb_to.name_on_bank
+        END AS paid_to_name_on_bank,
+        CASE
+            WHEN p.route_id = 1 THEN ub_to.IFSC
+            WHEN p.route_id IN (2 , 4) THEN ob_to.entity_bank_IFSC
+            WHEN p.route_id = 3 THEN vb_to.IFSC
+        END AS paid_to_IFSC,
+        CASE
+            WHEN p.route_id IN (2 , 4) THEN ob_to.bank_ledger
+        END AS paid_to_bank_ledger,
+        p.amount,
+        p.UTR_number,
+        p.status_id AS payment_status_id,
+        ms3.status AS payment_status,
+        DATE_FORMAT(p.payment_date, '%d-%m-%Y') AS payment_date
 
+    FROM tally_booking tb
+    LEFT JOIN tickets t ON tb.ticket_id = t.ticket_id AND t.status_id = 1
+    LEFT JOIN entities e ON t.entity_id = e.entity_id
+    LEFT JOIN cost_center cc ON t.cost_center_id = cc.cost_center_id
+    LEFT JOIN contribution_type ct ON t.contribution_id = ct.contribution_id
+    LEFT JOIN expense_category ex ON tb.expense_category_id = ex.expense_category_id
+    LEFT JOIN master_status ms ON t.process_status_id = ms.status_id
+    LEFT JOIN master_status ms1 ON tb.status_id = ms1.status_id
+    LEFT JOIN master_status ms2 ON tb.process_status_id = ms2.status_id
+    LEFT JOIN users u ON t.user_id = u.user_id 
+    LEFT JOIN payments p ON tb.ticket_id = p.ticket_id AND p.status_id = 14
+    LEFT JOIN payment_type pt ON p.pay_type_id = pt.pay_type_id
+    LEFT JOIN entities e1 ON p.paid_from = e1.entity_id AND p.route_id IN (1 , 3)
+    LEFT JOIN users u1 ON p.paid_from = u1.user_id AND p.route_id = 2
+    LEFT JOIN vendors v1 ON p.paid_from = v1.vendor_id AND p.route_id = 4
+    LEFT JOIN users u2 ON p.paid_to = u2.user_id AND p.route_id = 1
+    LEFT JOIN entities e2 ON p.paid_to = e2.entity_id AND p.route_id IN (2 , 4)
+    LEFT JOIN vendors v2 ON p.paid_to = v2.vendor_id AND p.route_id = 3
+    LEFT JOIN organization_bank ob_from ON p.paid_from_bank = ob_from.org_bank_id AND p.route_id IN (1 , 3)
+    LEFT JOIN user_bank ub_from ON p.paid_from_bank = ub_from.bank_id AND p.route_id = 2
+    LEFT JOIN vendor_bank vb_from ON p.paid_from_bank = vb_from.vendor_bank_id AND p.route_id = 4
+    LEFT JOIN user_bank ub_to ON p.paid_to_bank = ub_to.bank_id AND p.route_id = 1
+    LEFT JOIN organization_bank ob_to ON p.paid_to_bank = ob_to.org_bank_id AND p.route_id IN (2 , 4)
+    LEFT JOIN vendor_bank vb_to ON p.paid_to_bank = vb_to.vendor_bank_id AND p.route_id = 3
+    LEFT JOIN master_status ms3 ON p.status_id = ms3.status_id
+    LEFT JOIN re_ticket_details rm ON tb.ticket_dtls_id = rm.reimb_dtls_id AND tb.expense_category_id = 1 AND rm.status_id = 1
+    LEFT JOIN categories cat ON rm.category_id = cat.category_id
+    LEFT JOIN ledgers ld ON rm.ledger_id = ld.ledger_id
 
-        -- Show data from temp table
-        IF p_limit = '*' THEN
-            SELECT * FROM temp_tally_list;
-        ELSE
-            SET @sql := CONCAT('SELECT * FROM temp_tally_list LIMIT ', CAST(p_limit AS UNSIGNED));
-            PREPARE stmt FROM @sql;
-            EXECUTE stmt;
-            DEALLOCATE PREPARE stmt;
-        END IF;
+    WHERE 
+    tb.status_id = 1 
+    AND (CAST(tb.process_status_id AS CHAR) = p_status_id OR p_status_id = '*')
+    AND (CAST(tb.expense_category_id AS CHAR) = p_expense_category_id OR p_expense_category_id = '*')
+    AND (CAST(t.entity_id AS CHAR) = p_entity_id OR p_entity_id = '*')
+    ORDER BY tb.created_at DESC;
 
-        DROP TEMPORARY TABLE IF EXISTS temp_tally_list;
+    -- Display data from temp table with limit handling
+    IF p_limit = '*' THEN
+		SELECT * FROM temp_tally_list;
+	ELSEIF p_limit REGEXP '^[0-9]+$' THEN
+		SET @sql := CONCAT('SELECT * FROM temp_tally_list LIMIT ', CAST(p_limit AS UNSIGNED));
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt;
+		DEALLOCATE PREPARE stmt;
+	ELSE
+		-- fallback if p_limit is invalid
+		SELECT * FROM temp_tally_list;
+	END IF;
 
-END ;;
+    DROP TEMPORARY TABLE IF EXISTS temp_tally_list;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2178,7 +2171,11 @@ BEGIN
 		JOIN tally_pay_bank tpb ON tb.tally_pay_id = tpb.tally_pay_id 
 								 AND p.paid_from_bank = tpb.bank_id
 		WHERE tb.status_id = 1 AND tb.process_status_id = 24
-		GROUP BY tpb.tally_pay_bank_id, p.paid_from_bank, bank_ledger;
+		GROUP BY tpb.tally_pay_bank_id, p.paid_from_bank, 
+        CASE 
+        WHEN p.route_id IN (1, 3) THEN ob_from.bank_ledger 
+        ELSE NULL 
+    END;
 
 
 		-- Step 6: Update tally_pay_bank using matched bank_id and tally_pay_bank_id
@@ -2212,7 +2209,7 @@ BEGIN
         DROP TEMPORARY TABLE IF EXISTS temp_booking_ids;
         DROP TEMPORARY TABLE IF EXISTS temp_bank_summary;
     END;
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2249,7 +2246,71 @@ BEGIN
     END IF;
 END ;;
 DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_MARK_TICKETS_DELETED_BY_REPORT` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 
+DELIMITER ;;
+
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_MARK_TICKETS_DELETED_BY_REPORT`(
+    IN p_user_id INT,
+    IN p_report_id INT,
+    IN p_remarks TEXT
+)
+BEGIN
+    DECLARE report_exists INT DEFAULT 0;
+
+    -- Step 1: Check if report has status_id = 3
+    SELECT COUNT(*) INTO report_exists
+    FROM reports
+    WHERE report_id = p_report_id AND status_id = 3;
+
+    IF report_exists > 0 THEN
+
+        -- Step 2: Insert into ticket_logs for related tickets before update
+        INSERT INTO ticket_logs (
+            ticket_id,
+            pre_status_id,
+            aft_status_id,
+            created_by,
+            created_at,
+            remarks
+        )
+        SELECT 
+            t.ticket_id,
+            t.status_id AS pre_status_id,
+            3 AS aft_status_id,
+            p_user_id,
+            NOW(),
+            p_remarks
+        FROM tickets t
+        WHERE t.report_id = p_report_id AND t.status_id <> 3;
+
+        -- Step 3: Update tickets status to 3 (Deleted)
+        UPDATE tickets
+        SET status_id = 3
+        WHERE report_id = p_report_id AND status_id <> 3;
+
+        -- Step 4: Return success
+        SELECT 'Deletion Successful' AS Message, 1 AS Success;
+
+    ELSE
+        -- Report not marked as deleted
+        SELECT 'Failed to delete' AS Message, 0 AS Success;
+    END IF;
+END ;;
+
+DELIMITER ;
 
 
 
