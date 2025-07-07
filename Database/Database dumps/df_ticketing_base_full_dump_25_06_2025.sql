@@ -685,7 +685,7 @@ CREATE TABLE `entities` (
 
 LOCK TABLES `entities` WRITE;
 /*!40000 ALTER TABLE `entities` DISABLE KEYS */;
-INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Education Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation');
+INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Educational Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Under Deshpande Foundation');
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1474,7 +1474,7 @@ CREATE TABLE `role_actions` (
 
 LOCK TABLES `role_actions` WRITE;
 /*!40000 ALTER TABLE `role_actions` DISABLE KEYS */;
-INSERT INTO `role_actions` VALUES (1,1,'*',1),(2,2,'home',1),(3,2,'config',1),(4,2,'contactus',1),(5,2,'reports',1),(6,2,'reports/report',1),(7,2,'reports/ticket',1),(8,2,'userprofile',1),(9,3,'home',1),(10,3,'reports',1),(11,3,'reports/report',1),(12,3,'reports/ticket',1),(13,3,'financeapproval',1),(14,3,'financeapproval/ticket',1),(15,3,'contactus',1),(16,3,'userprofile',1),(17,4,'home',1),(18,4,'reports',1),(19,4,'reports/report',1),(20,4,'reports/ticket',1),(21,4,'financeapproval',1),(22,4,'financeapproval/ticket',1),(23,4,'financepanel',1),(24,4,'financepanel/ticket',1),(25,4,'contactus',1),(26,4,'userprofile',1),(27,5,'home',1),(28,5,'operations',1),(29,5,'reports',1),(30,5,'reports/report',1),(31,5,'reports/ticket',1),(32,5,'contactus',1),(33,5,'userprofile',1),(34,6,'home',1),(35,6,'reports',1),(36,6,'reports/report',1),(37,6,'reports/ticket',1),(38,6,'hrportal',1),(39,6,'hrportal/newemployee',1),(40,6,'contactus',1),(41,6,'userprofile',1),(42,7,'home',1),(43,7,'reports',1),(44,7,'reports/report',1),(45,7,'reports/ticket',1),(46,7,'contactus',1),(47,7,'userprofile',1),(48,8,'home',1),(49,8,'reports',1),(50,8,'reports/report',1),(51,8,'reports/ticket',1),(52,8,'myteam',1),(53,8,'myteam/report',1),(54,8,'myteam/ticket',1),(55,8,'contactus',1),(56,8,'userprofile',1),(57,2,'summary',1),(58,3,'summary',1),(59,4,'summary',1);
+INSERT INTO `role_actions` VALUES (1,1,'*',1),(2,2,'home',1),(3,2,'config',1),(4,2,'contactus',1),(5,2,'reports',1),(6,2,'reports/report',1),(7,2,'reports/ticket',1),(8,2,'userprofile',1),(9,3,'home',1),(10,3,'reports',1),(11,3,'reports/report',1),(12,3,'reports/ticket',1),(13,3,'financeapproval',1),(14,3,'financeapproval/ticket',1),(15,3,'contactus',1),(16,3,'userprofile',1),(17,4,'home',1),(18,4,'reports',1),(19,4,'reports/report',1),(20,4,'reports/ticket',1),(21,4,'financeapproval',1),(22,4,'financeapproval/ticket',1),(23,4,'financepanel',1),(24,4,'financepanel/ticket',1),(25,4,'contactus',1),(26,4,'userprofile',1),(27,5,'home',1),(28,5,'operations',1),(29,5,'reports',1),(30,5,'reports/report',1),(31,5,'reports/ticket',1),(32,5,'contactus',1),(33,5,'userprofile',1),(34,6,'home',1),(35,6,'reports',1),(36,6,'reports/report',1),(37,6,'reports/ticket',1),(38,6,'hrportal',1),(39,6,'hrportal/newemployee',1),(40,6,'contactus',1),(41,6,'userprofile',1),(42,7,'home',1),(43,7,'reports',1),(44,7,'reports/report',1),(45,7,'reports/ticket',1),(46,7,'contactus',1),(47,7,'userprofile',1),(48,8,'home',1),(49,8,'reports',1),(50,8,'reports/report',1),(51,8,'reports/ticket',1),(52,8,'myteam',1),(53,8,'myteam/report',1),(54,8,'myteam/ticket',1),(55,8,'contactus',1),(56,8,'userprofile',1),(57,2,'summary',1),(58,3,'summary',1),(59,4,'summary',1),(60,3,'financepanel',1),(61,3,'financepanel/ticket',1);
 /*!40000 ALTER TABLE `role_actions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1506,7 +1506,7 @@ CREATE TABLE `role_menu` (
 
 LOCK TABLES `role_menu` WRITE;
 /*!40000 ALTER TABLE `role_menu` DISABLE KEYS */;
-INSERT INTO `role_menu` VALUES (1,1,1,1),(2,2,1,1),(3,3,1,1),(4,4,1,1),(5,5,1,1),(6,6,1,1),(7,7,1,1),(8,1,2,1),(9,2,2,1),(10,3,2,1),(11,4,2,1),(12,5,2,1),(13,6,2,1),(14,7,2,1),(15,1,9,1),(16,2,9,1),(17,3,9,1),(18,4,9,1),(19,5,9,1),(20,6,9,1),(21,7,9,1),(22,6,3,1),(23,8,4,1),(24,3,5,1),(25,4,5,1),(26,5,6,1),(27,2,3,1),(28,2,7,1),(29,1,3,1),(30,1,4,1),(31,1,5,1),(32,1,6,1),(33,1,7,1),(34,1,8,1),(35,8,1,1),(36,8,2,1),(37,8,9,1),(38,4,10,1),(39,1,10,1),(40,1,11,1),(41,2,11,1),(42,3,11,1),(43,4,11,1);
+INSERT INTO `role_menu` VALUES (1,1,1,1),(2,2,1,1),(3,3,1,1),(4,4,1,1),(5,5,1,1),(6,6,1,1),(7,7,1,1),(8,1,2,1),(9,2,2,1),(10,3,2,1),(11,4,2,1),(12,5,2,1),(13,6,2,1),(14,7,2,1),(15,1,9,1),(16,2,9,1),(17,3,9,1),(18,4,9,1),(19,5,9,1),(20,6,9,1),(21,7,9,1),(22,6,3,1),(23,8,4,1),(24,3,5,1),(25,4,5,1),(26,5,6,1),(27,2,3,1),(28,2,7,1),(29,1,3,1),(30,1,4,1),(31,1,5,1),(32,1,6,1),(33,1,7,1),(34,1,8,1),(35,8,1,1),(36,8,2,1),(37,8,9,1),(38,4,10,1),(39,1,10,1),(40,1,11,1),(41,2,11,1),(42,3,11,1),(43,4,11,1),(44,3,1,1);
 /*!40000 ALTER TABLE `role_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2126,6 +2126,102 @@ LOCK TABLES `vendor_bank` WRITE;
 /*!40000 ALTER TABLE `vendor_bank` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vendor_bank` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `faq`
+--
+
+DROP TABLE IF EXISTS `faq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq` (
+  `faq_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `faq_description` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `solved_description` text,
+  `solved_by` int DEFAULT NULL,
+  `solved_at` datetime DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`faq_id`),
+  KEY `user_id` (`user_id`),
+  KEY `solved_by` (`solved_by`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `faq_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `faq_ibfk_2` FOREIGN KEY (`solved_by`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `faq_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq`
+--
+
+LOCK TABLES `faq` WRITE;
+/*!40000 ALTER TABLE `faq` DISABLE KEYS */;
+/*!40000 ALTER TABLE `faq` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `faq_files`
+--
+
+DROP TABLE IF EXISTS `faq_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq_files` (
+  `faq_file_id` int NOT NULL AUTO_INCREMENT,
+  `faq_id` int DEFAULT NULL,
+  `file_path` text,
+  `faq_type` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`faq_file_id`),
+  KEY `faq_id` (`faq_id`),
+  CONSTRAINT `faq_files_ibfk_1` FOREIGN KEY (`faq_id`) REFERENCES `faq` (`faq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq_files`
+--
+
+LOCK TABLES `faq_files` WRITE;
+/*!40000 ALTER TABLE `faq_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `faq_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `query_chat`
+--
+
+DROP TABLE IF EXISTS `query_chat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `query_chat` (
+  `query_chat_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `faq_id` int DEFAULT NULL,
+  `query_chat` text,
+  `created_at` datetime DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`query_chat_id`),
+  KEY `user_id` (`user_id`),
+  KEY `faq_id` (`faq_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `query_chat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `query_chat_ibfk_2` FOREIGN KEY (`faq_id`) REFERENCES `faq` (`faq_id`),
+  CONSTRAINT `query_chat_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `query_chat`
+--
+
+LOCK TABLES `query_chat` WRITE;
+/*!40000 ALTER TABLE `query_chat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `query_chat` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 --
 -- Table structure for table `vendors`
@@ -2980,22 +3076,6 @@ BEGIN
         WHERE entity_name = p_entity_name AND status_id = 1
         LIMIT 1;
 
-        IF v_entity_id IS NULL THEN
-            INSERT INTO entities (org_id, entity_name, status_id)
-            VALUES (p_org_id, p_entity_name, 1);
-            SET v_entity_id = LAST_INSERT_ID();
-        END IF;
-
-        -- Check or insert into academic_entity
-        IF v_year_id IS NOT NULL AND v_entity_id IS NOT NULL THEN
-            IF NOT EXISTS (
-                SELECT 1 FROM academic_entity
-                WHERE entity_id = v_entity_id AND year_id = v_year_id AND status_id = 1
-            ) THEN
-                INSERT INTO academic_entity (entity_id, year_id, status_id)
-                VALUES (v_entity_id, v_year_id, 1);
-            END IF;
-        END IF;
     END IF;
 
     -- Process cost center
@@ -3061,7 +3141,7 @@ BEGIN
         v_department_id AS department_id,
         v_sub_department_id AS sub_department_id;
 
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3821,7 +3901,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_USERS_FA_FP_BY_ENTITY` */;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_FA_FP_BY_ENTITY` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -3831,7 +3911,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USERS_FA_FP_BY_ENTITY`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_FA_FP_BY_ENTITY`(
     p_entity_id INT
 )
 BEGIN
@@ -3849,10 +3929,10 @@ BEGIN
     INNER JOIN 
         roles r ON ur.role_id = r.role_id
     WHERE 
-        u.entity_id = p_entity_id
+        (u.entity_id = p_entity_id OR (p_entity_id = 4 AND u.entity_id = 1))
         AND ur.status_id = 1
         AND ur.role_id IN (3, 4);
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4406,6 +4486,180 @@ BEGIN
         WHERE report_id = p_report_id;
     END IF;
 END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_EDIT_REPORT_DATE_DESCRIPTION` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EDIT_REPORT_DATE_DESCRIPTION`(
+	IN p_user_id INT,
+    IN p_report_id INT,
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_description TEXT,
+    IN p_edit_description TEXT
+)
+proc: BEGIN
+    -- Variable declarations
+    DECLARE rpt_start_date DATE;
+    DECLARE rpt_end_date DATE;
+    DECLARE rpt_description TEXT;
+    DECLARE v_ticket_id INT;
+    DECLARE v_reimb_dtls_id INT;
+    DECLARE v_category_id INT;
+    DECLARE v_min_date DATE;
+    DECLARE v_max_date DATE;
+    DECLARE done INT DEFAULT FALSE;
+
+    -- Cursor for looping through tickets
+    DECLARE cur_tk CURSOR FOR
+        SELECT t.ticket_id
+        FROM tickets t
+        WHERE t.report_id = p_report_id AND t.exp_catg_id = 1 AND status_id =1;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    -- Step 1: Get report details
+    SELECT start_date, end_date, description
+    INTO rpt_start_date, rpt_end_date, rpt_description
+    FROM reports
+    WHERE report_id = p_report_id AND user_id = p_user_id AND status_id =1;
+
+    -- Step 2: Loop through tickets and get min/max date range
+    OPEN cur_tk;
+
+    read_loop: LOOP
+        FETCH cur_tk INTO v_ticket_id;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        SELECT reimb_dtls_id, category_id
+        INTO v_reimb_dtls_id, v_category_id
+        FROM re_ticket_details
+        WHERE ticket_id = v_ticket_id AND status_id=1
+        LIMIT 1;
+
+        IF v_category_id = 1 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, date), MIN(date)),
+                GREATEST(IFNULL(v_max_date, date), MAX(date))
+            INTO v_min_date, v_max_date
+            FROM food
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+        ELSEIF v_category_id = 2 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, travel_date), MIN(travel_date)),
+                GREATEST(IFNULL(v_max_date, travel_date), MAX(travel_date))
+            INTO v_min_date, v_max_date
+            FROM travels
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+        ELSEIF v_category_id = 3 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, check_in_date), MIN(check_in_date)),
+                GREATEST(IFNULL(v_max_date, check_out_date), MAX(check_out_date))
+            INTO v_min_date, v_max_date
+            FROM accommodation
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+        ELSEIF v_category_id = 4 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, date), MIN(date)),
+                GREATEST(IFNULL(v_max_date, date), MAX(date))
+            INTO v_min_date, v_max_date
+            FROM reimb_others
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+        END IF;
+    END LOOP;
+
+    CLOSE cur_tk;
+
+    -- Step 3: If tickets exist, validate ticket date range
+    IF v_min_date IS NOT NULL AND v_max_date IS NOT NULL THEN
+        IF p_start_date > v_min_date OR p_end_date < v_max_date THEN
+            SELECT 
+                CONCAT('Cannot Edit: Tickets have entries between ', DATE_FORMAT(v_min_date, '%d-%m-%Y'),
+                       ' and ', DATE_FORMAT(v_max_date, '%d-%m-%Y'), '. Please ensure new dates cover this range.') AS Message,
+                0 AS Success;
+            LEAVE proc;
+        END IF;
+    END IF;
+
+    -- Step 4: No Change Detected
+    IF rpt_start_date = p_start_date AND
+       rpt_end_date = p_end_date AND
+       rpt_description = p_description THEN
+        SELECT 'No Change Detected, Everything is Same' AS Message, 0 AS Success;
+        LEAVE proc;
+    END IF;
+
+    -- Step 5: Apply changes and track history
+    IF rpt_description <> p_description AND rpt_start_date = p_start_date AND rpt_end_date = p_end_date THEN
+        -- Only description changed
+        INSERT INTO report_history (report_id, description, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_description, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET description = p_description,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'Description Edited Successfully' AS Message, 1 AS Success;
+
+    ELSEIF rpt_start_date <> p_start_date AND rpt_end_date = p_end_date AND rpt_description = p_description THEN
+        -- Only start_date changed
+        INSERT INTO report_history (report_id, start_date, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_start_date, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET start_date = p_start_date,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'Start Date Edited Successfully' AS Message, 1 AS Success;
+
+    ELSEIF rpt_end_date <> p_end_date AND rpt_start_date = p_start_date AND rpt_description = p_description THEN
+        -- Only end_date changed
+        INSERT INTO report_history (report_id, end_date, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_end_date, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET end_date = p_end_date,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'End Date Edited Successfully' AS Message, 1 AS Success;
+
+    ELSE
+        -- Multiple fields changed
+        INSERT INTO report_history (report_id, start_date, end_date, description, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_start_date, rpt_end_date, rpt_description, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET start_date = p_start_date,
+            end_date = p_end_date,
+            description = p_description,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'Date and Description Edited Successfully' AS Message, 1 AS Success;
+    END IF;
+
+END;;
+
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;

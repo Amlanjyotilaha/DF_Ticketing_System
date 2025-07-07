@@ -752,3 +752,37 @@ UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank
 UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '27');
 
 */
+
+/* **************************************************************** 
+<-- 02/07/2025-->
+******************************************************************* */
+
+/*
+-- DF Finance inserted as an user 
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`,`cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DF Finance', 'dfpayments@dfmail.org', '1','1', 'Finance Approver','DCSE Building, B, V.B. Campus, Vidya Nagar,', '0', '1', NOW());
+
+-- Pavan Given FP access, Seema given Onboarder access, DF Finance given user and FA access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('35', '3', NOW(), 'System', '1'), ('48', '6', NOW(), 'System', '1'),('71', '7', NOW(), 'System', '1'),('71', '4', NOW(), 'System', '1');
+*/
+
+/* **************************************************************** 
+<-- 04/07/2025-->
+******************************************************************* */
+
+/*
+--FP Given access to Finance Fanel menu and finance panel action
+INSERT INTO `df_ticketing`.`role_menu` (`role_id`, `menu_id`, `status_id`) VALUES ('3', '10', '1');
+INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VALUES ('3', 'financepanel', '1');
+INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VALUES ('3', 'financepanel/ticket', '1');
+
+*/
+
+/* **************************************************************** 
+<-- 07/07/2025-->
+******************************************************************* */
+
+/*
+-- Jayathirtha Y S given access of FA and FP
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('18', '3', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('18', '4',NOW(), 'System', '1');
+*/

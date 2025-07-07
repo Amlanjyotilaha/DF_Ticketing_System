@@ -819,22 +819,6 @@ BEGIN
         WHERE entity_name = p_entity_name AND status_id = 1
         LIMIT 1;
 
-        IF v_entity_id IS NULL THEN
-            INSERT INTO entities (org_id, entity_name, status_id)
-            VALUES (p_org_id, p_entity_name, 1);
-            SET v_entity_id = LAST_INSERT_ID();
-        END IF;
-
-        -- Check or insert into academic_entity
-        IF v_year_id IS NOT NULL AND v_entity_id IS NOT NULL THEN
-            IF NOT EXISTS (
-                SELECT 1 FROM academic_entity
-                WHERE entity_id = v_entity_id AND year_id = v_year_id AND status_id = 1
-            ) THEN
-                INSERT INTO academic_entity (entity_id, year_id, status_id)
-                VALUES (v_entity_id, v_year_id, 1);
-            END IF;
-        END IF;
     END IF;
 
     -- Process cost center
@@ -900,7 +884,7 @@ BEGIN
         v_department_id AS department_id,
         v_sub_department_id AS sub_department_id;
 
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1660,7 +1644,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_USERS_FA_FP_BY_ENTITY` */;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_GET_FA_FP_BY_ENTITY` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1670,7 +1654,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USERS_FA_FP_BY_ENTITY`(
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_FA_FP_BY_ENTITY`(
     p_entity_id INT
 )
 BEGIN
@@ -1688,10 +1672,10 @@ BEGIN
     INNER JOIN 
         roles r ON ur.role_id = r.role_id
     WHERE 
-        u.entity_id = p_entity_id
+        (u.entity_id = p_entity_id OR (p_entity_id = 4 AND u.entity_id = 1))
         AND ur.status_id = 1
         AND ur.role_id IN (3, 4);
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2311,6 +2295,181 @@ BEGIN
 END ;;
 
 DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_EDIT_REPORT_DATE_DESCRIPTION` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EDIT_REPORT_DATE_DESCRIPTION`(
+	IN p_user_id INT,
+    IN p_report_id INT,
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_description TEXT,
+    IN p_edit_description TEXT
+)
+proc: BEGIN
+    -- Variable declarations
+    DECLARE rpt_start_date DATE;
+    DECLARE rpt_end_date DATE;
+    DECLARE rpt_description TEXT;
+    DECLARE v_ticket_id INT;
+    DECLARE v_reimb_dtls_id INT;
+    DECLARE v_category_id INT;
+    DECLARE v_min_date DATE;
+    DECLARE v_max_date DATE;
+    DECLARE done INT DEFAULT FALSE;
+
+    -- Cursor for looping through tickets
+    DECLARE cur_tk CURSOR FOR
+        SELECT t.ticket_id
+        FROM tickets t
+        WHERE t.report_id = p_report_id AND t.exp_catg_id = 1 AND status_id =1;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    -- Step 1: Get report details
+    SELECT start_date, end_date, description
+    INTO rpt_start_date, rpt_end_date, rpt_description
+    FROM reports
+    WHERE report_id = p_report_id AND user_id = p_user_id AND status_id =1;
+
+    -- Step 2: Loop through tickets and get min/max date range
+    OPEN cur_tk;
+
+    read_loop: LOOP
+        FETCH cur_tk INTO v_ticket_id;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        SELECT reimb_dtls_id, category_id
+        INTO v_reimb_dtls_id, v_category_id
+        FROM re_ticket_details
+        WHERE ticket_id = v_ticket_id AND status_id=1
+        LIMIT 1;
+
+        IF v_category_id = 1 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, date), MIN(date)),
+                GREATEST(IFNULL(v_max_date, date), MAX(date))
+            INTO v_min_date, v_max_date
+            FROM food
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+        ELSEIF v_category_id = 2 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, travel_date), MIN(travel_date)),
+                GREATEST(IFNULL(v_max_date, travel_date), MAX(travel_date))
+            INTO v_min_date, v_max_date
+            FROM travels
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+        ELSEIF v_category_id = 3 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, check_in_date), MIN(check_in_date)),
+                GREATEST(IFNULL(v_max_date, check_out_date), MAX(check_out_date))
+            INTO v_min_date, v_max_date
+            FROM accommodation
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+        ELSEIF v_category_id = 4 THEN
+            SELECT 
+                LEAST(IFNULL(v_min_date, date), MIN(date)),
+                GREATEST(IFNULL(v_max_date, date), MAX(date))
+            INTO v_min_date, v_max_date
+            FROM reimb_others
+            WHERE reimb_dtls_id = v_reimb_dtls_id;
+        END IF;
+    END LOOP;
+
+    CLOSE cur_tk;
+
+    -- Step 3: If tickets exist, validate ticket date range
+    IF v_min_date IS NOT NULL AND v_max_date IS NOT NULL THEN
+        IF p_start_date > v_min_date OR p_end_date < v_max_date THEN
+            SELECT 
+                CONCAT('Cannot Edit: Tickets have entries between ', DATE_FORMAT(v_min_date, '%d-%m-%Y'),
+                       ' and ', DATE_FORMAT(v_max_date, '%d-%m-%Y'), '. Please ensure new dates cover this range.') AS Message,
+                0 AS Success;
+            LEAVE proc;
+        END IF;
+    END IF;
+
+    -- Step 4: No Change Detected
+    IF rpt_start_date = p_start_date AND
+       rpt_end_date = p_end_date AND
+       rpt_description = p_description THEN
+        SELECT 'No Change Detected, Everything is Same' AS Message, 0 AS Success;
+        LEAVE proc;
+    END IF;
+
+    -- Step 5: Apply changes and track history
+    IF rpt_description <> p_description AND rpt_start_date = p_start_date AND rpt_end_date = p_end_date THEN
+        -- Only description changed
+        INSERT INTO report_history (report_id, description, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_description, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET description = p_description,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'Description Edited Successfully' AS Message, 1 AS Success;
+
+    ELSEIF rpt_start_date <> p_start_date AND rpt_end_date = p_end_date AND rpt_description = p_description THEN
+        -- Only start_date changed
+        INSERT INTO report_history (report_id, start_date, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_start_date, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET start_date = p_start_date,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'Start Date Edited Successfully' AS Message, 1 AS Success;
+
+    ELSEIF rpt_end_date <> p_end_date AND rpt_start_date = p_start_date AND rpt_description = p_description THEN
+        -- Only end_date changed
+        INSERT INTO report_history (report_id, end_date, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_end_date, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET end_date = p_end_date,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'End Date Edited Successfully' AS Message, 1 AS Success;
+
+    ELSE
+        -- Multiple fields changed
+        INSERT INTO report_history (report_id, start_date, end_date, description, updated_by, updated_at, edit_description)
+        VALUES (p_report_id, rpt_start_date, rpt_end_date, rpt_description, p_user_id, NOW(), p_edit_description);
+
+        UPDATE reports
+        SET start_date = p_start_date,
+            end_date = p_end_date,
+            description = p_description,
+            updated_at = NOW()
+        WHERE report_id = p_report_id;
+
+        SELECT 'Date and Description Edited Successfully' AS Message, 1 AS Success;
+    END IF;
+
+END;;
+
+DELIMITER ;
+
 
 
 

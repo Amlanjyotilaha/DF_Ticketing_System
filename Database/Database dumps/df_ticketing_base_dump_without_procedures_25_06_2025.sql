@@ -685,7 +685,7 @@ CREATE TABLE `entities` (
 
 LOCK TABLES `entities` WRITE;
 /*!40000 ALTER TABLE `entities` DISABLE KEYS */;
-INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Education Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation');
+INSERT INTO `entities` VALUES (1,1,'Deshpande Foundation','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Deshpande Foundation'),(2,1,'Deshpande Educational Trust','9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021','DE',1,NULL,'Deshpande Skilling'),(3,1,'Foundation for Sandboxstartup Initiatives','Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030','DS',1,NULL,'Deshpande Startup'),(4,1,'USF','DCSE Building, B, V.B. Campus, Vidya Nagar, Hubballi, Karnataka 580031','DF',1,NULL,'Under Deshpande Foundation');
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1474,7 +1474,7 @@ CREATE TABLE `role_actions` (
 
 LOCK TABLES `role_actions` WRITE;
 /*!40000 ALTER TABLE `role_actions` DISABLE KEYS */;
-INSERT INTO `role_actions` VALUES (1,1,'*',1),(2,2,'home',1),(3,2,'config',1),(4,2,'contactus',1),(5,2,'reports',1),(6,2,'reports/report',1),(7,2,'reports/ticket',1),(8,2,'userprofile',1),(9,3,'home',1),(10,3,'reports',1),(11,3,'reports/report',1),(12,3,'reports/ticket',1),(13,3,'financeapproval',1),(14,3,'financeapproval/ticket',1),(15,3,'contactus',1),(16,3,'userprofile',1),(17,4,'home',1),(18,4,'reports',1),(19,4,'reports/report',1),(20,4,'reports/ticket',1),(21,4,'financeapproval',1),(22,4,'financeapproval/ticket',1),(23,4,'financepanel',1),(24,4,'financepanel/ticket',1),(25,4,'contactus',1),(26,4,'userprofile',1),(27,5,'home',1),(28,5,'operations',1),(29,5,'reports',1),(30,5,'reports/report',1),(31,5,'reports/ticket',1),(32,5,'contactus',1),(33,5,'userprofile',1),(34,6,'home',1),(35,6,'reports',1),(36,6,'reports/report',1),(37,6,'reports/ticket',1),(38,6,'hrportal',1),(39,6,'hrportal/newemployee',1),(40,6,'contactus',1),(41,6,'userprofile',1),(42,7,'home',1),(43,7,'reports',1),(44,7,'reports/report',1),(45,7,'reports/ticket',1),(46,7,'contactus',1),(47,7,'userprofile',1),(48,8,'home',1),(49,8,'reports',1),(50,8,'reports/report',1),(51,8,'reports/ticket',1),(52,8,'myteam',1),(53,8,'myteam/report',1),(54,8,'myteam/ticket',1),(55,8,'contactus',1),(56,8,'userprofile',1),(57,2,'summary',1),(58,3,'summary',1),(59,4,'summary',1);
+INSERT INTO `role_actions` VALUES (1,1,'*',1),(2,2,'home',1),(3,2,'config',1),(4,2,'contactus',1),(5,2,'reports',1),(6,2,'reports/report',1),(7,2,'reports/ticket',1),(8,2,'userprofile',1),(9,3,'home',1),(10,3,'reports',1),(11,3,'reports/report',1),(12,3,'reports/ticket',1),(13,3,'financeapproval',1),(14,3,'financeapproval/ticket',1),(15,3,'contactus',1),(16,3,'userprofile',1),(17,4,'home',1),(18,4,'reports',1),(19,4,'reports/report',1),(20,4,'reports/ticket',1),(21,4,'financeapproval',1),(22,4,'financeapproval/ticket',1),(23,4,'financepanel',1),(24,4,'financepanel/ticket',1),(25,4,'contactus',1),(26,4,'userprofile',1),(27,5,'home',1),(28,5,'operations',1),(29,5,'reports',1),(30,5,'reports/report',1),(31,5,'reports/ticket',1),(32,5,'contactus',1),(33,5,'userprofile',1),(34,6,'home',1),(35,6,'reports',1),(36,6,'reports/report',1),(37,6,'reports/ticket',1),(38,6,'hrportal',1),(39,6,'hrportal/newemployee',1),(40,6,'contactus',1),(41,6,'userprofile',1),(42,7,'home',1),(43,7,'reports',1),(44,7,'reports/report',1),(45,7,'reports/ticket',1),(46,7,'contactus',1),(47,7,'userprofile',1),(48,8,'home',1),(49,8,'reports',1),(50,8,'reports/report',1),(51,8,'reports/ticket',1),(52,8,'myteam',1),(53,8,'myteam/report',1),(54,8,'myteam/ticket',1),(55,8,'contactus',1),(56,8,'userprofile',1),(57,2,'summary',1),(58,3,'summary',1),(59,4,'summary',1),(60,3,'financepanel',1),(61,3,'financepanel/ticket',1);
 /*!40000 ALTER TABLE `role_actions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1506,7 +1506,7 @@ CREATE TABLE `role_menu` (
 
 LOCK TABLES `role_menu` WRITE;
 /*!40000 ALTER TABLE `role_menu` DISABLE KEYS */;
-INSERT INTO `role_menu` VALUES (1,1,1,1),(2,2,1,1),(3,3,1,1),(4,4,1,1),(5,5,1,1),(6,6,1,1),(7,7,1,1),(8,1,2,1),(9,2,2,1),(10,3,2,1),(11,4,2,1),(12,5,2,1),(13,6,2,1),(14,7,2,1),(15,1,9,1),(16,2,9,1),(17,3,9,1),(18,4,9,1),(19,5,9,1),(20,6,9,1),(21,7,9,1),(22,6,3,1),(23,8,4,1),(24,3,5,1),(25,4,5,1),(26,5,6,1),(27,2,3,1),(28,2,7,1),(29,1,3,1),(30,1,4,1),(31,1,5,1),(32,1,6,1),(33,1,7,1),(34,1,8,1),(35,8,1,1),(36,8,2,1),(37,8,9,1),(38,4,10,1),(39,1,10,1),(40,1,11,1),(41,2,11,1),(42,3,11,1),(43,4,11,1);
+INSERT INTO `role_menu` VALUES (1,1,1,1),(2,2,1,1),(3,3,1,1),(4,4,1,1),(5,5,1,1),(6,6,1,1),(7,7,1,1),(8,1,2,1),(9,2,2,1),(10,3,2,1),(11,4,2,1),(12,5,2,1),(13,6,2,1),(14,7,2,1),(15,1,9,1),(16,2,9,1),(17,3,9,1),(18,4,9,1),(19,5,9,1),(20,6,9,1),(21,7,9,1),(22,6,3,1),(23,8,4,1),(24,3,5,1),(25,4,5,1),(26,5,6,1),(27,2,3,1),(28,2,7,1),(29,1,3,1),(30,1,4,1),(31,1,5,1),(32,1,6,1),(33,1,7,1),(34,1,8,1),(35,8,1,1),(36,8,2,1),(37,8,9,1),(38,4,10,1),(39,1,10,1),(40,1,11,1),(41,2,11,1),(42,3,11,1),(43,4,11,1),(44,3,1,1);
 /*!40000 ALTER TABLE `role_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2126,6 +2126,102 @@ LOCK TABLES `vendor_bank` WRITE;
 /*!40000 ALTER TABLE `vendor_bank` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vendor_bank` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `faq`
+--
+
+DROP TABLE IF EXISTS `faq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq` (
+  `faq_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `faq_description` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `solved_description` text,
+  `solved_by` int DEFAULT NULL,
+  `solved_at` datetime DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`faq_id`),
+  KEY `user_id` (`user_id`),
+  KEY `solved_by` (`solved_by`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `faq_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `faq_ibfk_2` FOREIGN KEY (`solved_by`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `faq_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq`
+--
+
+LOCK TABLES `faq` WRITE;
+/*!40000 ALTER TABLE `faq` DISABLE KEYS */;
+/*!40000 ALTER TABLE `faq` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `faq_files`
+--
+
+DROP TABLE IF EXISTS `faq_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq_files` (
+  `faq_file_id` int NOT NULL AUTO_INCREMENT,
+  `faq_id` int DEFAULT NULL,
+  `file_path` text,
+  `faq_type` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`faq_file_id`),
+  KEY `faq_id` (`faq_id`),
+  CONSTRAINT `faq_files_ibfk_1` FOREIGN KEY (`faq_id`) REFERENCES `faq` (`faq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq_files`
+--
+
+LOCK TABLES `faq_files` WRITE;
+/*!40000 ALTER TABLE `faq_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `faq_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `query_chat`
+--
+
+DROP TABLE IF EXISTS `query_chat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `query_chat` (
+  `query_chat_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `faq_id` int DEFAULT NULL,
+  `query_chat` text,
+  `created_at` datetime DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`query_chat_id`),
+  KEY `user_id` (`user_id`),
+  KEY `faq_id` (`faq_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `query_chat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `query_chat_ibfk_2` FOREIGN KEY (`faq_id`) REFERENCES `faq` (`faq_id`),
+  CONSTRAINT `query_chat_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `query_chat`
+--
+
+LOCK TABLES `query_chat` WRITE;
+/*!40000 ALTER TABLE `query_chat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `query_chat` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 --
 -- Table structure for table `vendors`
