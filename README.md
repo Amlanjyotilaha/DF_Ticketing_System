@@ -20,9 +20,9 @@
 2. [🧩 Overall Description](#2--overall-description)
 3. [🔧 System Features and Requirements](#3--system-features-and-requirements)
 4. [👤 Module Breakdown by Role](#4--module-breakdown-by-role)
-5. [⚙️ Non-Functional Requirements](#5--non-functional-requirements)
-6. [🗂️ Deployment Architecture](#6--deployment-architecture)
-7. [🗄️ Database Overview](#7--database-overview)
+5. [⚙️ Non-Functional Requirements](#5-%EF%B8%8F-non-functional-requirements)
+6. [🗂️ Deployment Architecture](#6-%EF%B8%8F-deployment-architecture)
+7. [🗄️ Database Overview](#7-%EF%B8%8F-database-overview)
 8. [💻 Software Requirements](#8--software-requirements)
 
 ---
