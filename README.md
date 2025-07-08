@@ -86,6 +86,8 @@ Defines the functional and non-functional requirements for the DF_Ticketing Syst
 * Tally + Bank export supported  
 * Applies to food, travel, stay, vehicles
 
+[🔝 Top](#-table-of-contents)
+
 ---
 
 ## 3. 🔧 System Features and Requirements
@@ -161,6 +163,8 @@ Upload PR, PO, WO, invoices, bills, UTRs
 3. Upload UTR  
 4. Status: `Paid` / `Closed`  
 
+[🔝 Top](#-table-of-contents)
+
 ---
 
 ## 4. 👤 Module Breakdown by Role
@@ -173,6 +177,8 @@ Upload PR, PO, WO, invoices, bills, UTRs
 | 👥 HR | HOME, REPORT, HRPORTAL, CONTACT US |  
 | 🛠️ Admin | HOME, REPORT, HRPORTAL, MY TEAM, FINANCE APPROVAL, FINANCE PANEL, SUMMARY, CONFIG, CONTACT US |
 
+[🔝 Top](#-table-of-contents)
+
 ---
 
 ## 5. ⚙️ Non-Functional Requirements
@@ -184,6 +190,8 @@ Upload PR, PO, WO, invoices, bills, UTRs
 * 🧼 Clean codebase  
 * 📱 Responsive UI  
 * 🌍 Cross-browser support  
+
+[🔝 Top](#-table-of-contents)
 
 ---
 
@@ -205,6 +213,9 @@ Upload PR, PO, WO, invoices, bills, UTRs
 
 📊 **Workflow:**
 User → API → Backend → DB → Notification/Export → Frontend Update  
+
+
+[🔝 Top](#-table-of-contents)
 
 ---
 
@@ -231,6 +242,9 @@ User → API → Backend → DB → Notification/Export → Frontend Update
 | `tally_payment` | Tally integration fields |  
 | … | *(See full list above)* |
 
+
+[🔝 Top](#-table-of-contents)
+
 ---
 
 ## 8. 💻 Software Requirements
@@ -250,6 +264,7 @@ User → API → Backend → DB → Notification/Export → Frontend Update
 | express-validator | ✅ Validation |  
 | Bcrypt | 🔒 Password Hashing |
 
+[🔝 Top](#-table-of-contents)
 
 <br><br>
 <div align="center">
