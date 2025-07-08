@@ -5,7 +5,8 @@
 # 🧾 DF_Ticketing System Overview
 
 
-![SRS Infographics-1](https://github.com/user-attachments/assets/cae8b492-1777-4006-926d-cf323359d907)
+![SRS Infographics-1](https://github.com/user-attachments/assets/3e19b1f1-96e4-4f6e-9676-2ebb730455e8)
+
 
 ## 📄 Software Requirements Specification (SRS)
 
