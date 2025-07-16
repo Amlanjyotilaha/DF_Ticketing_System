@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: DF_Ticketing System Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- 
+    Palette Name: Brilliant Blues 
+    HEX Codes: #004AAD, #0062D5, #4292FF, #8BC1FF, #D6EBFF
+
+    Narrative Plan:
+    1. Introduction: High-level overview - What is the system and who is it for?
+    2. System Architecture & Tech Stack: How is it built? Visualize the 3-tier architecture.
+    3. Core Workflows: Detail the Reimbursement, Procurement, and Advance processes using flowcharts.
+    4. Roles & Data Universe: Illustrate user roles, their permissions, and the database structure.
+    5. Key Features: Summarize main functionalities.
+
+    Visualization Choices (NO SVG, NO MERMAID JS):
+    - Key Metrics (e.g., 3 Workflows): Goal: Inform -> Big Number -> Styled HTML.
+    - 3-Tier Architecture: Goal: Organize -> Flow Chart -> Structured HTML/CSS with Tailwind.
+    - Tech Stack: Goal: Organize -> List -> Styled HTML with Unicode characters.
+    - Workflows (Reimbursement, etc.): Goal: Organize -> Flow Chart -> Structured HTML/CSS with Tailwind.
+    - Role Distribution: Goal: Compare -> Donut Chart -> Chart.js (Canvas).
+    - Module Access: Goal: Organize -> Table -> Styled HTML `<table>`.
+    - Database Composition: Goal: Compare -> Bar Chart -> Chart.js (Canvas).
+    - Key Features: Goal: Inform -> Pictograph -> Styled HTML with Unicode characters.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flowchart-node {
+            border: 2px solid #8BC1FF;
+            background-color: #D6EBFF;
+            color: #004AAD;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flowchart-node-decision {
+            transform: rotate(45deg);
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+        }
+        .flowchart-node-decision .text {
+            transform: rotate(-45deg);
+        }
+        .flowchart-arrow {
+            position: relative;
+            height: 50px;
+            width: 2px;
+            background-color: #0062D5;
+            margin: 0 auto;
+        }
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #0062D5;
+        }
+        .flowchart-line {
+            height: 2px;
+            background-color: #0062D5;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-[#004AAD] text-white p-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold">DF_Ticketing System</h1>
+        <p class="mt-2 text-lg text-[#D6EBFF]">A Visual Overview of the Financial Workflow Engine</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="introduction" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-[#004AAD]">System at a Glance</h2>
+                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">The DF_Ticketing System is a comprehensive, web-based platform designed to streamline and automate financial requests across the Deshpande Foundation and its associated entities.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#0062D5]">
+                    <p class="text-5xl font-extrabold text-[#004AAD]">3</p>
+                    <p class="text-xl font-semibold text-gray-700 mt-2">Core Workflows</p>
+                    <p class="text-gray-500">Reimbursement, Procurement, and Advance</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#0062D5]">
+                    <p class="text-5xl font-extrabold text-[#004AAD]">5+</p>
+                    <p class="text-xl font-semibold text-gray-700 mt-2">User Roles</p>
+                    <p class="text-gray-500">From Employees to Admins and Finance</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#0062D5]">
+                    <p class="text-5xl font-extrabold text-[#004AAD]">3+</p>
+                    <p class="text-xl font-semibold text-gray-700 mt-2">Supported Entities</p>
+                    <p class="text-gray-500">DF, DET, Sandbox Startups, and more</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-8">System Architecture & Technology</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                    <div class="md:col-span-3">
+                        <h3 class="font-bold text-xl mb-4 text-[#0062D5]">Three-Tier Logical Architecture</h3>
+                        <p class="text-gray-600 mb-6">The system is built on a robust and scalable 3-tier model, separating concerns for maintainability and performance. This structure ensures a clear data flow from user interaction to data storage.</p>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-[#004AAD]">① Presentation Layer (Frontend)</h4>
+                                <p class="text-sm text-gray-600">Built with <span class="font-semibold">ReactJS</span>. Manages the user interface and all client-side interactions.</p>
+                            </div>
+                            <div class="text-center text-2xl font-bold text-blue-400">↓</div>
+                            <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-[#004AAD]">② Application Layer (Backend)</h4>
+                                <p class="text-sm text-gray-600">Powered by <span class="font-semibold">NodeJS & Express.js</span>. Contains all business logic, handles API requests, and enforces security.</p>
+                            </div>
+                             <div class="text-center text-2xl font-bold text-blue-400">↓</div>
+                            <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-[#004AAD]">③ Data Layer (Database)</h4>
+                                <p class="text-sm text-gray-600">Utilizes <span class="font-semibold">MySQL</span>. Responsible for the persistent storage and retrieval of all system data.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h3 class="font-bold text-xl mb-4 text-[#0062D5]">Technology Stack</h3>
+                        <p class="text-gray-600 mb-6">A modern, reliable stack ensures the system is secure, performant, and developer-friendly.</p>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-gray-100 p-4 rounded-lg"><span class="text-3xl">💻</span><p class="font-semibold mt-2">ReactJS</p></div>
+                            <div class="bg-gray-100 p-4 rounded-lg"><span class="text-3xl">⚙️</span><p class="font-semibold mt-2">NodeJS</p></div>
+                            <div class="bg-gray-100 p-4 rounded-lg"><span class="text-3xl">🗃️</span><p class="font-semibold mt-2">MySQL</p></div>
+                            <div class="bg-gray-100 p-4 rounded-lg"><span class="text-3xl">☁️</span><p class="font-semibold mt-2">AWS EC2</p></div>
+                            <div class="bg-gray-100 p-4 rounded-lg"><span class="text-3xl">🔑</span><p class="font-semibold mt-2">JWT Auth</p></div>
+                            <div class="bg-gray-100 p-4 rounded-lg"><span class="text-3xl">🔄</span><p class="font-semibold mt-2">Axios API</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflows" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-8">Core Financial Workflows</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-[#0062D5] mb-6 text-center">Reimbursement Workflow</h3>
+                    <div class="flex flex-col items-center">
+                        <div class="flowchart-node">User Creates Ticket & Uploads Bills</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Manager Review & Approval</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Finance Processor Verification</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Finance Approver Final Check</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Payment Processed & UTR Uploaded</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node bg-green-100 border-green-300 text-green-800">Ticket Closed</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-[#0062D5] mb-6 text-center">Procurement Workflow</h3>
+                     <div class="flex flex-col items-center">
+                        <div class="flowchart-node">User/Ops Raises Request</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node flowchart-node-decision"><span class="text">Amount ≥ ₹20,000?</span></div>
+                        <div class="flex w-full items-start">
+                            <div class="w-1/2 pr-2 text-center">
+                                <p class="font-bold text-sm mb-1">NO</p>
+                                <div class="flowchart-arrow"></div>
+                                <div class="flowchart-node">Direct Approval</div>
+                            </div>
+                            <div class="w-1/2 pl-2 text-center">
+                                <p class="font-bold text-sm mb-1">YES</p>
+                                <div class="flowchart-arrow"></div>
+                                <div class="flowchart-node !min-h-[120px]">Generate PR → Collect Quotations → Select Vendor → Generate PO/WO</div>
+                            </div>
+                        </div>
+                        <div class="flex w-full items-center mt-4">
+                            <div class="w-1/2 pr-1"><div class="flowchart-line"></div></div>
+                             <div class="w-1/2 pl-1"><div class="flowchart-line"></div></div>
+                        </div>
+                         <div class="flowchart-arrow rotate-180 -mt-px"></div>
+                        <div class="flowchart-node">Payment & Invoice Upload</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node bg-green-100 border-green-300 text-green-800">UTR Upload & Closure</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-[#0062D5] mb-6 text-center">Advance Workflow</h3>
+                     <div class="flex flex-col items-center">
+                        <div class="flowchart-node">User Requests Advance Amount</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Manager & Finance Approval</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Advance Paid to User</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">User Uploads Bills Post-Expense</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node">Finance Reconciles Bills</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flowchart-node bg-green-100 border-green-300 text-green-800">Balance Settled & Closed</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="roles-data" class="mb-12">
+             <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-8">User Roles & Data Universe</h2>
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-[#0062D5] mb-4 text-center">Role-Based Access Control</h3>
+                    <p class="text-gray-600 mb-6 text-center">The system provides granular control over data and features, ensuring users only see what's relevant to their role. This enhances security and simplifies the user experience.</p>
+                    <div class="chart-container mx-auto h-[250px] md:h-[300px]">
+                        <canvas id="rolesChart"></canvas>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-[#0062D5] mb-4 text-center">Database Composition</h3>
+                    <p class="text-gray-600 mb-6 text-center">The MySQL database is logically organized into functional groups to manage the system's complex data requirements efficiently.</p>
+                     <div class="chart-container mx-auto h-[250px] md:h-[300px]">
+                        <canvas id="databaseChart"></canvas>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <section id="features" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#004AAD] mb-8">Key System Features</h2>
+             <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">🔐</span>
+                        <p class="font-semibold mt-2">Role-Based Access</p>
+                        <p class="text-sm text-gray-500">Secure modules for each user type.</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">📜</span>
+                        <p class="font-semibold mt-2">Full Audit Trail</p>
+                        <p class="text-sm text-gray-500">Complete history logs for tickets & reports.</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">📎</span>
+                        <p class="font-semibold mt-2">Document Management</p>
+                        <p class="text-sm text-gray-500">Upload and track all related files (bills, POs).</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">📊</span>
+                        <p class="font-semibold mt-2">Dashboard & Reports</p>
+                        <p class="text-sm text-gray-500">At-a-glance summaries and data filtering.</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">💹</span>
+                        <p class="font-semibold mt-2">Tally Integration</p>
+                        <p class="text-sm text-gray-500">Export data for accounting software.</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">🏦</span>
+                        <p class="font-semibold mt-2">Bank Format Export</p>
+                        <p class="text-sm text-gray-500">Simplify payment processing with exports.</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">📧</span>
+                        <p class="font-semibold mt-2">Email Notifications</p>
+                        <p class="text-sm text-gray-500">Keep users informed of status changes.</p>
+                    </div>
+                     <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <span class="text-4xl">🔍</span>
+                        <p class="font-semibold mt-2">Advanced Search</p>
+                        <p class="text-sm text-gray-500">Easily find tickets, reports, or documents.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center p-6 bg-gray-800 text-gray-400 text-sm">
+        <p>This infographic provides a visual summary of the DF_Ticketing System SRS v1.0.</p>
+        <p>&copy; 2025 Amlanjyoti & Deshpande Foundation. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const vibrantBluePalette = ['#004AAD', '#0062D5', '#4292FF', '#8BC1FF', '#D6EBFF'];
+
+        function wrapLabel(label) {
+            const maxLen = 16;
+            if (label.length <= maxLen) return label;
+            
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLen && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const rolesCtx = document.getElementById('rolesChart').getContext('2d');
+        new Chart(rolesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Employee', 'Manager', 'Finance Approver', 'Finance Processor', 'HR/Onboarder', 'Operations', 'Admin'],
+                datasets: [{
+                    label: 'User Role Distribution',
+                    data: [60, 15, 3, 5, 5, 7, 5],
+                    backgroundColor: vibrantBluePalette,
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                       callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        const dbCtx = document.getElementById('databaseChart').getContext('2d');
+        const rawDbLabels = ['Users & Roles', 'Tickets & Workflow', 'Finance', 'Shared Resources', 'System Configuration'];
+        new Chart(dbCtx, {
+            type: 'bar',
+            data: {
+                labels: rawDbLabels.map(wrapLabel),
+                datasets: [{
+                    label: '# of Tables',
+                    data: [7, 8, 7, 6, 16],
+                    backgroundColor: vibrantBluePalette[1],
+                    borderColor: vibrantBluePalette[0],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
