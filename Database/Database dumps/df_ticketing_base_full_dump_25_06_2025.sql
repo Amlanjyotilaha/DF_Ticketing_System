@@ -510,7 +510,7 @@ CREATE TABLE `employee_history` (
   `pay_group` varchar(100) DEFAULT NULL,
   `work_location` text,
   `employee_name_on_bank` varchar(100) DEFAULT NULL,
-  `employee_bank_name` varchar(30) DEFAULT NULL,
+  `employee_bank_name` varchar(100) DEFAULT NULL,
   `employee_account_number` varchar(20) DEFAULT NULL,
   `employee_IFSC` varchar(50) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -631,7 +631,7 @@ CREATE TABLE `employees` (
   `pay_group` varchar(100) DEFAULT NULL,
   `work_location` text,
   `employee_name_on_bank` varchar(100) DEFAULT NULL,
-  `employee_bank_name` varchar(30) DEFAULT NULL,
+  `employee_bank_name` varchar(100) DEFAULT NULL,
   `employee_account_number` varchar(20) DEFAULT NULL,
   `employee_IFSC` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -993,7 +993,7 @@ CREATE TABLE `organization_bank` (
 
 LOCK TABLES `organization_bank` WRITE;
 /*!40000 ALTER TABLE `organization_bank` DISABLE KEYS */;
-INSERT INTO `organization_bank` VALUES (1,1,1,'FCRA','DESHPANDE','HDFC BANK','50100114012217','Deshpande Foundation','HDFC0000254','HDFC Bank A/c No-50100114012217','Tb Revankar Complex,Vivekanand Hospital Road,Hubli, karnataka- 580029','9343982426','Krishnag Desai',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(2,1,1,'FCRA','DESHPANDE','ICICI BANK','015701014774','Deshpande Foundation','ICIC0000157','ICICI Bank A/c No-015701014774','Icici Bank Ltd, Eureka Junction, Travellers Bungalow Road, Hubli, Karnataka, 580029','8971912459','Vinay Joshi',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(3,1,1,'FCRA','DESHPANDE','RATNAKAR BANK LTD','309023289619','Deshpande Foundation','RATN0000056','RBL Bank A/c NO.-309023289619','Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001','9538926434','Anandkumar Chimmalagi',NULL,'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(4,1,1,'FCRA','DESHPANDE','Kotak BANK','6411841218','Deshpande Foundation','KKBK0000446','Kotak Bank A/c No.-6411841218','Club Road, Corporation Ward No.46, Old No.1, Hubli Dharwad-500 020, Karnataka','6364570480','Muzammil Ahmedb',NULL,'Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(5,1,1,'FCRA','DESHPANDE','YES BANK','024994600000027','Deshpande Foundation','YESB0000249','Yes Bank A/c No-024994600000027','Ground Floor,Svb City Centre Club Road,Hubli Karnataka 580020','9986123798','Firozkhan Pathan',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(6,1,1,'FCRA','DESHPANDE','SBI BANK','33058846735','Deshpande Foundation','SBIN0009297','State Bank of India A/c No-33058846735','Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021','9342893567','Jayshree',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(7,1,1,'FCRA','DESHPANDE','SBI BANK','40095443444','Deshpande Foundation','SBIN0000691','State Bank of India A/c No 40095443444-Main FCRA','\"11Sansad Marg, New Delhi 110 001\nState: Delhi\"','9711906089','Mohammed Shahid',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(8,1,1,'Non-FCRA','DESHPANDE','HDFC BANK','50100462351706','Deshpande Foundation','HDFC0006090','HDFC Bank A/c No: 50100462351706','Gr Flr Anusharan Arcade Nagshanti Building Shirur Park Road Vidyanagari Hubli Karnataka 580030','9343982426','Krishnag Desai',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(9,1,1,'Non-FCRA','DESHPANDE','RATNAKAR BANK LTD','309003312050','Deshpande Foundation','RATN0000056','RBL Bank A/c No.-309003312050','Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001','9538926434','Anandkumar Chimmalagi',NULL,'Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(10,1,1,'Non-FCRA','DESHPANDE','SBI BANK','37058263175','Deshpande Foundation','SBIN0009297','SBI Bank A/c No.-37058263175','Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021','9342893567','Jayshree',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(11,1,2,'Non-FCRA','DESHTI','Canara Bank','1628101016715','Deshpande Education Trust','CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(12,1,2,'OD','DESHTI','Canara Bank','1628257005280','Deshpande Education Trust','CNRB0001628','Canara Bank OD A/c.No.1628257005280','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(13,1,2,'Non-FCRA','DESHTI','State Bank of India','33058845324','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 33058845324 HBL','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(14,1,2,'Non-FCRA','DESHTI','State Bank of India','37592898899','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 37592898899 AP','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(15,1,2,'Non-FCRA','DESHTI','State Bank of India','37592924740','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 37592924740 KKT','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(16,1,2,'FCRA','DESHTI','State Bank of India','40095732865','Deshpande Education Trust','SBIN0000691','SBI Bank A/c No: 40095732865(FCRA)','Parliment Street, N. D. Main Branch, New Delhi','8026599990',NULL,'fcrasupport9.00691@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(17,1,2,'FCRA','DESHTI','Kotak Mahindra','714421269','Deshpande Education Trust','KKBK0000446','Kotak Bank A/c No:0714421269 (FCRA)','Club Road, Hubballi','+91 63645 70480',NULL,'muzammil.ahmedb@kotak.com','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(18,1,2,'Non-FCRA','DESHTI','Kotak Mahindra','746116324','Deshpande Education Trust','KKBK0000446','Kotak Bank A/c No:0746116324 (Non FCRA)','Club Road, Hubballi','+91 63645 70480',NULL,'muzammil.ahmedb@kotak.com','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(19,1,2,'FCRA','DESHTI','RBL Bank Ltd','309023236264','Deshpande Education Trust','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(20,1,2,'Non-FCRA','DESHTI','RBL Bank Ltd','309006956664','Deshpande Education Trust','RATN0000056','RBL Bank A/c No: 309006956664','Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(21,1,2,'OD','DESHTI','RBL Bank Ltd','609001110406','Deshpande Education Trust','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(22,1,2,'CSR','DESHTI','HDFC','50200105967093','Deshpande Education Trust','HDFC0006090','HDFC Bank A/C No : 50200105967093','Vidyanagar Hubli','+91 93439 82426',NULL,'krishnag.desai@hdfcbank.com',NULL,2,'2025-06-24 13:17:48',NULL),(23,1,3,'FCRA',NULL,'RBL Bank Ltd','309023300170','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(24,1,3,'FCRA',NULL,'RBL Bank Ltd','300000580030','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(25,1,3,'FCRA',NULL,'State Bank of India','40095425888','Foundation for Sandboxstartup Initiatives','SBIN0009297',NULL,'Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(26,1,3,'Non-FCRA',NULL,'Canara Bank','1628101016715','Foundation for Sandboxstartup Initiatives','CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(27,1,3,'Non-FCRA',NULL,'RBL Bank Ltd','309006967837','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(28,1,3,'Non-FCRA',NULL,'State Bank of India','35823266728','Foundation for Sandboxstartup Initiatives','SBIN0009297','State Bank of India C.A/c.No.35823266728-Statutory','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(29,1,3,'Non-FCRA',NULL,'State Bank of India','35834648411','Foundation for Sandboxstartup Initiatives','SBIN0009297','State Bank of India SB A/c. No.35834648411-Accelara','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(30,1,3,'Non-FCRA',NULL,'Bank of Baroda','07790100021289','Foundation for Sandboxstartup Initiatives',NULL,'Bank of Baroda SB A/c. No. 07790100021289-Prayas',NULL,NULL,NULL,NULL,NULL,2,'2025-06-24 13:17:48',NULL),(31,1,3,'Non-FCRA',NULL,'Union Bank of India','066922010001223','Foundation for Sandboxstartup Initiatives',NULL,'Union Bank of India SB.A/c.No.066922010001223-SISFS',NULL,NULL,NULL,NULL,NULL,2,'2025-06-24 13:17:48',NULL);
+INSERT INTO `organization_bank` VALUES (1,1,1,'FCRA','DESHPANDE','HDFC BANK','50100114012217','Deshpande Foundation','HDFC0000254','HDFC Bank A/c No-50100114012217','Tb Revankar Complex,Vivekanand Hospital Road,Hubli, karnataka- 580029','9343982426','Krishnag Desai',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(2,1,1,'FCRA','DESHPANDE','ICICI BANK','015701014774','Deshpande Foundation','ICIC0000157','ICICI Bank A/c No-015701014774','Icici Bank Ltd, Eureka Junction, Travellers Bungalow Road, Hubli, Karnataka, 580029','8971912459','Vinay Joshi',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(3,1,1,'FCRA','DESHPANDE','RATNAKAR BANK LTD','309023289619','Deshpande Foundation','RATN0000056','RBL Bank A/c NO.-309023289619','Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001','9538926434','Anandkumar Chimmalagi','dfpayments@dfmail.org','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(4,1,1,'FCRA','DESHPANDE','Kotak BANK','6411841218','Deshpande Foundation','KKBK0000446','Kotak Bank A/c No.-6411841218','Club Road, Corporation Ward No.46, Old No.1, Hubli Dharwad-500 020, Karnataka','6364570480','Muzammil Ahmedb','dfpayments@dfmail.org','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(5,1,1,'FCRA','DESHPANDE','YES BANK','024994600000027','Deshpande Foundation','YESB0000249','Yes Bank A/c No-024994600000027','Ground Floor,Svb City Centre Club Road,Hubli Karnataka 580020','9986123798','Firozkhan Pathan',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(6,1,1,'FCRA','DESHPANDE','SBI BANK','33058846735','Deshpande Foundation','SBIN0009297','State Bank of India A/c No-33058846735','Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021','9342893567','Jayshree',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(7,1,1,'FCRA','DESHPANDE','SBI BANK','40095443444','Deshpande Foundation','SBIN0000691','State Bank of India A/c No 40095443444-Main FCRA','\"11Sansad Marg, New Delhi 110 001\nState: Delhi\"','9711906089','Mohammed Shahid',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(8,1,1,'Non-FCRA','DESHPANDE','HDFC BANK','50100462351706','Deshpande Foundation','HDFC0006090','HDFC Bank A/c No: 50100462351706','Gr Flr Anusharan Arcade Nagshanti Building Shirur Park Road Vidyanagari Hubli Karnataka 580030','9343982426','Krishnag Desai',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(9,1,1,'Non-FCRA','DESHPANDE','RATNAKAR BANK LTD','309003312050','Deshpande Foundation','RATN0000056','RBL Bank A/c No.-309003312050','Nazare Complex, Tikare Road, Line Bazar, Dharwad 580001','9538926434','Anandkumar Chimmalagi','dfpayments@dfmail.org','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(10,1,1,'Non-FCRA','DESHPANDE','SBI BANK','37058263175','Deshpande Foundation','SBIN0009297','SBI Bank A/c No.-37058263175','Mahila Vidyapeeth Complex, Vidyanagar, Distt. Dharwar, Karnataka 580021','9342893567','Jayshree',NULL,NULL,2,'2025-06-24 13:17:48',NULL),(11,1,2,'Non-FCRA','DESHTI','Canara Bank','1628101016715','Deshpande Education Trust','CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(12,1,2,'OD','DESHTI','Canara Bank','1628257005280','Deshpande Education Trust','CNRB0001628','Canara Bank OD A/c.No.1628257005280','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(13,1,2,'Non-FCRA','DESHTI','State Bank of India','33058845324','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 33058845324 HBL','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(14,1,2,'Non-FCRA','DESHTI','State Bank of India','37592898899','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 37592898899 AP','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(15,1,2,'Non-FCRA','DESHTI','State Bank of India','37592924740','Deshpande Education Trust','SBIN0009297','SBI Bank A/c No: 37592924740 KKT','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(16,1,2,'FCRA','DESHTI','State Bank of India','40095732865','Deshpande Education Trust','SBIN0000691','SBI Bank A/c No: 40095732865(FCRA)','Parliment Street, N. D. Main Branch, New Delhi','8026599990',NULL,'fcrasupport9.00691@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(17,1,2,'FCRA','DESHTI','Kotak Mahindra','714421269','Deshpande Education Trust','KKBK0000446','Kotak Bank A/c No:0714421269 (FCRA)','Club Road, Hubballi','+91 63645 70480',NULL,'detpayments@dfmail.org','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(18,1,2,'Non-FCRA','DESHTI','Kotak Mahindra','746116324','Deshpande Education Trust','KKBK0000446','Kotak Bank A/c No:0746116324 (Non FCRA)','Club Road, Hubballi','+91 63645 70480',NULL,'detpayments@dfmail.org','Client_Code,Product_Code,Payment_Type,Payment_Ref_No.,Payment_Date,Instrument,Date,Dr_Ac_No,Amount,Bank_Code_Indicator,Beneficiary_Code,Beneficiary_Name,Beneficiary_Bank,Beneficiary_Branch / IFSC Code,Beneficiary_Acc_No,Location,Print_Location,Instrument_Number,Ben_Add1,Ben_Add2,Ben_Add3,Ben_Add4,Beneficiary_Email,Beneficiary_Mobile,Debit_Narration,Credit_Narration,Payment Details 1,Payment Details 2,Payment Details 3,Payment Details 4,Enrichment_1,Enrichment_2,Enrichment_3,Enrichment_4,Enrichment_5,Enrichment_6,Enrichment_7,Enrichment_8,Enrichment_9,Enrichment_10,Enrichment_11,Enrichment_12,Enrichment_13,Enrichment_14,Enrichment_15,Enrichment_16,Enrichment_17,Enrichment_18,Enrichment_19,Enrichment_20',1,'2025-06-24 13:17:48',NULL),(19,1,2,'FCRA','DESHTI','RBL Bank Ltd','309023236264','Deshpande Education Trust','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(20,1,2,'Non-FCRA','DESHTI','RBL Bank Ltd','309006956664','Deshpande Education Trust','RATN0000056','RBL Bank A/c No: 309006956664','Jubilee Circle, Dharwad','+91 95389 26434',NULL,'detpayments@dfmail.org','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(21,1,2,'OD','DESHTI','RBL Bank Ltd','609001110406','Deshpande Education Trust','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(22,1,2,'CSR','DESHTI','HDFC','50200105967093','Deshpande Education Trust','HDFC0006090','HDFC Bank A/C No : 50200105967093','Vidyanagar Hubli','+91 93439 82426',NULL,'krishnag.desai@hdfcbank.com',NULL,2,'2025-06-24 13:17:48',NULL),(23,1,3,'FCRA',NULL,'RBL Bank Ltd','309023300170','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(24,1,3,'FCRA',NULL,'RBL Bank Ltd','300000580030','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(25,1,3,'FCRA',NULL,'State Bank of India','40095425888','Foundation for Sandboxstartup Initiatives','SBIN0009297',NULL,'Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(26,1,3,'Non-FCRA',NULL,'Canara Bank','1628101016715','Foundation for Sandboxstartup Initiatives','CNRB0001628','Canara Bank SB A/c No 1628101016715-EIR','1st Floor, Mirjankar Building, Vidyanagar, P B Road, Hubli, Karnataka - 580 021','+91 94498 67176',NULL,'cb1628@canarabank.com',NULL,2,'2025-06-24 13:17:48',NULL),(27,1,3,'Non-FCRA',NULL,'RBL Bank Ltd','309006967837','Foundation for Sandboxstartup Initiatives','RATN0000056',NULL,'Jubilee Circle, Dharwad','+91 95389 26434',NULL,'anand.chimmalagi@rblbank.com','Payment Type,Cust Ref Number,Source Account Number,Source Narration,Destination Account Number,Currency,Amount,Destination Narration,Destination bank,Destination Bank IFS Code,Beneficiary Name,Beneficiary Account Type,Email ',1,'2025-06-24 13:17:48',NULL),(28,1,3,'Non-FCRA',NULL,'State Bank of India','35823266728','Foundation for Sandboxstartup Initiatives','SBIN0009297','State Bank of India C.A/c.No.35823266728-Statutory','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(29,1,3,'Non-FCRA',NULL,'State Bank of India','35834648411','Foundation for Sandboxstartup Initiatives','SBIN0009297','State Bank of India SB A/c. No.35834648411-Accelara','Vidyanagar, Hubballi','+91 93428 93567',NULL,'SBI.09297@sbi.co.in',NULL,2,'2025-06-24 13:17:48',NULL),(30,1,3,'Non-FCRA',NULL,'Bank of Baroda','07790100021289','Foundation for Sandboxstartup Initiatives',NULL,'Bank of Baroda SB A/c. No. 07790100021289-Prayas',NULL,NULL,NULL,NULL,NULL,2,'2025-06-24 13:17:48',NULL),(31,1,3,'Non-FCRA',NULL,'Union Bank of India','066922010001223','Foundation for Sandboxstartup Initiatives',NULL,'Union Bank of India SB.A/c.No.066922010001223-SISFS',NULL,NULL,NULL,NULL,NULL,2,'2025-06-24 13:17:48',NULL);
 /*!40000 ALTER TABLE `organization_bank` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1073,7 +1073,7 @@ CREATE TABLE `payment_type` (
 
 LOCK TABLES `payment_type` WRITE;
 /*!40000 ALTER TABLE `payment_type` DISABLE KEYS */;
-INSERT INTO `payment_type` VALUES (1,'NEFT'),(2,'IMPS'),(3,'RTGS'),(4,'IFT');
+INSERT INTO `payment_type` VALUES (1,'NFT'),(2,'IMPS'),(3,'RTGS'),(4,'IFT');
 /*!40000 ALTER TABLE `payment_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1884,7 +1884,7 @@ CREATE TABLE `user_bank` (
   `bank_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `name_on_bank` varchar(100) DEFAULT NULL,
-  `bank_name` varchar(30) DEFAULT NULL,
+  `bank_name` varchar(100) DEFAULT NULL,
   `account_number` varchar(20) DEFAULT NULL,
   `IFSC` varchar(50) DEFAULT NULL,
   `status_id` int DEFAULT NULL,
@@ -3650,25 +3650,29 @@ CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_MANAGER_REPORTS_NUMBER`(
     IN p_user_id INT
 )
 BEGIN
-    -- Temporary table to store relevant report_ids
-    CREATE TEMPORARY TABLE TempReportIds
+    -- Step 1: Create temporary table to store relevant report_ids
+    CREATE TEMPORARY TABLE IF NOT EXISTS TempReportIds (
+        report_id INT PRIMARY KEY
+    );
+
+    INSERT INTO TempReportIds (report_id)
     SELECT report_id 
     FROM reports 
     WHERE manager_id = p_user_id 
       AND status_id = 1;
 
-    -- Fetch the distinct count of report_id based on process_status_id in tickets table
+    -- Step 2: Fetch counts of reports grouped by process_status_id
     SELECT 
         COUNT(DISTINCT CASE WHEN t.process_status_id = 7 THEN t.report_id END) AS pending,
-        COUNT(DISTINCT CASE WHEN t.process_status_id NOT IN (19, 7, 8) THEN t.report_id END) AS approved,
+        COUNT(DISTINCT CASE WHEN t.process_status_id NOT IN (7, 8, 19) THEN t.report_id END) AS approved,
         COUNT(DISTINCT CASE WHEN t.process_status_id = 8 THEN t.report_id END) AS rejected,
         COUNT(DISTINCT CASE WHEN t.process_status_id = 15 THEN t.report_id END) AS closed
     FROM tickets t
-    WHERE t.report_id IN (SELECT report_id FROM TempReportIds);
+    INNER JOIN TempReportIds tr ON t.report_id = tr.report_id;
 
-    -- Drop the temporary table to free up memory
+    -- Step 3: Clean up
     DROP TEMPORARY TABLE IF EXISTS TempReportIds;
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4044,33 +4048,33 @@ CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_GET_USER_REPORT_NUMBERS`(
 BEGIN
     SELECT 
         -- Report Details
-        COUNT(r.report_id) AS raised_reports,
-        COUNT(CASE WHEN r.status_id = 1 THEN 1 END) AS active_reports,
-        COUNT(CASE WHEN r.status_id = 1 AND r.process_status_id != 15 THEN 1 END) AS pending_reports,
-        COUNT(CASE WHEN r.process_status_id = 15 THEN 1 END) AS closed_reports,
+        COUNT(DISTINCT r.report_id) AS raised_reports,
+        COUNT(DISTINCT CASE WHEN r.status_id = 1 THEN r.report_id END) AS active_reports,
+        COUNT(DISTINCT CASE WHEN r.status_id = 1 AND r.process_status_id != 15 THEN r.report_id END) AS pending_reports,
+        COUNT(DISTINCT CASE WHEN r.process_status_id = 15 THEN r.report_id END) AS closed_reports,
 
         -- Reimbursement Details (exp_catg_id = 1)
-        COUNT(CASE WHEN t.exp_catg_id = 1 THEN t.ticket_id END) AS re_raised_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 THEN t.ticket_id END) AS re_active_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS re_pending_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 1 AND t.process_status_id = 15 THEN t.ticket_id END) AS re_closed_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 1 THEN t.ticket_id END) AS re_raised_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 THEN t.ticket_id END) AS re_active_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 1 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS re_pending_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 1 AND t.process_status_id = 15 THEN t.ticket_id END) AS re_closed_tickets,
 
         -- Procurement Details (exp_catg_id = 2)
-        COUNT(CASE WHEN t.exp_catg_id = 2 THEN t.ticket_id END) AS pro_raised_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 THEN t.ticket_id END) AS pro_active_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS pro_pending_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 2 AND t.process_status_id = 15 THEN t.ticket_id END) AS pro_closed_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 2 THEN t.ticket_id END) AS pro_raised_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 THEN t.ticket_id END) AS pro_active_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 2 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS pro_pending_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 2 AND t.process_status_id = 15 THEN t.ticket_id END) AS pro_closed_tickets,
 
         -- Advance Details (exp_catg_id = 3)
-        COUNT(CASE WHEN t.exp_catg_id = 3 THEN t.ticket_id END) AS adv_raised_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 THEN t.ticket_id END) AS adv_active_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS adv_pending_tickets,
-        COUNT(CASE WHEN t.exp_catg_id = 3 AND t.process_status_id = 15 THEN t.ticket_id END) AS adv_closed_tickets
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 3 THEN t.ticket_id END) AS adv_raised_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 THEN t.ticket_id END) AS adv_active_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 3 AND t.status_id = 1 AND t.process_status_id != 15 THEN t.ticket_id END) AS adv_pending_tickets,
+        COUNT(DISTINCT CASE WHEN t.exp_catg_id = 3 AND t.process_status_id = 15 THEN t.ticket_id END) AS adv_closed_tickets
 
     FROM reports r
     LEFT JOIN tickets t ON r.report_id = t.report_id
     WHERE r.user_id = p_user_id;
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4090,7 +4094,7 @@ CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_INSERT_USER_BANK_DETAILS`(
     IN p_updated_by INT,
     IN p_employee_number varchar(50),
     IN p_employee_name_on_bank VARCHAR(100),
-    IN p_employee_bank_name VARCHAR(30),
+    IN p_employee_bank_name VARCHAR(100),
     IN p_employee_account_number VARCHAR(20),
     IN p_employee_IFSC VARCHAR(50)
 )
@@ -4102,7 +4106,7 @@ BEGIN
     DECLARE v_existing_account_number VARCHAR(20);
     DECLARE v_existing_IFSC VARCHAR(50);
     DECLARE v_existing_name_on_bank VARCHAR(100);
-    DECLARE v_existing_bank_name VARCHAR(30);
+    DECLARE v_existing_bank_name VARCHAR(100);
 
     proc_end: BEGIN
 
@@ -4503,7 +4507,7 @@ DELIMITER ;
 
 DELIMITER ;;
 CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EDIT_REPORT_DATE_DESCRIPTION`(
-	IN p_user_id INT,
+    IN p_user_id INT,
     IN p_report_id INT,
     IN p_start_date DATE,
     IN p_end_date DATE,
@@ -4518,76 +4522,96 @@ proc: BEGIN
     DECLARE v_ticket_id INT;
     DECLARE v_reimb_dtls_id INT;
     DECLARE v_category_id INT;
-    DECLARE v_min_date DATE;
-    DECLARE v_max_date DATE;
-    DECLARE done INT DEFAULT FALSE;
+    DECLARE v_min_date DATE DEFAULT NULL;
+    DECLARE v_max_date DATE DEFAULT NULL;
+    DECLARE v_tmp_min DATE;
+    DECLARE v_tmp_max DATE;
+    DECLARE done_tk INT DEFAULT FALSE;
+    DECLARE done_dtls INT DEFAULT FALSE;
 
     -- Cursor for looping through tickets
     DECLARE cur_tk CURSOR FOR
         SELECT t.ticket_id
         FROM tickets t
-        WHERE t.report_id = p_report_id AND t.exp_catg_id = 1 AND status_id =1;
+        WHERE t.report_id = p_report_id AND t.exp_catg_id = 1 AND t.status_id = 1;
 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done_tk = TRUE;
 
     -- Step 1: Get report details
     SELECT start_date, end_date, description
     INTO rpt_start_date, rpt_end_date, rpt_description
     FROM reports
-    WHERE report_id = p_report_id AND user_id = p_user_id AND status_id =1;
+    WHERE report_id = p_report_id AND user_id = p_user_id AND status_id = 1;
 
-    -- Step 2: Loop through tickets and get min/max date range
+    -- Step 2: Loop through tickets and get overall min/max date range
     OPEN cur_tk;
 
-    read_loop: LOOP
+    read_tk_loop: LOOP
         FETCH cur_tk INTO v_ticket_id;
-        IF done THEN
-            LEAVE read_loop;
+        IF done_tk THEN
+            LEAVE read_tk_loop;
         END IF;
 
-        SELECT reimb_dtls_id, category_id
-        INTO v_reimb_dtls_id, v_category_id
-        FROM re_ticket_details
-        WHERE ticket_id = v_ticket_id AND status_id=1
-        LIMIT 1;
+        -- Inner cursor for all reimb_dtls under the ticket
+        BEGIN
+            DECLARE cur_dtls CURSOR FOR
+                SELECT reimb_dtls_id, category_id
+                FROM re_ticket_details
+                WHERE ticket_id = v_ticket_id AND status_id = 1;
 
-        IF v_category_id = 1 THEN
-            SELECT 
-                LEAST(IFNULL(v_min_date, date), MIN(date)),
-                GREATEST(IFNULL(v_max_date, date), MAX(date))
-            INTO v_min_date, v_max_date
-            FROM food
-            WHERE reimb_dtls_id = v_reimb_dtls_id;
+            DECLARE CONTINUE HANDLER FOR NOT FOUND SET done_dtls = TRUE;
+            SET done_dtls = FALSE;
+            OPEN cur_dtls;
 
-        ELSEIF v_category_id = 2 THEN
-            SELECT 
-                LEAST(IFNULL(v_min_date, travel_date), MIN(travel_date)),
-                GREATEST(IFNULL(v_max_date, travel_date), MAX(travel_date))
-            INTO v_min_date, v_max_date
-            FROM travels
-            WHERE reimb_dtls_id = v_reimb_dtls_id;
+            read_dtls_loop: LOOP
+                FETCH cur_dtls INTO v_reimb_dtls_id, v_category_id;
+                IF done_dtls THEN
+                    LEAVE read_dtls_loop;
+                END IF;
 
-        ELSEIF v_category_id = 3 THEN
-            SELECT 
-                LEAST(IFNULL(v_min_date, check_in_date), MIN(check_in_date)),
-                GREATEST(IFNULL(v_max_date, check_out_date), MAX(check_out_date))
-            INTO v_min_date, v_max_date
-            FROM accommodation
-            WHERE reimb_dtls_id = v_reimb_dtls_id;
+                IF v_category_id = 1 THEN
+                    SELECT MIN(date), MAX(date)
+                    INTO v_tmp_min, v_tmp_max
+                    FROM food
+                    WHERE reimb_dtls_id = v_reimb_dtls_id;
 
-        ELSEIF v_category_id = 4 THEN
-            SELECT 
-                LEAST(IFNULL(v_min_date, date), MIN(date)),
-                GREATEST(IFNULL(v_max_date, date), MAX(date))
-            INTO v_min_date, v_max_date
-            FROM reimb_others
-            WHERE reimb_dtls_id = v_reimb_dtls_id;
-        END IF;
+                ELSEIF v_category_id = 2 THEN
+                    SELECT MIN(travel_date), MAX(travel_date)
+                    INTO v_tmp_min, v_tmp_max
+                    FROM travels
+                    WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+                ELSEIF v_category_id = 3 THEN
+                    SELECT MIN(check_in_date), MAX(check_out_date)
+                    INTO v_tmp_min, v_tmp_max
+                    FROM accommodation
+                    WHERE reimb_dtls_id = v_reimb_dtls_id;
+
+                ELSEIF v_category_id = 4 THEN
+                    SELECT MIN(date), MAX(date)
+                    INTO v_tmp_min, v_tmp_max
+                    FROM reimb_others
+                    WHERE reimb_dtls_id = v_reimb_dtls_id;
+                END IF;
+
+                -- Update overall min and max if not null
+                IF v_tmp_min IS NOT NULL THEN
+                    SET v_min_date = IF(v_min_date IS NULL OR v_tmp_min < v_min_date, v_tmp_min, v_min_date);
+                END IF;
+
+                IF v_tmp_max IS NOT NULL THEN
+                    SET v_max_date = IF(v_max_date IS NULL OR v_tmp_max > v_max_date, v_tmp_max, v_max_date);
+                END IF;
+
+            END LOOP;
+            CLOSE cur_dtls;
+        END;
+
     END LOOP;
 
     CLOSE cur_tk;
 
-    -- Step 3: If tickets exist, validate ticket date range
+    -- Step 3: If ticket date range exists, validate new range
     IF v_min_date IS NOT NULL AND v_max_date IS NOT NULL THEN
         IF p_start_date > v_min_date OR p_end_date < v_max_date THEN
             SELECT 
@@ -4598,7 +4622,7 @@ proc: BEGIN
         END IF;
     END IF;
 
-    -- Step 4: No Change Detected
+    -- Step 4: No change detected
     IF rpt_start_date = p_start_date AND
        rpt_end_date = p_end_date AND
        rpt_description = p_description THEN
@@ -4606,9 +4630,8 @@ proc: BEGIN
         LEAVE proc;
     END IF;
 
-    -- Step 5: Apply changes and track history
+    -- Step 5: Apply change and insert into history
     IF rpt_description <> p_description AND rpt_start_date = p_start_date AND rpt_end_date = p_end_date THEN
-        -- Only description changed
         INSERT INTO report_history (report_id, description, updated_by, updated_at, edit_description)
         VALUES (p_report_id, rpt_description, p_user_id, NOW(), p_edit_description);
 
@@ -4620,7 +4643,6 @@ proc: BEGIN
         SELECT 'Description Edited Successfully' AS Message, 1 AS Success;
 
     ELSEIF rpt_start_date <> p_start_date AND rpt_end_date = p_end_date AND rpt_description = p_description THEN
-        -- Only start_date changed
         INSERT INTO report_history (report_id, start_date, updated_by, updated_at, edit_description)
         VALUES (p_report_id, rpt_start_date, p_user_id, NOW(), p_edit_description);
 
@@ -4632,7 +4654,6 @@ proc: BEGIN
         SELECT 'Start Date Edited Successfully' AS Message, 1 AS Success;
 
     ELSEIF rpt_end_date <> p_end_date AND rpt_start_date = p_start_date AND rpt_description = p_description THEN
-        -- Only end_date changed
         INSERT INTO report_history (report_id, end_date, updated_by, updated_at, edit_description)
         VALUES (p_report_id, rpt_end_date, p_user_id, NOW(), p_edit_description);
 
@@ -4644,7 +4665,6 @@ proc: BEGIN
         SELECT 'End Date Edited Successfully' AS Message, 1 AS Success;
 
     ELSE
-        -- Multiple fields changed
         INSERT INTO report_history (report_id, start_date, end_date, description, updated_by, updated_at, edit_description)
         VALUES (p_report_id, rpt_start_date, rpt_end_date, rpt_description, p_user_id, NOW(), p_edit_description);
 
@@ -4657,6 +4677,74 @@ proc: BEGIN
 
         SELECT 'Date and Description Edited Successfully' AS Message, 1 AS Success;
     END IF;
+END;;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `USP_EDIT_TICKET_DESCRIPTION` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+
+DELIMITER ;;
+CREATE DEFINER=`DF-Ticketing`@`%` PROCEDURE `USP_EDIT_TICKET_DESCRIPTION`(
+	IN p_user_id INT,
+    IN p_ticket_id INT,
+    IN p_description TEXT,
+    IN p_edit_description TEXT
+)
+proc: BEGIN
+    DECLARE v_old_description TEXT;
+    
+    -- Step 1: Check if p_description has at least 5 characters
+    IF LENGTH(p_description) < 5 THEN
+        SELECT 'Minimum 5 characters needed' AS Message, 0 AS Success;
+        LEAVE proc;
+    END IF;
+
+    -- Step 2: Fetch the existing description if the ticket is active
+    SELECT description
+    INTO v_old_description
+    FROM tickets
+    WHERE ticket_id = p_ticket_id AND status_id = 1 AND user_id = p_user_id;
+
+    -- Step 3: Check if the new description is the same as the old one
+    IF v_old_description = p_description THEN
+        SELECT 'No Change Detected, Everything is Same' AS Message, 0 AS Success;
+        LEAVE proc;
+    END IF;
+
+    -- Step 4: Insert the old description into ticket_history
+    INSERT INTO ticket_history (
+        ticket_id,
+        description,
+        updated_by,
+        updated_at,
+        edit_description
+    )
+    VALUES (
+        p_ticket_id,
+        v_old_description,
+        p_user_id,
+        NOW(),
+        p_edit_description
+    );
+
+    -- Step 5: Update the new description in tickets table
+    UPDATE tickets
+    SET description = p_description,
+        updated_at = NOW(),
+        updated_by = p_user_id
+    WHERE ticket_id = p_ticket_id;
+
+    -- Step 5: Return success message
+    SELECT 'Description Changed Successfully' AS Message, 1 AS Success;
 
 END;;
 

@@ -66,6 +66,12 @@ Chnages asked by user
 Hover on profile show option of profile and log out
 Report Edit, and Recall option
 
+-- Changes asked by finance team
+Finance team want to change the process. Initially 1st ticket used to go to Finance Processor who would check the tickets and then proccessed it.
+Then  the finance approver will approve or reject the ticket . If approved then Finance Approver will do the payments processing . 
+But now they want once Finace Approver approves, the ticket should again go to the Finance Processor who will do the payments.
+
+
 */
 /* **************************************************************** 
 <-- Changes neede to be done -->
@@ -77,9 +83,7 @@ create the function and event to cretae new date on 1st april next year.(Either 
 
 In config for entity , emtity code addition feature should be given 
 
-Finance team want to change the process. Initially 1st ticket used to go to Finance Processor who would check the tickets and then proccessed it.
-Then  the finance approver will approve or reject the ticket . If approved then Finance Approver will do the payments processing . 
-But now they want once Finace Approver approves, the ticket should again go to the Finance Processor who will do the payments.
+
 
 
 -----------------------------------------------------------------------------------------------------------------------------

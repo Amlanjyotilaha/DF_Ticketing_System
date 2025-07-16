@@ -785,4 +785,41 @@ INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VAL
 -- Jayathirtha Y S given access of FA and FP
 INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('18', '3', NOW(), 'System', '1');
 INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('18', '4',NOW(), 'System', '1');
+
+-- 1. Change employee_bank_name in employees table
+ALTER TABLE employees
+MODIFY employee_bank_name VARCHAR(100);
+
+-- 2. Change employee_bank_name in employee_history table
+ALTER TABLE employee_history
+MODIFY employee_bank_name VARCHAR(100);
+
+-- 3. Change bank_name in user_bank table
+ALTER TABLE user_bank
+MODIFY bank_name VARCHAR(100);
+
+*/
+
+/* **************************************************************** 
+<-- 10/07/2025-->
+******************************************************************* */
+
+/*
+-- Payment Type - NFT instead of NEFT
+
+-- Changes asked by finance team
+Finance team want to change the process. Initially 1st ticket used to go to Finance Processor who would check the tickets and then proccessed it.
+Then  the finance approver will approve or reject the ticket . If approved then Finance Approver will do the payments processing . 
+But now they want once Finace Approver approves, the ticket should again go to the Finance Processor who will do the payments.
+
+So now FP and FA have the access of bank excel download 
+*/
+
+/* **************************************************************** 
+<-- 15/07/2025-->
+******************************************************************* */
+
+/*
+-- Organization bank - Email set to 'dfpayments@dfmail.org' for RBL and Kotak Bank 
+
 */
