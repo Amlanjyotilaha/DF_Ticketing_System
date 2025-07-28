@@ -222,6 +222,11 @@ User → API → Backend → DB → Notification/Export → Frontend Update
 
 ## 7. 🗄️ Database Overview
 
+## DF Ticketing Database Schema Screenshot
+<img width="4994" height="4143" alt="df_ticketing database" src="https://github.com/user-attachments/assets/556fa562-4c2c-4341-aac2-63e7c29ce5b2" />
+
+#### [View Interactive Schema on dbdiagram.io](https://dbdiagram.io/d/df_ticketing-database-686d0055f413ba3508d3e899)
+
 ### 7.1 📌 Core Tables
 - 👤 Users & Roles: `users`, `employees`, `user_roles`, `roles`...  
 - 🎫 Tickets: `tickets`, `reports`, `ticket_logs`...  
