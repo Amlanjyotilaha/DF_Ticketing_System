@@ -821,5 +821,46 @@ So now FP and FA have the access of bank excel download
 
 /*
 -- Organization bank - Email set to 'dfpayments@dfmail.org' for RBL and Kotak Bank 
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'dfpayments@dfmail.org' WHERE (`org_bank_id` = '3');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'dfpayments@dfmail.org' WHERE (`org_bank_id` = '4');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'dfpayments@dfmail.org' WHERE (`org_bank_id` = '9');
+*/
+
+/* **************************************************************** 
+<-- 25/07/2025-->
+******************************************************************* */
+
+/*
+-- Organization bank - Email set to 'detpayments@dfmail.org' for RBL and Kotak Bank For Entity 2
+
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'detpayments@dfmail.org' WHERE (`org_bank_id` = '17');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'detpayments@dfmail.org' WHERE (`org_bank_id` = '18');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'detpayments@dfmail.org' WHERE (`org_bank_id` = '20');
+
+-- Organization bank - Email set to 'sandboxaccounts@dfmail.org' for RBL For Entity 3
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'sandboxaccounts@dfmail.org' WHERE (`org_bank_id` = '23');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'sandboxaccounts@dfmail.org' WHERE (`org_bank_id` = '24');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'sandboxaccounts@dfmail.org' WHERE (`org_bank_id` = '27');
+*/
+
+/* **************************************************************** 
+<-- 31/07/2025-->
+******************************************************************* */
+
+/*
+
+INSERT INTO `df_ticketing`.`organization_bank` (`org_id`, `entity_id`, `entity_bank_name`, `entity_name_on_bank`, `bank_ledger`, `status_id`, `created_at`) VALUES ('1', '3', 'Other Bank', 'Foundation for Sandboxstartup Initiatives', 'Other Bank', '1', Now());
+
+INSERT INTO `payment_type` VALUES (5,'NEFT'),(6,'TPT'),(7,'RTS')
+
+
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DET Finance', 'detpayments@dfmail.org', '2', '1', 'Finance Approver', '9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021', '0', '1', NOW());
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DS Finance', 'sandboxaccounts@dfmail.org', '3', '1', 'Finance Approver', 'Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030', '0', '1', NOW());
+
+--DET Finance and DS Finance given user and FA access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('73', '7', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('73', '4', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('74', '7', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('74', '4', NOW(), 'System', '1');
 
 */

@@ -72,6 +72,10 @@ Then  the finance approver will approve or reject the ticket . If approved then 
 But now they want once Finace Approver approves, the ticket should again go to the Finance Processor who will do the payments.
 
 
+-- Changes In Fianace
+In orgbank change email in main for entity 3 for RBL
+Ledger addition for RBL and status 1 for entity 3
+
 */
 /* **************************************************************** 
 <-- Changes neede to be done -->
@@ -83,8 +87,44 @@ create the function and event to cretae new date on 1st april next year.(Either 
 
 In config for entity , emtity code addition feature should be given 
 
+In Config there will be a org bank edit add page where Finance can add bank, delete them , change them
 
 
+
+
+DF FP = Pavan
+DET who FP = nayana
+DS who FP = Gowri
+
+ADD as User
+Df FA  = dfpayments@dfmail.org
+DET FA = detpayments@dfmail.org
+DS FA = sandboxaccounts@dfmail.org
+
+
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DET Finance', 'detpayments@dfmail.org', '2', '1', 'Finance Approver', '9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021', '0', '1', NOW());
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DS Finance', 'sandboxaccounts@dfmail.org', '3', '1', 'Finance Approver', 'Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030', '0', '1', NOW());
+
+
+FP gets the Approve and Reject option and later all entity only 1 person will be doing FP for all the 3 entities
+
+Also when manager approves or finance approves a amount the mail should have the amount and remarks
+
+Payment Type 
+add for RBL make NFT , RTS, TPT
+Add for KOTAK make RTGS, NEFT, IFT  
+INSERT INTO `payment_type` VALUES (5,'NEFT'),(6,'TPT'),(7,'RTS')
+
+
+
+if beni bank and org bank is same ie both are RBL or both are Kotak identify using IFSC , then Payment type will be TPT for RBL and IFT for Kotak
+other banks will be NEFT for Kotak and NFT for RBL 
+and for DS if bank is selected as Other Bank then it will be NEFT with below excel format 
+
+Entity 3 (DS) other bank
+Trandsaction ID, Benef Name, Account number, IFSC , Account Bank Name,Amount
+
+INSERT INTO `df_ticketing`.`organization_bank` (`org_id`, `entity_id`,,`account_type`, `entity_bank_name`,`entity_bank_account_no`, `entity_name_on_bank`, `bank_ledger`, `status_id`, `created_at`) VALUES ('1', '3','Other Bank', 'Other Bank','Other bank', 'Foundation for Sandboxstartup Initiatives', 'Other Bank', '1', Now());
 
 -----------------------------------------------------------------------------------------------------------------------------
 /* **************************************************************** 
@@ -92,6 +132,9 @@ In config for entity , emtity code addition feature should be given
 ******************************************************************* */
 -----------------------------------------------------------------------------------------------------------------------------
 for procurement there should be admin who can raise ticket for any entity, any cost center
+
+
+
 
 
 
