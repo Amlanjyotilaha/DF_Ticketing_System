@@ -1,0 +1,340 @@
+-----------------------------------------------------------------------------------------------------------------------------
+/* **************************************************************** 
+<-- Reimburesement-->
+******************************************************************* */
+-----------------------------------------------------------------------------------------------------------------------------
+/* **************************************************************** 
+<-- Changes Done-->
+******************************************************************* */
+
+/*
+-- Changes asked by finance team
+
+-- Remove Report name 
+-- Emoployee ID in Finance Approver emp details
+-- remeove time from date time
+-- remove expected date of payment
+-- in travel start odo , end odo pic is not mandatory and value should be mandatory and give a check box if asking Do you have Odometer readings? 
+if not then direct distance adding 
+in travel add auto/taxi 
+-- for reimbursement both manageer and finace have option of amout edit 
+-- validate invoice number , date , amount if matching with above section or even available in database 
+
+
+-- to be added in ticket for all type of expences(Asked by Finance)
+
+-- New Table 
+Table Name Budget Type
+Revenue Budget 
+Capex Budget
+ (can be changed by manager and finance)
+
+
+-- New Table
+Table name Expense
+Program Expense
+G & A Expences
+(change by manager and finance)
+
+-- New Table
+Table Name Contribution type
+FC
+NFC
+
+bank excel download
+bank payment excel
+payment utr excel download
+for tally excel 
+
+According to expense the ledgers will come . ie. for program expense only program ledgers will come
+
+-- Changes found by technology team
+employee_number need to be varchar in employees, employees_history, users, user_history and users tables 
+
+change statue 
+Active to Initiated
+
+Edit employee details upload and while uploading also check academic_cost_center, academic_entity and insert those
+
+employee details upload change according to latest list of details
+
+Remember to change the ledger type to 1 and 2 for Program amd Admin repectively
+
+
+
+Chnages asked by user
+Hover on profile show option of profile and log out
+Report Edit, and Recall option
+
+-- Changes asked by finance team
+Finance team want to change the process. Initially 1st ticket used to go to Finance Processor who would check the tickets and then proccessed it.
+Then  the finance approver will approve or reject the ticket . If approved then Finance Approver will do the payments processing . 
+But now they want once Finace Approver approves, the ticket should again go to the Finance Processor who will do the payments.
+
+
+-- Changes In Fianace
+In orgbank change email in main for entity 3 for RBL
+Ledger addition for RBL and status 1 for entity 3
+
+
+
+ADD as User
+Df FA  = dfpayments@dfmail.org
+DET FA = detpayments@dfmail.org
+DS FA = sandboxaccounts@dfmail.org
+
+
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DET Finance', 'detpayments@dfmail.org', '2', '1', 'Finance Approver', '9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021', '0', '1', NOW());
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DS Finance', 'sandboxaccounts@dfmail.org', '3', '1', 'Finance Approver', 'Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030', '0', '1', NOW());
+
+
+Payment Type 
+add for RBL make NFT , RTS, TPT
+Add for KOTAK make RTGS, NEFT, IFT  
+INSERT INTO `payment_type` VALUES (5,'NEFT'),(6,'TPT'),(7,'RTS')
+
+
+
+
+and for DS if bank is selected as Other Bank then it will be NEFT with below excel format 
+
+Entity 3 (DS) other bank
+Trandsaction ID, Benef Name, Account number, IFSC , Account Bank Name,Amount
+
+INSERT INTO `df_ticketing`.`organization_bank` (`org_id`, `entity_id`,,`account_type`, `entity_bank_name`,`entity_bank_account_no`, `entity_name_on_bank`, `bank_ledger`, `status_id`, `created_at`) VALUES ('1', '3','Other Bank', 'Other Bank','Other bank', 'Foundation for Sandboxstartup Initiatives', 'Other Bank', '1', Now());
+
+
+-- Gowri and Nayana Given FP access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('156', '3', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('227', '3', NOW(), 'System', '1');
+
+
+if beni bank and org bank is same ie both are RBL or both are Kotak identify using IFSC code , 
+TPT if Org bank and User bank RBL
+IFT if Org bank and User bank Kotak
+For DS Other bank it will be NEFT, 
+for Kotak if user bank is non kotak then it will be NEFT and 
+for RBL if user bank is non RBL then it will be NFT
+FP gets the Approve and Reject option and later all entity only 1 person will be doing FP for all the 3 entities
+
+Need to ADD USP_GET_USER_ROLE_LOCATION in Main
+USP_UPDATE_PAY_TYPE_ID
+Need to update USP_API_GET_USER_ORG_DETAILS in Main
+
+-- Change the role names
+UPDATE `df_ticketing`.`roles` SET `role_name` = 'Finance Maker' WHERE (`role_id` = '3');
+UPDATE `df_ticketing`.`roles` SET `role_name` = 'Finance Checker' WHERE (`role_id` = '4');
+
+Select * from `df_ticketing`.`roles`;
+
+-- activate 7 email roles (689,688,687,686,685,684,683)
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1391');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1399');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1427');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1392');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1400');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1428');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1393');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1401');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1429');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1394');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1402');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1430');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1395');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1431');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1396');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1432');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1397');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1433');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1427');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1429');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1430');
+
+SELECT * FROM df_ticketing.user_roles where user_id in (689,688,687,686,685,684,683);
+
+-- revoke access of 659 - 4 (FA of all location), 35,227,10 - 3(FP of all location)
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1081');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1080');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1079');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1078');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '766');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1059');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '114');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1058');
+
+SELECT * FROM df_ticketing.user_roles where user_id in (659,35,227,10) and role_id in(3,4);
+SELECT * FROM df_ticketing.user_roles where user_id in (659,35,227,10) and role_id in(9);
+
+
+-- Revoke admin and Bank Processor from Partha
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1355');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1434');
+
+Select * from df_ticketing.user_roles where user_id = 34;
+
+-- give 659 - 2(Admin) and 9(bank Processor)
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '2', Now(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '9', Now(), 'System', '1');
+
+
+SELECT * FROM df_ticketing.user_roles where user_id in (659);
+
+
+*/
+/* **************************************************************** 
+<-- Changes neede to be done -->
+******************************************************************* */
+
+create function for ledger code auto generation  and while entering ledfrt add the ledger typr that is Program or General and Administrative  expense
+
+create the function and event to cretae new date on 1st april next year.(Either databse or Backend)
+
+In config for entity , emtity code addition feature should be given 
+
+In Config there will be a org bank edit add page where Finance can add bank, delete them , change them
+
+
+
+Also when manager approves or finance approves a amount the mail should have the amount and remarks
+
+Description in all the Ticket Section
+
+Ticket Section Edit option
+
+
+
+
+
+
+
+-- Bejjenki Alekhya Given FP access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`,`office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('10', '3','4', NOW(), 'System', '1');
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+/* **************************************************************** 
+<-- Procurement-->
+******************************************************************* */
+-----------------------------------------------------------------------------------------------------------------------------
+for procurement there should be admin who can raise ticket for any entity, any cost center
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+/* **************************************************************** 
+<-- Reimbursement Changes that may happen-->
+******************************************************************* */
+-----------------------------------------------------------------------------------------------------------------------------
+Changes that may happen
+--
+-- Table structure for table `faq`
+--
+
+DROP TABLE IF EXISTS `faq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq` (
+  `faq_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `faq_description` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `solved_description` text,
+  `solved_by` int DEFAULT NULL,
+  `solved_at` datetime DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`faq_id`),
+  KEY `user_id` (`user_id`),
+  KEY `solved_by` (`solved_by`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `faq_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `faq_ibfk_2` FOREIGN KEY (`solved_by`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `faq_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq`
+--
+
+LOCK TABLES `faq` WRITE;
+/*!40000 ALTER TABLE `faq` DISABLE KEYS */;
+/*!40000 ALTER TABLE `faq` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `faq_files`
+--
+
+DROP TABLE IF EXISTS `faq_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq_files` (
+  `faq_file_id` int NOT NULL AUTO_INCREMENT,
+  `faq_id` int DEFAULT NULL,
+  `file_path` text,
+  `faq_type` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`faq_file_id`),
+  KEY `faq_id` (`faq_id`),
+  CONSTRAINT `faq_files_ibfk_1` FOREIGN KEY (`faq_id`) REFERENCES `faq` (`faq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq_files`
+--
+
+LOCK TABLES `faq_files` WRITE;
+/*!40000 ALTER TABLE `faq_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `faq_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `query_chat`
+--
+
+DROP TABLE IF EXISTS `query_chat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `query_chat` (
+  `query_chat_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `faq_id` int DEFAULT NULL,
+  `query_chat` text,
+  `created_at` datetime DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`query_chat_id`),
+  KEY `user_id` (`user_id`),
+  KEY `faq_id` (`faq_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `query_chat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `query_chat_ibfk_2` FOREIGN KEY (`faq_id`) REFERENCES `faq` (`faq_id`),
+  CONSTRAINT `query_chat_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `master_status` (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `query_chat`
+--
+
+LOCK TABLES `query_chat` WRITE;
+/*!40000 ALTER TABLE `query_chat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `query_chat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

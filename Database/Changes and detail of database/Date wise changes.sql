@@ -1,0 +1,1056 @@
+/* **************************************************************** 
+<-- 08/03/2025-->
+******************************************************************* */
+/*
+df_ticketing database created
+*/
+
+/* **************************************************************** 
+<-- 15/04/2025-->
+******************************************************************* */
+/*
+CREATE TABLE budget_type (
+    budget_id INT AUTO_INCREMENT PRIMARY KEY,
+    budget_name VARCHAR(255) NOT NULL,
+    status_id INT,
+    FOREIGN KEY (status_id) REFERENCES master_status(status_id)
+);
+
+CREATE TABLE expense (
+    expense_id INT AUTO_INCREMENT PRIMARY KEY,
+    expense_name VARCHAR(255) NOT NULL,
+    status_id INT,
+    FOREIGN KEY (status_id) REFERENCES master_status(status_id)
+);
+
+CREATE TABLE contribution_type (
+    contribution_id INT AUTO_INCREMENT PRIMARY KEY,
+    contribution_name VARCHAR(255) NOT NULL,
+    status_id INT,
+    FOREIGN KEY (status_id) REFERENCES master_status(status_id)
+);
+
+ALTER TABLE ticket_history
+ADD COLUMN expense_id INT AFTER cost_center_id,
+ADD COLUMN budget_id INT AFTER expense_id,
+ADD COLUMN contribution_id INT AFTER budget_id;
+
+ALTER TABLE ledgers
+ADD COLUMN category_id INT AFTER ledger_name,
+ADD FOREIGN KEY (category_id) REFERENCES categories(category_id);
+
+CREATE TABLE reimb_others (
+    reimb_other_id INT AUTO_INCREMENT PRIMARY KEY,
+    reimb_dtls_id INT,
+    date datetime,
+    remarks text,
+    FOREIGN KEY (reimb_dtls_id) REFERENCES re_ticket_details(reimb_dtls_id)
+);
+
+*/
+
+
+
+/* **************************************************************** 
+<-- 21/04/2025-->
+******************************************************************* */
+
+/*
+CREATE TABLE organization_bank (
+    org_bank_id INT PRIMARY KEY AUTO_INCREMENT,
+    org_id INT DEFAULT NULL,
+    entity_id INT DEFAULT NULL,
+    org_bank_name VARCHAR(100) DEFAULT NULL,
+    org_bank_account_no VARCHAR(50) DEFAULT NULL,
+    org_name_on_bank VARCHAR(100) DEFAULT NULL,
+    org_bank_ifsc VARCHAR(50) DEFAULT NULL,
+    org_bank_format TEXT DEFAULT NULL,
+    status_id INT DEFAULT NULL,
+    created_at DATETIME DEFAULT NULL,
+    updated_at DATETIME DEFAULT NULL,
+    FOREIGN KEY (status_id) REFERENCES master_status(status_id),
+    FOREIGN KEY (org_id) REFERENCES organization(org_id),
+    FOREIGN KEY (entity_id) REFERENCES entities(entity_id)
+);
+
+CREATE TABLE payment_type (
+    pay_type_id INT AUTO_INCREMENT PRIMARY KEY,
+    pay_type VARCHAR(30) DEFAULT NULL
+);
+
+ALTER TABLE payments  
+ADD COLUMN pay_type_id INT DEFAULT NULL AFTER route_id,
+ADD CONSTRAINT payments_ibfk_pay_type_id FOREIGN KEY (pay_type_id) REFERENCES payment_type(pay_type_id);
+
+ALTER TABLE payments  
+ADD COLUMN org_bank_id INT DEFAULT NULL AFTER pay_type_id,
+ADD CONSTRAINT payments_ibfk_org_bank_id FOREIGN KEY (org_bank_id) REFERENCES organization_bank(org_bank_id);
+
+ALTER TABLE payments  
+ADD COLUMN user_bank_id INT DEFAULT NULL AFTER org_bank_id,
+ADD CONSTRAINT payments_ibfk_user_bank_id FOREIGN KEY (user_bank_id) REFERENCES user_bank(bank_id);
+
+ALTER TABLE payments  
+ADD COLUMN vendor_bank_id INT DEFAULT NULL AFTER user_bank_id,
+ADD CONSTRAINT payments_ibfk_vendor_bank_id FOREIGN KEY (vendor_bank_id) REFERENCES vendor_bank(vendor_bank_id);
+
+
+ALTER TABLE payments
+MODIFY COLUMN paid_from INT DEFAULT NULL AFTER pay_type_id,
+MODIFY COLUMN paid_to INT DEFAULT NULL AFTER paid_from;
+
+ALTER TABLE payments
+MODIFY COLUMN amount varchar(30) Default Null;
+*/
+
+
+/* **************************************************************** 
+<-- 22/04/2025-->
+******************************************************************* */
+
+/*
+ALTER TABLE tickets  
+ADD COLUMN entity_id INT DEFAULT NULL AFTER ticket_id,
+ADD CONSTRAINT ticketss_ibfk_entity_id FOREIGN KEY (entity_id) REFERENCES entities(entity_id);
+
+ALTER TABLE organization_bank  
+ADD COLUMN entity_id INT DEFAULT NULL AFTER org_id,
+ADD CONSTRAINT organization_bank_ibfk_entity_id FOREIGN KEY (entity_id) REFERENCES entities(entity_id);
+
+ALTER TABLE organization_bank  
+ADD COLUMN org_name_on_bank INT DEFAULT NULL AFTER org_bank_account_no;
+
+ALTER TABLE organization_bank
+MODIFY COLUMN org_name_on_bank varchar(100) DEFAULT NULL;
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE tickets
+SET entity_id = 1;
+SET SQL_SAFE_UPDATES = 1;  -- (Optional) Re-enable safe mode
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE tickets
+SET entity_id = NULL;
+SET SQL_SAFE_UPDATES = 1;  -- (Optional) Re-enable safe mode
+
+
+
+*/
+
+
+/* **************************************************************** 
+<-- 23/04/2025-->
+******************************************************************* */
+
+/*
+-- Rename current_address to current_address_line_1 and change data type to TEXT
+ALTER TABLE employees
+CHANGE COLUMN current_address current_address_line_1 TEXT;
+
+-- Add new address-related columns after current_address_line_1
+ALTER TABLE employees
+ADD COLUMN current_address_line_2 TEXT AFTER current_address_line_1,
+ADD COLUMN current_address_city TEXT AFTER current_address_line_2,
+ADD COLUMN current_address_state TEXT AFTER current_address_city,
+ADD COLUMN current_address_zip TEXT AFTER current_address_state,
+ADD COLUMN current_address_country TEXT AFTER current_address_zip;
+
+-- Rename permanent_address to permanent_address_line_1 and change data type to TEXT
+ALTER TABLE employees
+CHANGE COLUMN permanent_address permanent_address_line_1 TEXT;
+
+-- Add new permanent address-related columns after permanent_address_line_1
+ALTER TABLE employees
+ADD COLUMN permanent_address_line_2 TEXT AFTER permanent_address_line_1,
+ADD COLUMN permanent_address_city TEXT AFTER permanent_address_line_2,
+ADD COLUMN permanent_address_state TEXT AFTER permanent_address_city,
+ADD COLUMN permanent_address_zip TEXT AFTER permanent_address_state,
+ADD COLUMN permanent_address_country TEXT AFTER permanent_address_zip;
+
+
+-- Rename current_address to current_address_line_1 and change data type to TEXT
+ALTER TABLE employee_history
+CHANGE COLUMN current_address current_address_line_1 TEXT;
+
+-- Add new address-related columns after current_address_line_1
+ALTER TABLE employee_history
+ADD COLUMN current_address_line_2 TEXT AFTER current_address_line_1,
+ADD COLUMN current_address_city TEXT AFTER current_address_line_2,
+ADD COLUMN current_address_state TEXT AFTER current_address_city,
+ADD COLUMN current_address_zip TEXT AFTER current_address_state,
+ADD COLUMN current_address_country TEXT AFTER current_address_zip;
+
+-- Rename permanent_address to permanent_address_line_1 and change data type to TEXT
+ALTER TABLE employee_history
+CHANGE COLUMN permanent_address permanent_address_line_1 TEXT;
+
+-- Add new permanent address-related columns after permanent_address_line_1
+ALTER TABLE employee_history
+ADD COLUMN permanent_address_line_2 TEXT AFTER permanent_address_line_1,
+ADD COLUMN permanent_address_city TEXT AFTER permanent_address_line_2,
+ADD COLUMN permanent_address_state TEXT AFTER permanent_address_city,
+ADD COLUMN permanent_address_zip TEXT AFTER permanent_address_state,
+ADD COLUMN permanent_address_country TEXT AFTER permanent_address_zip;
+
+
+CREATE TABLE role_actions (
+  role_action_id INT(11) NOT NULL AUTO_INCREMENT,
+  role_id INT(11) DEFAULT NULL,
+  action VARCHAR(100) DEFAULT NULL,
+  status_id INT(11) DEFAULT NULL,
+  PRIMARY KEY (role_action_id),
+  KEY role_id (role_id),
+  KEY status_id (status_id),
+  CONSTRAINT role_action_ibfk_1 FOREIGN KEY (role_id) REFERENCES roles (role_id),
+  CONSTRAINT role_action_ibfk_2 FOREIGN KEY (status_id) REFERENCES master_status (status_id)
+  );
+  
+  */
+
+/* **************************************************************** 
+<-- 25/04/2025-->
+******************************************************************* */
+/*
+ALTER TABLE login_details 
+ADD COLUMN login_type VARCHAR(30) AFTER user_id;
+
+ALTER TABLE payments CHANGE transaction_id UTR_number VARCHAR(100);
+
+ALTER TABLE payments 
+ADD COLUMN payment_number VARCHAR(45) AFTER ticket_id;
+
+ALTER TABLE payments 
+ADD COLUMN created_by int(11) AFTER payment_date,
+ADD CONSTRAINT payments_ibfk_created_by FOREIGN KEY (created_by) REFERENCES users(user_id);
+
+ALTER TABLE payments CHANGE payment_number transaction_id VARCHAR(45);
+
+*/
+
+/* **************************************************************** 
+<-- 26/04/2025-->
+******************************************************************* */
+
+/*
+SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME 
+FROM information_schema.KEY_COLUMN_USAGE 
+WHERE TABLE_NAME = 'payments' 
+  AND CONSTRAINT_SCHEMA = 'df_ticketing' 
+  AND REFERENCED_TABLE_NAME IS NOT NULL;
+  
+  
+ALTER TABLE payments DROP FOREIGN KEY payments_ibfk_org_bank_id;
+ALTER TABLE payments DROP FOREIGN KEY payments_ibfk_user_bank_id;
+ALTER TABLE payments DROP FOREIGN KEY payments_ibfk_vendor_bank_id;
+
+ALTER TABLE payments
+DROP COLUMN org_bank_id,
+DROP COLUMN user_bank_id,
+DROP COLUMN vendor_bank_id;
+
+ALTER TABLE payments
+ADD COLUMN paid_from_bank INT(11) AFTER paid_to,
+ADD COLUMN paid_to_bank INT(11) AFTER paid_from_bank;
+
+ALTER TABLE organization_bank
+CHANGE org_bank_name entity_bank_name VARCHAR(100),
+CHANGE org_bank_account_no entity_bank_account_no VARCHAR(50),
+CHANGE org_name_on_bank entity_name_on_bank VARCHAR(100),
+CHANGE org_bank_ifsc entity_bank_ifsc VARCHAR(50),
+CHANGE org_bank_format entity_bank_format TEXT;
+
+
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE payments
+SET paid_from_bank = 1,
+    paid_to_bank = 1;
+
+SET SQL_SAFE_UPDATES = 1;
+*/
+
+/* **************************************************************** 
+<-- 02/05/2025-->
+******************************************************************* */
+
+/*
+-- Rename column granted_amount to m_granted_amount
+ALTER TABLE re_ticket_details
+CHANGE granted_amount m_granted_amount VARCHAR(100);
+
+-- Add new column f_granted_amount after m_granted_amount
+ALTER TABLE re_ticket_details
+ADD f_granted_amount VARCHAR(100) AFTER m_granted_amount;
+
+-- Rename column granted_by to f_granted_by
+ALTER TABLE re_ticket_details
+CHANGE granted_by f_granted_by INT(11);
+
+-- Rename column granted_amount to m_granted_amount
+ALTER TABLE reimbursement_history
+CHANGE granted_amount m_granted_amount VARCHAR(100);
+
+-- Add new column f_granted_amount after m_granted_amount
+ALTER TABLE reimbursement_history
+ADD f_granted_amount VARCHAR(100) AFTER m_granted_amount;
+*/
+
+
+/* **************************************************************** 
+<-- 03/05/2025-->
+******************************************************************* */
+
+/*
+
+SELECT report_code, COUNT(*)
+FROM df_ticketing.reports
+GROUP BY report_code
+HAVING COUNT(*) > 1;
+
+ALTER TABLE df_ticketing.reports
+ADD CONSTRAINT unique_report_code UNIQUE (report_code);
+
+SELECT ticket_number, COUNT(*)
+FROM df_ticketing.tickets
+GROUP BY ticket_number
+HAVING COUNT(*) > 1;
+
+ALTER TABLE df_ticketing.tickets
+ADD CONSTRAINT unique_ticket_number UNIQUE (ticket_number);
+
+SELECT transaction_id, COUNT(*)
+FROM df_ticketing.payments
+GROUP BY transaction_id
+HAVING COUNT(*) > 1;
+
+ALTER TABLE df_ticketing.payments
+ADD CONSTRAINT unique_transaction_id UNIQUE (transaction_id);
+
+*/
+
+/* **************************************************************** 
+<-- 08/05/2025-->
+******************************************************************* */
+
+/*
+ALTER TABLE employee_history MODIFY COLUMN secondary_job_title VARCHAR(100);
+ALTER TABLE employees MODIFY COLUMN secondary_job_title VARCHAR(100);
+ALTER TABLE user_history MODIFY COLUMN secondary_job_title VARCHAR(100);
+ALTER TABLE users MODIFY COLUMN secondary_job_title VARCHAR(100);
+
+ALTER TABLE employee_history MODIFY COLUMN job_title VARCHAR(100);
+ALTER TABLE employees MODIFY COLUMN job_title VARCHAR(100);
+ALTER TABLE user_history MODIFY COLUMN job_title VARCHAR(100);
+ALTER TABLE users MODIFY COLUMN job_title VARCHAR(100);
+
+ALTER TABLE organization_bank 
+ADD COLUMN email VARCHAR(100) 
+after entity_bank_IFSC;
+
+*/
+
+/* **************************************************************** 
+<-- 09/05/2025-->
+******************************************************************* */
+
+/*
+ALTER TABLE organization_bank
+ADD COLUMN account_type VARCHAR(50) AFTER entity_id,
+ADD COLUMN bank_address TEXT AFTER entity_bank_IFSC,
+ADD COLUMN bank_contact_no VARCHAR(30) AFTER bank_address,
+ADD COLUMN bank_contact_person VARCHAR(100) AFTER bank_contact_no;
+
+ALTER TABLE organization_bank AUTO_INCREMENT = 1;
+
+
+SELECT table_name
+FROM information_schema.columns
+WHERE column_name = 'employee_number'
+  AND table_schema = 'df_ticketing';
+  
+  
+  ALTER TABLE employee_history 
+MODIFY COLUMN employee_number VARCHAR(50);
+
+ALTER TABLE employees 
+MODIFY COLUMN employee_number VARCHAR(50);
+
+ALTER TABLE user_history 
+MODIFY COLUMN employee_number VARCHAR(50);
+
+ALTER TABLE users 
+MODIFY COLUMN employee_number VARCHAR(50);
+
+
+--
+-- Table structure for table `bill_history`
+--
+
+		DROP TABLE IF EXISTS `bill_history`;
+/*		/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*		/*!50503 SET character_set_client = utf8mb4 */;
+/*	  CREATE TABLE bill_history (
+		`bill_hst_id` INT(11) NOT NULL AUTO_INCREMENT,
+		`bill_id` INT(11) DEFAULT NULL,
+		`ticket_id` INT(11) DEFAULT NULL,
+		`exp_catg_id` INT(11) DEFAULT NULL,
+		`ticket_dtls_id` INT(11) DEFAULT NULL,
+		`bill_path` TEXT DEFAULT NULL,
+		`bill_number` VARCHAR(45) DEFAULT NULL,
+		`bill_amount` VARCHAR(100) DEFAULT NULL,
+		`bill_date` DATETIME DEFAULT NULL,
+		`status_id` INT(11) DEFAULT NULL,
+		`created_at` DATETIME DEFAULT NULL,
+		`created_by` INT(11) DEFAULT NULL,
+		`updated_at` DATETIME DEFAULT NULL,
+		`updated_by` INT(11) DEFAULT NULL,
+		PRIMARY KEY (`bill_hst_id`),
+		KEY `bill_id` (`bill_id`),
+		KEY `ticket_id` (`ticket_id`),
+		KEY `exp_catg_id` (`exp_catg_id`),
+		KEY `status_id` (`status_id`),
+		CONSTRAINT `bill_hst_ibfk_1` FOREIGN KEY (`bill_id`) REFERENCES `bills`(`bill_id`),
+		CONSTRAINT `bill_hst_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `tickets`(`ticket_id`) ,
+		CONSTRAINT `bill_hst_ibfk_3` FOREIGN KEY (`exp_catg_id`) REFERENCES `expense_category`(`expense_category_id`) ,
+		CONSTRAINT `bill_hst_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `master_status`(`status_id`) 
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+	--
+	-- Dumping data for table `bill_history`
+	--
+/*
+	LOCK TABLES `bill_history` WRITE;
+	/*!40000 ALTER TABLE `bill_history` DISABLE KEYS */;
+/*    
+	/*!40000 ALTER TABLE `bill_history` ENABLE KEYS */;
+/*	UNLOCK TABLES;
+
+
+
+DROP TABLE `df_ticketing`.`bill_history`
+
+
+*/
+
+/* **************************************************************** 
+<-- 12/05/2025-->
+******************************************************************* */
+
+/*
+SELECT table_name
+FROM information_schema.columns
+WHERE column_name = 'reporting_manager_en'
+  AND table_schema = 'df_ticketing';
+  
+  
+    ALTER TABLE employee_history 
+MODIFY COLUMN reporting_manager_en VARCHAR(50);
+
+
+ALTER TABLE employees 
+MODIFY COLUMN reporting_manager_en VARCHAR(50);
+
+
+
+--
+-- Table structure for table `edit_history`
+--
+
+		DROP TABLE IF EXISTS `edit_history`;
+/*		/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*		/*!50503 SET character_set_client = utf8mb4 */;
+/*		CREATE TABLE `edit_history` (
+		  `edit_id` int(11) NOT NULL AUTO_INCREMENT,
+		  `report_id` int(11) DEFAULT NULL,
+		  `ticket_id` int(11) DEFAULT NULL,
+		  `updated_by` int(11) DEFAULT NULL,
+		  `table_name` varchar(50) DEFAULT NULL,
+		  `column_name` varchar(60) DEFAULT NULL,
+		  `before` varchar(50) DEFAULT NULL,
+		  `after` varchar(50) DEFAULT NULL,
+		  `updated_date` datetime DEFAULT NULL,
+		  `description` text,
+		  PRIMARY KEY (`edit_id`),
+		  KEY `report_id` (`report_id`),
+		  KEY `ticket_id` (`ticket_id`),
+		  CONSTRAINT `edit_history_ibfk_1` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`),
+		  CONSTRAINT `edit_history_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`ticket_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		/*!40101 SET character_set_client = @saved_cs_client */;
+
+		--
+		-- Dumping data for table `edit_history`
+		--
+
+/*		LOCK TABLES `edit_history` WRITE;
+		/*!40000 ALTER TABLE `edit_history` DISABLE KEYS */;
+/*		/*!40000 ALTER TABLE `edit_history` ENABLE KEYS */;
+/*		UNLOCK TABLES;
+
+
+
+DROP TABLE `df_ticketing`.`edit_history`
+
+
+
+*/
+
+
+/* **************************************************************** 
+<-- 12/05/2025-->
+******************************************************************* */
+
+/*
+
+
+ ALTER TABLE employee_history 
+MODIFY COLUMN personal_email VARCHAR(100);   
+ ALTER TABLE employee_history 
+MODIFY COLUMN work_email VARCHAR(100);
+
+ALTER TABLE employees 
+MODIFY COLUMN personal_email VARCHAR(100);
+ALTER TABLE employees 
+MODIFY COLUMN work_email VARCHAR(100);
+
+ALTER TABLE users 
+MODIFY COLUMN work_email VARCHAR(100);
+
+ALTER TABLE users 
+MODIFY COLUMN personal_email VARCHAR(100);
+
+ALTER TABLE user_history 
+MODIFY COLUMN work_email VARCHAR(100);
+
+ALTER TABLE user_history 
+MODIFY COLUMN personal_email VARCHAR(100);
+
+
+ALTER TABLE employee_history 
+MODIFY COLUMN display_name VARCHAR(100);   
+
+ALTER TABLE employees 
+MODIFY COLUMN display_name VARCHAR(100); 
+
+
+ALTER TABLE users 
+MODIFY COLUMN user_name VARCHAR(100); 
+
+ALTER TABLE user_history 
+MODIFY COLUMN user_name VARCHAR(100); 
+
+ALTER TABLE user_bank 
+MODIFY COLUMN name_on_bank VARCHAR(100); 
+
+
+ALTER TABLE employee_history 
+MODIFY COLUMN first_name VARCHAR(100);   
+ALTER TABLE employee_history 
+MODIFY COLUMN middle_name VARCHAR(100); 
+ALTER TABLE employee_history 
+MODIFY COLUMN last_name VARCHAR(100); 
+ALTER TABLE employee_history 
+MODIFY COLUMN full_name VARCHAR(100); 
+
+ALTER TABLE employees 
+MODIFY COLUMN first_name VARCHAR(100);   
+ALTER TABLE employees 
+MODIFY COLUMN middle_name VARCHAR(100); 
+ALTER TABLE employees 
+MODIFY COLUMN last_name VARCHAR(100); 
+ALTER TABLE employees 
+MODIFY COLUMN full_name VARCHAR(100); 
+
+ALTER TABLE employees 
+MODIFY COLUMN entity VARCHAR(100);   
+
+ALTER TABLE employee_history 
+MODIFY COLUMN entity VARCHAR(100); 
+
+ALTER TABLE employee_history 
+MODIFY COLUMN employee_name_on_bank VARCHAR(100); 
+
+ALTER TABLE employees 
+MODIFY COLUMN employee_name_on_bank VARCHAR(100); 
+
+
+ALTER TABLE employee_history 
+MODIFY COLUMN employees_name VARCHAR(100); 
+
+ALTER TABLE employees 
+MODIFY COLUMN employees_name VARCHAR(100); 
+
+ALTER TABLE employee_history 
+MODIFY COLUMN pay_group VARCHAR(100); 
+
+ALTER TABLE employees 
+MODIFY COLUMN pay_group VARCHAR(100); 
+
+
+ALTER TABLE employee_history 
+MODIFY COLUMN employee_IFSC VARCHAR(50); 
+
+ALTER TABLE employees 
+MODIFY COLUMN employee_IFSC VARCHAR(50); 
+
+ALTER TABLE user_bank 
+MODIFY COLUMN IFSC VARCHAR(50); 
+
+ALTER TABLE vendor_bank 
+MODIFY COLUMN IFSC VARCHAR(50); 
+
+ALTER TABLE employees 
+MODIFY COLUMN reporting_manager VARCHAR(100); 
+
+ALTER TABLE employee_history 
+MODIFY COLUMN reporting_manager VARCHAR(100); 
+
+ALTER TABLE vendor_bank  
+MODIFY COLUMN name_on_bank VARCHAR(100);
+
+*/
+
+/* **************************************************************** 
+<-- 15/05/2025-->
+******************************************************************* */
+
+/*
+ALTER TABLE employees
+CHANGE employee_Account_number employee_account_number VARCHAR(20);
+
+ALTER TABLE employee_history
+CHANGE employee_Account_number employee_account_number VARCHAR(20);
+
+*/
+
+/* **************************************************************** 
+<-- 23/05/2025-->
+******************************************************************* */
+
+/*
+
+-- Add new column description after process_status_id
+ALTER TABLE tickets
+ADD description text AFTER process_status_id;
+
+-- Add new column description after contribution_id
+ALTER TABLE ticket_history
+ADD description text AFTER contribution_id;
+
+ALTER TABLE travels
+MODIFY COLUMN `from` VARCHAR(100) AFTER vehicle_id,
+MODIFY COLUMN `to` VARCHAR(100) AFTER `from`;
+
+ALTER TABLE tickets
+ADD COLUMN granted_amount VARCHAR(100) AFTER exp_catg_id;
+
+ALTER TABLE organization_bank
+ADD COLUMN client_code VARCHAR(100) AFTER account_type;
+
+*/
+
+/* **************************************************************** 
+<-- 31/05/2025-->
+******************************************************************* */
+
+/*
+
+-- Add new column bank_ledger after entity_bank_IFSC
+ALTER TABLE organization_bank
+ADD bank_ledger text AFTER entity_bank_IFSC;
+
+
+ALTER TABLE employees
+MODIFY cost_center VARCHAR(225);
+
+ALTER TABLE employee_history
+MODIFY cost_center VARCHAR(225);
+
+ALTER TABLE `df_ticketing`.`users`
+ADD COLUMN `sended_email` INT(11) AFTER `work_location`;
+
+*/
+
+
+/* **************************************************************** 
+<-- 05/06/2025-->
+******************************************************************* */
+
+/*
+
+SELECT 
+    CONSTRAINT_NAME
+FROM 
+    information_schema.KEY_COLUMN_USAGE
+WHERE 
+    TABLE_NAME = 'ledgers'
+    AND COLUMN_NAME = 'entity_id'
+    AND TABLE_SCHEMA = 'df_ticketing';
+
+
+
+ALTER TABLE ledgers
+DROP FOREIGN KEY ledgers_ibfk_2;
+
+SHOW INDEX FROM `ledgers` WHERE Column_name = 'entity_id';
+
+ALTER TABLE `ledgers` DROP INDEX `entity_id`;
+
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE ledgers
+SET entity_id = NULL;
+
+-- Optionally, re-enable safe updates after
+SET SQL_SAFE_UPDATES = 1;
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE ledgers
+SET status_id = 2;
+
+-- Optionally, re-enable safe updates after
+SET SQL_SAFE_UPDATES = 1;
+
+alter table tally_booking ADD COLUMN `dr/cr` varchar(10) AFTER `payment_id`;
+
+ALTER TABLE `tally_booking`
+  ADD COLUMN `tally_pay_id` INT(11) AFTER `payment_id`,
+  ADD CONSTRAINT `tally_booking_ibfk_5` FOREIGN KEY (`tally_pay_id`) REFERENCES `tally_payment` (`tally_pay_id`);
+
+  
+*/
+
+/* **************************************************************** 
+<-- 11/06/2025-->
+******************************************************************* */
+
+/*
+
+ALTER TABLE tally_pay_bank
+ADD COLUMN route_id INT AFTER tally_pay_id,
+ADD COLUMN bank_id INT AFTER route_id,
+ADD CONSTRAINT fk_tally_pay_bank_route_id
+    FOREIGN KEY (route_id) REFERENCES payment_route(route_id);
+
+*/
+
+/* **************************************************************** 
+<-- 25/06/2025-->
+******************************************************************* */
+
+/*
+Organization bank without ledgers are marked as inactive
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '19');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '21');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '23');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '24');
+UPDATE `df_ticketing`.`organization_bank` SET `status_id` = '2' WHERE (`org_bank_id` = '27');
+
+*/
+
+/* **************************************************************** 
+<-- 02/07/2025-->
+******************************************************************* */
+
+/*
+-- DF Finance inserted as an user 
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`,`cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DF Finance', 'dfpayments@dfmail.org', '1','1', 'Finance Approver','DCSE Building, B, V.B. Campus, Vidya Nagar,', '0', '1', NOW());
+
+-- Pavan Given FP access, Seema given Onboarder access, DF Finance given user and FA access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('35', '3', NOW(), 'System', '1'), ('48', '6', NOW(), 'System', '1'),('71', '7', NOW(), 'System', '1'),('71', '4', NOW(), 'System', '1');
+*/
+
+/* **************************************************************** 
+<-- 04/07/2025-->
+******************************************************************* */
+
+/*
+--FP Given access to Finance Fanel menu and finance panel action
+INSERT INTO `df_ticketing`.`role_menu` (`role_id`, `menu_id`, `status_id`) VALUES ('3', '10', '1');
+INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VALUES ('3', 'financepanel', '1');
+INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VALUES ('3', 'financepanel/ticket', '1');
+
+*/
+
+/* **************************************************************** 
+<-- 07/07/2025-->
+******************************************************************* */
+
+/*
+-- Jayathirtha Y S given access of FA and FP
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('18', '3', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('18', '4',NOW(), 'System', '1');
+
+-- 1. Change employee_bank_name in employees table
+ALTER TABLE employees
+MODIFY employee_bank_name VARCHAR(100);
+
+-- 2. Change employee_bank_name in employee_history table
+ALTER TABLE employee_history
+MODIFY employee_bank_name VARCHAR(100);
+
+-- 3. Change bank_name in user_bank table
+ALTER TABLE user_bank
+MODIFY bank_name VARCHAR(100);
+
+*/
+
+/* **************************************************************** 
+<-- 10/07/2025-->
+******************************************************************* */
+
+/*
+-- Payment Type - NFT instead of NEFT
+
+-- Changes asked by finance team
+Finance team want to change the process. Initially 1st ticket used to go to Finance Processor who would check the tickets and then proccessed it.
+Then  the finance approver will approve or reject the ticket . If approved then Finance Approver will do the payments processing . 
+But now they want once Finace Approver approves, the ticket should again go to the Finance Processor who will do the payments.
+
+So now FP and FA have the access of bank excel download 
+*/
+
+/* **************************************************************** 
+<-- 15/07/2025-->
+******************************************************************* */
+
+/*
+-- Organization bank - Email set to 'dfpayments@dfmail.org' for RBL and Kotak Bank 
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'dfpayments@dfmail.org' WHERE (`org_bank_id` = '3');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'dfpayments@dfmail.org' WHERE (`org_bank_id` = '4');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'dfpayments@dfmail.org' WHERE (`org_bank_id` = '9');
+*/
+
+/* **************************************************************** 
+<-- 25/07/2025-->
+******************************************************************* */
+
+/*
+-- Organization bank - Email set to 'detpayments@dfmail.org' for RBL and Kotak Bank For Entity 2
+
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'detpayments@dfmail.org' WHERE (`org_bank_id` = '17');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'detpayments@dfmail.org' WHERE (`org_bank_id` = '18');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'detpayments@dfmail.org' WHERE (`org_bank_id` = '20');
+
+-- Organization bank - Email set to 'sandboxaccounts@dfmail.org' for RBL For Entity 3
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'sandboxaccounts@dfmail.org' WHERE (`org_bank_id` = '23');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'sandboxaccounts@dfmail.org' WHERE (`org_bank_id` = '24');
+UPDATE `df_ticketing`.`organization_bank` SET `email` = 'sandboxaccounts@dfmail.org' WHERE (`org_bank_id` = '27');
+*/
+
+/* **************************************************************** 
+<-- 31/07/2025-->
+******************************************************************* */
+
+/*
+
+INSERT INTO `df_ticketing`.`organization_bank` (`org_id`, `entity_id`, `entity_bank_name`, `entity_name_on_bank`, `bank_ledger`, `status_id`, `created_at`) VALUES ('1', '3', 'Other Bank', 'Foundation for Sandboxstartup Initiatives', 'Other Bank', '1', Now());
+
+INSERT INTO `payment_type` VALUES (5,'NEFT'),(6,'TPT'),(7,'RTS')
+
+
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DET Finance', 'detpayments@dfmail.org', '2', '1', 'Finance Approver', '9338+8JV, Hosur - Unkal Bypass Rd, Chetana Colony, Vidya Nagar, Hubballi, Karnataka 580021', '0', '1', NOW());
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('DS Finance', 'sandboxaccounts@dfmail.org', '3', '1', 'Finance Approver', 'Foundation for Sandboxstartup Initiatives, Gokul Rd, next to International Airport, opposite Gokul, Gokul, Hubballi, Karnataka 580030', '0', '1', NOW());
+
+--DET Finance and DS Finance given user and FA access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('73', '7', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('73', '4', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('74', '7', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('74', '4', NOW(), 'System', '1');
+
+*/
+
+/* **************************************************************** 
+<-- 01/08/2025-->
+******************************************************************* */
+
+/*
+
+-- Gowri and Nayana Given FP access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('156', '3', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('227', '3', NOW(), 'System', '1');
+
+
+-- Hemavathi Malleshappa Purad, Vinaykumar Vardhaman Upadhye, Kesha Udvitha and Chandrashekar S K given HR Access
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('20', '6',NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('119', '6', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('17', '6', NOW(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('59', '6', NOW(), 'System', '1');
+
+*/
+
+/* **************************************************************** 
+<-- 06/08/2025-->
+******************************************************************* */
+
+/*
+-- Office location table created
+CREATE TABLE office_location (
+    office_location_id INT NOT NULL AUTO_INCREMENT,
+    office_location TEXT DEFAULT NULL,
+    office_code varchar(30) DEFAULT NULL,
+    status_id INT(11) DEFAULT NULL,
+    PRIMARY KEY (office_location_id),
+    KEY idx_office_location_status_id (status_id),
+    CONSTRAINT office_location_status_ibfk_1
+        FOREIGN KEY (status_id) REFERENCES master_status(status_id)
+);
+
+-- Data inserted in office_location table
+INSERT INTO `office_location` VALUES ('1', 'Deshpande Foundation Hubballi Office', '1'),('2', 'Deshpande Educational Trust Hubballi Office', '1'),('3', 'Foundation For Sandbox Startup Initiatives Hubballi Office', '1'),('4', 'Nizamabad Office', '1');
+
+
+--Column Added in user_roles table
+ALTER TABLE `user_roles`
+    ADD COLUMN `office_location_id` INT NULL AFTER `role_id`,
+    ADD KEY `idx_user_roles_office_location_id` (`office_location_id`),
+    ADD CONSTRAINT `user_roles_office_location_ibfk_1` 
+        FOREIGN KEY (`office_location_id`) REFERENCES `office_location`(`office_location_id`);
+        
+--Column Added in Users table
+ALTER TABLE `users`
+    ADD COLUMN `office_location_id` INT NULL AFTER `entity_id`,
+    ADD KEY `idx_users_office_location_id` (`office_location_id`),
+    ADD CONSTRAINT `users_office_location_ibfk_1`
+        FOREIGN KEY (`office_location_id`) REFERENCES `office_location`(`office_location_id`);
+        
+-- Column Added in tickets table
+ALTER TABLE `tickets`
+    ADD COLUMN `office_location_id` INT NULL AFTER `entity_id`,
+    ADD KEY `idx_tickets_office_location_id` (`office_location_id`),
+    ADD CONSTRAINT `tickets_office_location_ibfk_1`
+        FOREIGN KEY (`office_location_id`) REFERENCES `office_location`(`office_location_id`);
+*/
+
+
+/* **************************************************************** 
+<-- 08/08/2025-->
+******************************************************************* */
+
+/*
+INSERT INTO `df_ticketing`.`roles` (`role_name`, `created_at`, `create_by`, `status_id`, `description`) VALUES ('Bank Processor', NOW(), '1', '1', 'Banking Process');
+UPDATE `df_ticketing`.`role_menu` SET `status_id` = '2' WHERE (`role_menu_id` = '44');
+UPDATE `df_ticketing`.`role_actions` SET `status_id` = '2' WHERE (`role_action_id` = '60');
+UPDATE `df_ticketing`.`role_actions` SET `status_id` = '2' WHERE (`role_action_id` = '61');
+UPDATE `df_ticketing`.`role_actions` SET `status_id` = '2' WHERE (`role_action_id` = '23');
+UPDATE `df_ticketing`.`role_actions` SET `status_id` = '2' WHERE (`role_action_id` = '24');
+UPDATE `df_ticketing`.`role_menu` SET `status_id` = '2' WHERE (`role_menu_id` = '38');
+INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VALUES ('9', 'financepanel', '1');
+INSERT INTO `df_ticketing`.`role_actions` (`role_id`, `action`, `status_id`) VALUES ('9', 'financepanel/ticket', '1');
+INSERT INTO `df_ticketing`.`role_menu` (`role_id`, `menu_id`, `status_id`) VALUES ('9', '10', '1');
+*/
+
+/* **************************************************************** 
+<-- 14/08/2025-->
+******************************************************************* */
+
+/*
+-- Bejjenki Alekhya Given FP access for Nizamabad office Location
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`,`office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('10', '3','4', NOW(), 'System', '1');
+
+-- Pavan Given FP access for Deshpande Foundation Hubballi Office and Foundation For Sandbox Startup Initiatives Hubballi Office Location
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`,`office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('35', '3','1', NOW(), 'System', '1'),('35', '3','3', NOW(), 'System', '1');
+
+-- Pavan and Nayana Given access of Bank Processor for all locations and entity
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('35', '9', NOW(), 'System', '1')('227', '9', NOW(), 'System', '1');
+
+-- Nayana given FP access for Deshpande Educational Trust Hubballi Office location
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`,`office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('227', '2','1', NOW(), 'System', '1')
+
+
+
+-- dfticketing.finance@dfmail.org added as user 
+
+INSERT INTO `df_ticketing`.`users` (`user_name`, `work_email`, `entity_id`, `cost_center_id`, `job_title`, `office_location_id`,`work_location`, `sended_email`, `status_id`, `timestamp`) VALUES ('Finance Approver', 'dfticketing.finance@dfmail.org', '1', '1', 'Finance Approver','1','Hubbali', '0', '1', Now());
+
+-- dfticketing.finance@dfmail.org given access to FA for all 4 office location
+
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '4', '1', Now(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '4', '2', Now(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '4', '3', Now(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `office_location_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '4', '4', Now(), 'System', '1');
+
+-- FA access for these 3 Revoked
+1. dfpayments@dfmail.org
+2. detpayments@dfmail.org
+3. sandboxaccounts@dfmail.org
+*/
+
+/* **************************************************************** 
+<-- 01/04/2026-->
+******************************************************************* */
+
+/*
+
+-- 7 finance users were inserted in Users table 
+
+df.maker@dfmail.org – User: Pavan Mahedrakar,
+det.maker@dfmail.org – User: Nayana Kubyal,
+fssi.maker@dfmail.org – User: Nikhil Bellad,
+ks.maker@dfmail.org – User: Alekhya Bejjenki, 
+df.checker@dfmail.org – User: Muttanna Waleekar,
+det.checker@dfmail.org – User: Vijay Kulkarni,
+fssi.checker@dfmail.org – User: Nithin Patil
+
+-- Change the role names Fianance Processor and Finance Approver
+UPDATE `df_ticketing`.`roles` SET `role_name` = 'Finance Maker' WHERE (`role_id` = '3');
+UPDATE `df_ticketing`.`roles` SET `role_name` = 'Finance Checker' WHERE (`role_id` = '4');
+
+Select * from `df_ticketing`.`roles`;
+
+-- activate 7 email roles (689,688,687,686,685,684,683) [df.maker@dfmail.org – User: Pavan Mahedrakar,det.maker@dfmail.org – User: Nayana Kubyal,fssi.maker@dfmail.org – User: Nikhil Bellad,ks.maker@dfmail.org – User: Alekhya Bejjenki, df.checker@dfmail.org – User: Muttanna Waleekar,det.checker@dfmail.org – User: Vijay Kulkarni,fssi.checker@dfmail.org – User: Nithin Patil] for roles 3, 4, 7, 9
+
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1391');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1399');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1427');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1392');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1400');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1428');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1393');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1401');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1429');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1394');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1402');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1430');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1395');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1431');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1396');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1432');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1397');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1433');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1427');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1429');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '1' WHERE (`user_role_id` = '1430');
+
+
+
+
+-- revoke access of 659 [dfticketing.finance@dfmail.org] - 4 (FA of all location), 35,227,10 [Bejjenki Alekhya – alekhya.bejjenki@dfmail.org, Pavan, Mahendrakar – pavan.mahendrakar@dfmail.org, Nayana Kubyal – nayana.kubyal@dfmail.org] - 3(FP of all location)
+
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1081');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1080');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1079');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1078');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '766');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1059');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '114');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1058');
+
+
+-- Revoke admin and Bank Processor from Parthasarathy Sudarsanam
+
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1355');
+UPDATE `df_ticketing`.`user_roles` SET `status_id` = '2' WHERE (`user_role_id` = '1434');
+
+
+-- give 659 [dfticketing.finance@dfmail.org]- 2(Admin) and 9(bank Processor) will be used by Parthasarathy Sudarsanam
+
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '2', Now(), 'System', '1');
+INSERT INTO `df_ticketing`.`user_roles` (`user_id`, `role_id`, `created_at`, `created_by`, `status_id`) VALUES ('659', '9', Now(), 'System', '1');
+
+*/
