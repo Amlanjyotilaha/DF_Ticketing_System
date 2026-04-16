@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DF Ticketing System: A Data-Driven Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; /* Base height, adjust with media queries */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        /* Styles for the HTML/CSS diagrams */
+        .node-box {
+            @apply p-4 rounded-lg shadow-md text-center font-semibold text-sm w-48; /* Fixed width for better alignment */
+            border: 2px solid;
+            min-width: 120px;
+        }
+        .arrow-vertical-line {
+            @apply w-0.5 h-8 bg-gray-400;
+        }
+        .arrow-tip-down {
+            @apply text-gray-400 text-xl leading-none;
+        }
+        .connector-text {
+            @apply text-gray-600 text-xs font-medium my-1;
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-2">Anatomy of the DF Ticketing System</h1>
+            <p class="text-lg text-gray-600">A Data-Driven Overview of the Expense & Reimbursement Ecosystem</p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-center">
+            <div class="card p-6">
+                <div class="text-5xl font-bold text-blue-600">55+</div>
+                <div class="text-lg font-medium text-gray-600 mt-2">Total Tables</div>
+                <p class="text-sm text-gray-500 mt-1">Powering a complex and interconnected data model.</p>
+            </div>
+            <div class="card p-6">
+                <div class="text-5xl font-bold text-teal-600">3</div>
+                <div class="text-base font-medium text-gray-600 mt-2 leading-tight">Key Modules</div>
+                <p class="text-sm text-gray-500 mt-1">Users, Reports, and Tickets form the backbone.</p>
+            </div>
+            <div class="card p-6">
+                <div class="text-5xl font-bold text-amber-500">10+</div>
+                <div class="text-base font-medium text-gray-600 mt-2 leading-tight">Approval Workflows</div>
+                <p class="text-sm text-gray-500 mt-1">Managing processes from submission to settlement.</p>
+            </div>
+        </section>
+
+        <main class="space-y-16">
+
+            <!-- Section 1: Core Components -->
+            <section id="core-components">
+                <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">The Core Components: Organization & Users</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <div class="card lg:col-span-2">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Organizational Structure</h3>
+                        <p class="text-gray-600 mb-6">The system is built on a clear hierarchy, mapping real-world organizational structures. A single `Organization` can encompass multiple `Entities`, which in turn employ numerous `Users`. Each `User` is assigned specific `Roles` that define their permissions and access within the ticketing system.</p>
+                        <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 md:space-x-4 text-center">
+                            <div class="relative flex items-center">
+                                <div class="p-4 bg-blue-100 text-blue-700 rounded-lg shadow">
+                                    <div class="font-bold text-lg">🏢 Organization</div>
+                                    <div class="text-sm">(e.g., Deshpande Foundation)</div>
+                                </div>
+                                <div class="hidden md:block text-5xl text-gray-400 mx-4">→</div>
+                                <div class="md:hidden text-5xl text-gray-400 my-2">↓</div>
+                            </div>
+                            <div class="relative flex items-center">
+                                <div class="p-4 bg-teal-100 text-teal-700 rounded-lg shadow">
+                                    <div class="font-bold text-lg">🏛️ Entities</div>
+                                    <div class="text-sm">(e.g., DF, DET, DS)</div>
+                                </div>
+                                <div class="hidden md:block text-5xl text-gray-400 mx-4">→</div>
+                                 <div class="md:hidden text-5xl text-gray-400 my-2">↓</div>
+                            </div>
+                            <div class="p-4 bg-amber-100 text-amber-700 rounded-lg shadow">
+                                <div class="font-bold text-lg">👥 Users</div>
+                                <div class="text-sm">(Employees with Roles)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">User Roles Distribution</h3>
+                         <p class="text-gray-600 mb-4">Access and capabilities are managed through a role-based system. While 'Users' form the largest group, specialized roles like 'Finance Approver' and 'Manager' hold critical responsibilities in the approval chain, ensuring a robust authorization process.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="rolesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                         <h3 class="text-xl font-bold text-gray-800 mb-2">Users per Entity</h3>
+                        <p class="text-gray-600 mb-4">The distribution of users provides insight into the operational scale of each entity within the foundation. The primary Deshpande Foundation entity, for instance, typically accounts for the largest number of system users, reflecting its broader scope.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="usersPerEntityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Ticketing Workflow -->
+            <section id="workflow">
+                <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">The Ticketing Workflow: From Submission to Settlement</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <div class="card lg:col-span-3">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Detailed Ticket Lifecycle</h3>
+                        <p class="text-gray-600 mb-8">Every financial request follows a specific, multi-stage approval process. This ensures accountability and financial integrity, from initial user input to final payment and accounting in Tally, with distinct paths for Reimbursement, Procurement, and Advance tickets.</p>
+                        <div class="space-y-6 flex flex-col items-center">
+                            <div class="flex items-center space-x-4 w-full">
+                                <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">1</div>
+                                <div class="flex-1 p-4 bg-gray-100 rounded-lg shadow-sm">
+                                    <h4 class="font-bold text-gray-800">User Initiates Report</h4>
+                                    <p class="text-sm text-gray-600">A user opens a new report, which serves as a container for their financial requests.</p>
+                                </div>
+                            </div>
+                            <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+                            <div class="flex items-center space-x-4 w-full">
+                                <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">2</div>
+                                <div class="flex-1 p-4 bg-gray-100 rounded-lg shadow-sm">
+                                    <h4 class="font-bold text-gray-800">Ticket Creation: Reimbursement, Procurement, or Advance</h4>
+                                    <p class="text-sm text-gray-600">Within the report, the user creates individual tickets, specifying type. Each ticket details `Ledger`, `Expense Category`, and includes attached `Bills` for verification.</p>
+                                </div>
+                            </div>
+                            <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+                            <div class="flex items-center space-x-4 w-full">
+                                <div class="bg-teal-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">3</div>
+                                <div class="flex-1 p-4 bg-gray-100 rounded-lg shadow-sm">
+                                    <h4 class="font-bold text-gray-800">Report Submission & Manager Approval</h4>
+                                    <p class="text-sm text-gray-600">Once all tickets are added, the report is submitted. It then moves to the user's `Manager` for initial review and approval.</p>
+                                </div>
+                            </div>
+                            <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+                            <div class="flex items-center space-x-4 w-full">
+                                <div class="bg-teal-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">4</div>
+                                <div class="flex-1 p-4 bg-gray-100 rounded-lg shadow-sm">
+                                    <h4 class="font-bold text-gray-800">Finance Processing & Payment</h4>
+                                    <p class="text-sm text-gray-600">Approved reports proceed to `Finance Processor` and `Finance Approver`.
+                                        <br/> <b>Reimbursement:</b> Final payment is processed.
+                                        <br/> <b>Procurement:</b> Initial advance may be processed. Final settlement occurs upon material receipt and final invoice attachment.
+                                        <br/> <b>Advance:</b> Advance amount is processed and disbursed.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+                            <div class="flex items-center space-x-4 w-full">
+                                <div class="bg-amber-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">5</div>
+                                <div class="flex-1 p-4 bg-gray-100 rounded-lg shadow-sm">
+                                    <h4 class="font-bold text-gray-800">Final Settlement & Tally Integration</h4>
+                                    <p class="text-sm text-gray-600">
+                                        <b>Reimbursement:</b> Ticket is closed after payment.
+                                        <br/> <b>Procurement:</b> Ticket is closed after final material receipt, invoice attachment, and remaining payment (if any).
+                                        <br/> <b>Advance:</b> User submits final bills; an adjustment (user receives more or pays back) occurs before ticket closure.
+                                        <br/> All relevant data is then recorded in `Tally Booking` and `Tally Payment` tables.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="lg:col-span-2 space-y-8">
+                        <div class="card">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Ticket Types</h3>
+                            <p class="text-gray-600 mb-4">Tickets are categorized into three main types based on the nature of the financial request. Reimbursements typically constitute the largest share of all processed tickets, followed by procurement and advances.</p>
+                            <div class="chart-container h-64">
+                                <canvas id="ticketTypesChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Reimbursement Categories</h3>
+                            <p class="text-gray-600 mb-4">For reimbursement tickets, expenses are further broken down into specific categories such as Food, Travel, Accommodation, and other miscellaneous expenses, providing granular insights into spending patterns.</p>
+                            <div class="chart-container h-64">
+                                <canvas id="reimbursementCategoriesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+             <!-- Section 3: System Architecture: Data Relationships -->
+            <section id="architecture">
+                <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">System Architecture: Core Data Relationships</h2>
+                <div class="card">
+                     <p class="text-gray-600 mb-6 text-center">The database is meticulously designed around a network of interconnected tables, forming a logical data flow. This diagram highlights the primary entities and their relationships, showcasing how information propagates through the ticketing system, from user requests to financial record-keeping.</p>
+                     <div class="flex flex-col items-center space-y-4 py-8">
+                        
+                        <!-- Users -->
+                        <div class="node-box border-amber-300 bg-amber-100 text-amber-800">
+                            👥 Users
+                        </div>
+                        <div class="connector-text">Initiates</div>
+                        <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+                        
+                        <!-- Reports -->
+                        <div class="node-box border-blue-300 bg-blue-100 text-blue-800">
+                            📄 Reports
+                        </div>
+                        <div class="connector-text">Contains</div>
+                        <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+                        
+                        <!-- Tickets (with branches) -->
+                        <div class="node-box border-teal-300 bg-teal-100 text-teal-800">
+                            🎟️ Tickets
+                        </div>
+                        <div class="connector-text">Details & Supporting Data</div>
+
+                        <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8 mt-4">
+                            <div class="flex flex-col items-center">
+                                <div class="node-box border-gray-300 bg-gray-100 text-gray-800">
+                                    📈 Ledgers & Categories
+                                </div>
+                                <div class="hidden md:block arrow-vertical-line h-4"></div>
+                                <span class="hidden md:block arrow-tip-down -mt-1">↑</span>
+                                <div class="connector-text md:hidden">Linked to Tickets</div>
+                            </div>
+                            
+                            <div class="md:hidden arrow-vertical-line h-4"></div>
+                            <span class="md:hidden arrow-tip-down -mt-1">↓</span>
+                            <div class="connector-text md:hidden">and</div>
+                            <div class="md:hidden arrow-vertical-line h-4"></div>
+                            <span class="md:hidden arrow-tip-down -mt-1">↓</span>
+
+                            <div class="flex flex-col items-center">
+                                <div class="node-box border-red-300 bg-red-100 text-red-800">
+                                    🧾 Bills
+                                </div>
+                                <div class="hidden md:block arrow-vertical-line h-4"></div>
+                                <span class="hidden md:block arrow-tip-down -mt-1">↑</span>
+                                <div class="connector-text md:hidden">Attached to Tickets</div>
+                            </div>
+                        </div>
+
+                        <div class="arrow-vertical-line mt-4"></div><span class="arrow-tip-down">↓</span>
+                        <div class="connector-text">Leads to</div>
+                        
+                        <!-- Payments -->
+                        <div class="node-box border-green-300 bg-green-100 text-green-800">
+                            💳 Payments
+                        </div>
+                        <div class="connector-text">For Accounting</div>
+                        <div class="arrow-vertical-line"></div><span class="arrow-tip-down">↓</span>
+
+                        <!-- Tally -->
+                        <div class="node-box border-purple-300 bg-purple-100 text-purple-800">
+                            📊 Tally Booking & Payment
+                        </div>
+                     </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            let words = str.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const sharedChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                     labels: {
+                        font: {
+                            size: 12,
+                            family: 'Inter'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: '#1F2937',
+                    titleFont: { size: 14, weight: 'bold', family: 'Inter' },
+                    bodyFont: { size: 12, family: 'Inter' },
+                    padding: 10,
+                    cornerRadius: 4,
+                }
+            },
+        };
+
+        const rolesData = {
+            labels: ['User', 'Manager', 'Finance Processor', 'Finance Approver', 'Admin', 'Onboarder'],
+            datasets: [{
+                label: 'User Roles',
+                data: [150, 25, 8, 5, 10, 2],
+                backgroundColor: ['#2563EB', '#14B8A6', '#FBBF24', '#F87171', '#60A5FA', '#9CA3AF'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+            }]
+        };
+        new Chart(document.getElementById('rolesChart'), {
+            type: 'doughnut',
+            data: rolesData,
+            options: { ...sharedChartOptions }
+        });
+
+        const usersPerEntityData = {
+            labels: [wrapLabel('Deshpande Foundation', 16), wrapLabel('Deshpande Educational Trust', 16), wrapLabel('Foundation for Sandboxstartup Initiatives', 16)],
+            datasets: [{
+                label: 'Number of Users',
+                data: [120, 50, 30],
+                backgroundColor: ['#2563EB', '#14B8A6', '#FBBF24'],
+                borderRadius: 4,
+            }]
+        };
+        new Chart(document.getElementById('usersPerEntityChart'), {
+            type: 'bar',
+            data: usersPerEntityData,
+            options: {
+                ...sharedChartOptions,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        
+        const ticketTypesData = {
+            labels: ['Reimbursement', 'Procurement', 'Advance'],
+            datasets: [{
+                label: 'Ticket Types',
+                data: [350, 80, 45],
+                backgroundColor: ['#2563EB', '#14B8A6', '#FBBF24'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+            }]
+        };
+        new Chart(document.getElementById('ticketTypesChart'), {
+            type: 'pie',
+            data: ticketTypesData,
+            options: { ...sharedChartOptions }
+        });
+        
+        const reimbursementCategoriesData = {
+            labels: ['Travel', 'Food', 'Accommodation', 'Others'],
+            datasets: [{
+                label: 'Expense Amount (in thousands)',
+                data: [150, 95, 120, 60],
+                backgroundColor: ['#2563EB', '#34D399', '#FBBF24', '#9CA3AF'],
+                borderRadius: 4,
+            }]
+        };
+        new Chart(document.getElementById('reimbursementCategoriesChart'), {
+            type: 'bar',
+            data: reimbursementCategoriesData,
+            options: {
+                ...sharedChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
