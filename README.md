@@ -1,11 +1,12 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d50d2609-869f-44c7-b5d0-817e65e2a72f" alt="DF TICKETING (1) crop">
+  <img src="https://github.com/user-attachments/assets/54269500-d897-4953-a9b9-c00db9d75472" alt="DF TICKETING (1) crop">
 </p>
 
 # 🧾 DF_Ticketing System Overview
 
 
-![SRS Infographics-1](https://github.com/user-attachments/assets/3e19b1f1-96e4-4f6e-9676-2ebb730455e8)
+
+![SRS Infographics-1](https://github.com/user-attachments/assets/d447dcd7-527a-4d9c-9391-19ca0799cb9c)
 
 
 ## 📄 Software Requirements Specification (SRS)
@@ -223,7 +224,7 @@ User → API → Backend → DB → Notification/Export → Frontend Update
 ## 7. 🗄️ Database Overview
 
 ## DF Ticketing Database Schema Screenshot
-<img width="4994" height="4143" alt="df_ticketing database" src="https://github.com/user-attachments/assets/556fa562-4c2c-4341-aac2-63e7c29ce5b2" />
+<img width="4994" height="4143" alt="df_ticketing database" src="https://github.com/user-attachments/assets/e275a8b7-b00e-43ed-af02-2cc36775cf8b" />
 
 #### [View Interactive Schema on dbdiagram.io](https://dbdiagram.io/d/df_ticketing-database-686d0055f413ba3508d3e899)
 
